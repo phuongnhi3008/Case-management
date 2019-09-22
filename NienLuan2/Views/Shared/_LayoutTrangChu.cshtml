@@ -17,8 +17,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Bootstrap  -->
-    <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/bootstrap.css">
-
+    @*<link rel="stylesheet" type="text/css" href="~/Content/stylesheets/bootstrap.css">*@
+    <link href="~/Content/Boostrap4/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
     <!-- Theme Style -->
     <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/style.css">
 
@@ -57,16 +58,20 @@
         <span class="loader3 block-loader"></span>
     </div>
 
-    @RenderBody()
-
+                @RenderBody()
     <!-- Go Top -->
-    <a class="go-top">
+    <a class="go-top" style="background: #fff">
         <i class="fa fa-angle-up"></i>
     </a>
 
     <!-- Javascript -->
     <script type="text/javascript" src="~/Content/javascript/jquery.min.js"></script>
-    <script type="text/javascript" src="~/Content/javascript/bootstrap.min.js"></script>
+    @*<script type="text/javascript" src="~/Content/javascript/bootstrap.min.js"></script>*@
+
+    @*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>*@
+    <script type="text/javascript" src="~/Content/Boostrap4/bootstrap.min.js"></script>
+
     <script type="text/javascript" src="~/Content/javascript/jquery.easing.js"></script>
 
     <script type="text/javascript" src="~/Content/javascript/jquery.sticky.js"></script>
@@ -93,7 +98,6 @@
     <script type="text/javascript" src="~/Content/javascript/jquery.tweet.min.js"></script>
     <script type="text/javascript" src="~/Content/javascript/main.js"></script>
     <script type="text/javascript" src="~/Content/javascript/chat-popup.js"></script>
-
 </body>
 
 <!-- Mirrored from rollthemes.com/demo/html/besmart/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 31 Jul 2015 13:00:05 GMT -->

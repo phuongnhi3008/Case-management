@@ -17,5 +17,11 @@ namespace NienLuan2.Controllers
             IEnumerable<MAUDON> model = db.MAUDONs;
             return View(model.OrderByDescending(x => x.TenMauDon).ToPagedList(page, pageSize));
         }
+
+        [HttpGet]
+        public ActionResult DowloadDon(string link)
+        {
+            return Redirect(link);
+        }
     }
 }
