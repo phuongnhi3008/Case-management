@@ -1,0 +1,1176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ModelNL2.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="MA_ChucVu" />
+          </Key>
+          <Property Name="MA_ChucVu" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="TEN_ChucVu" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DIADIEM_XX">
+          <Key>
+            <PropertyRef Name="MA_DiaDiem" />
+          </Key>
+          <Property Name="MA_DiaDiem" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_DiaDiem" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DUONGSU">
+          <Key>
+            <PropertyRef Name="MA_DuongSu" />
+          </Key>
+          <Property Name="MA_DuongSu" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_LoaiDS" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="CMND" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="HoTen_DS" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NamSinh_DS" Type="date" Nullable="false" />
+          <Property Name="QueQuan_DS" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DiaChi_DS" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SoDienThoai_DS" Type="nvarchar" MaxLength="11" Nullable="false" />
+          <Property Name="GioiTinh_DS" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HOSO_VUAN">
+          <Key>
+            <PropertyRef Name="MA_HoSo" />
+          </Key>
+          <Property Name="MA_HoSo" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_NhanVien" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="MA_TrangThai" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_LoaiVA" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_VuAn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NoiDung_VA" Type="nvarchar" MaxLength="350" />
+          <Property Name="Loai_HS" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MA_VaiTro" Type="nvarchar" MaxLength="5" />
+          <Property Name="NgayNhan_HS" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="HOTRO">
+          <Key>
+            <PropertyRef Name="MA_HT" />
+          </Key>
+          <Property Name="MA_HT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen_HT" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Cau_Hoi" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="SDT_HT" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="Email_HT" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="MA_TT_HT" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="LOAI_DS">
+          <Key>
+            <PropertyRef Name="MA_LoaiDS" />
+          </Key>
+          <Property Name="MA_LoaiDS" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_LoaiDS" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOAI_VUAN">
+          <Key>
+            <PropertyRef Name="MA_LoaiVA" />
+          </Key>
+          <Property Name="MA_LoaiVA" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_LoaiVA" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MAIN_MENU">
+          <Key>
+            <PropertyRef Name="ID_Main" />
+          </Key>
+          <Property Name="ID_Main" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_Main" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MAUDON">
+          <Key>
+            <PropertyRef Name="MA_MauDon" />
+          </Key>
+          <Property Name="MA_MauDon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenMauDon" Type="nvarchar" MaxLength="250" />
+          <Property Name="Link_MD" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="NHANVIEN">
+          <Key>
+            <PropertyRef Name="MA_NhanVien" />
+          </Key>
+          <Property Name="MA_NhanVien" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="MA_ChucVu" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_QNSD" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_PhongBan" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="HoTen_NV" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NamSinh_NV" Type="date" Nullable="false" />
+          <Property Name="GioiTinh_NV" Type="bit" Nullable="false" />
+          <Property Name="QueQuan_NV" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="CMND_NV" Type="nvarchar" MaxLength="12" Nullable="false" />
+          <Property Name="SoDienThoai_NV" Type="nvarchar" MaxLength="11" Nullable="false" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Avatar" Type="nchar" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="PHONGBAN">
+          <Key>
+            <PropertyRef Name="MA_PhongBan" />
+          </Key>
+          <Property Name="MA_PhongBan" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_PB" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QUYEN_NSD">
+          <Key>
+            <PropertyRef Name="MA_QNSD" />
+          </Key>
+          <Property Name="MA_QNSD" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_QNSD" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUB_MENU">
+          <Key>
+            <PropertyRef Name="ID_SUB" />
+          </Key>
+          <Property Name="ID_SUB" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_SUB" Type="nvarchar" MaxLength="50" />
+          <Property Name="Controller_SUB" Type="nvarchar" MaxLength="100" />
+          <Property Name="Action_SUB" Type="nvarchar" MaxLength="50" />
+          <Property Name="MA_QNSD" Type="nvarchar" MaxLength="5" />
+          <Property Name="ID_Main" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TRANGTHAI_HOTRO">
+          <Key>
+            <PropertyRef Name="MA_TT_HT" />
+          </Key>
+          <Property Name="MA_TT_HT" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_TT_HT" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TRANGTHAI_HS">
+          <Key>
+            <PropertyRef Name="MA_TrangThai" />
+          </Key>
+          <Property Name="MA_TrangThai" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_TT" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VAITRO_NV">
+          <Key>
+            <PropertyRef Name="MA_VaiTro" />
+          </Key>
+          <Property Name="MA_VaiTro" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Ten_VT" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="XETXU">
+          <Key>
+            <PropertyRef Name="STT_XX" />
+          </Key>
+          <Property Name="STT_XX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ngay_XetXu" Type="nvarchar" MaxLength="50" />
+          <Property Name="Lan_XetXu" Type="int" Nullable="false" />
+          <Property Name="MA_DiaDiem" Type="nvarchar" MaxLength="5" />
+          <Property Name="MA_HoSo" Type="nvarchar" MaxLength="5" />
+          <Property Name="MA_DuongSu" Type="nvarchar" MaxLength="5" />
+          <Property Name="KetQua_XX" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <Association Name="FK_DUONGSU_LOAI_DS">
+          <End Role="LOAI_DS" Type="Self.LOAI_DS" Multiplicity="1" />
+          <End Role="DUONGSU" Type="Self.DUONGSU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAI_DS">
+              <PropertyRef Name="MA_LoaiDS" />
+            </Principal>
+            <Dependent Role="DUONGSU">
+              <PropertyRef Name="MA_LoaiDS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_LOAI_VUAN">
+          <End Role="LOAI_VUAN" Type="Self.LOAI_VUAN" Multiplicity="1" />
+          <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAI_VUAN">
+              <PropertyRef Name="MA_LoaiVA" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_LoaiVA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_NHANVIEN">
+          <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="1" />
+          <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHANVIEN">
+              <PropertyRef Name="MA_NhanVien" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_NhanVien" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_TRANGTHAI_HS">
+          <End Role="TRANGTHAI_HS" Type="Self.TRANGTHAI_HS" Multiplicity="1" />
+          <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRANGTHAI_HS">
+              <PropertyRef Name="MA_TrangThai" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_TrangThai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_VAITRO_NV">
+          <End Role="VAITRO_NV" Type="Self.VAITRO_NV" Multiplicity="0..1" />
+          <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VAITRO_NV">
+              <PropertyRef Name="MA_VaiTro" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_VaiTro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HT_TrangThaiHT">
+          <End Role="TRANGTHAI_HOTRO" Type="Self.TRANGTHAI_HOTRO" Multiplicity="0..1" />
+          <End Role="HOTRO" Type="Self.HOTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRANGTHAI_HOTRO">
+              <PropertyRef Name="MA_TT_HT" />
+            </Principal>
+            <Dependent Role="HOTRO">
+              <PropertyRef Name="MA_TT_HT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NHANVIEN_CHUCVU">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="1" />
+          <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MA_ChucVu" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MA_ChucVu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NHANVIEN_PHONGBAN">
+          <End Role="PHONGBAN" Type="Self.PHONGBAN" Multiplicity="1" />
+          <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONGBAN">
+              <PropertyRef Name="MA_PhongBan" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MA_PhongBan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NHANVIEN_QUYEN_NSD">
+          <End Role="QUYEN_NSD" Type="Self.QUYEN_NSD" Multiplicity="1" />
+          <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUYEN_NSD">
+              <PropertyRef Name="MA_QNSD" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MA_QNSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUB_MAIN">
+          <End Role="MAIN_MENU" Type="Self.MAIN_MENU" Multiplicity="0..1" />
+          <End Role="SUB_MENU" Type="Self.SUB_MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAIN_MENU">
+              <PropertyRef Name="ID_Main" />
+            </Principal>
+            <Dependent Role="SUB_MENU">
+              <PropertyRef Name="ID_Main" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUB_QUYEN">
+          <End Role="QUYEN_NSD" Type="Self.QUYEN_NSD" Multiplicity="0..1" />
+          <End Role="SUB_MENU" Type="Self.SUB_MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUYEN_NSD">
+              <PropertyRef Name="MA_QNSD" />
+            </Principal>
+            <Dependent Role="SUB_MENU">
+              <PropertyRef Name="MA_QNSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_XetXu_DiaDiem">
+          <End Role="DIADIEM_XX" Type="Self.DIADIEM_XX" Multiplicity="0..1" />
+          <End Role="XETXU" Type="Self.XETXU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIADIEM_XX">
+              <PropertyRef Name="MA_DiaDiem" />
+            </Principal>
+            <Dependent Role="XETXU">
+              <PropertyRef Name="MA_DiaDiem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_XETXU_DUONGSU">
+          <End Role="DUONGSU" Type="Self.DUONGSU" Multiplicity="0..1" />
+          <End Role="XETXU" Type="Self.XETXU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUONGSU">
+              <PropertyRef Name="MA_DuongSu" />
+            </Principal>
+            <Dependent Role="XETXU">
+              <PropertyRef Name="MA_DuongSu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_XETXU_HOSO">
+          <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="0..1" />
+          <End Role="XETXU" Type="Self.XETXU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOSO_VUAN">
+              <PropertyRef Name="MA_HoSo" />
+            </Principal>
+            <Dependent Role="XETXU">
+              <PropertyRef Name="MA_HoSo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_NhanVien_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ModelNL2StoreContainer">
+          <EntitySet Name="CHUCVU" EntityType="Self.CHUCVU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DIADIEM_XX" EntityType="Self.DIADIEM_XX" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DUONGSU" EntityType="Self.DUONGSU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HOSO_VUAN" EntityType="Self.HOSO_VUAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HOTRO" EntityType="Self.HOTRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOAI_DS" EntityType="Self.LOAI_DS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOAI_VUAN" EntityType="Self.LOAI_VUAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MAIN_MENU" EntityType="Self.MAIN_MENU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MAUDON" EntityType="Self.MAUDON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NHANVIEN" EntityType="Self.NHANVIEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHONGBAN" EntityType="Self.PHONGBAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QUYEN_NSD" EntityType="Self.QUYEN_NSD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUB_MENU" EntityType="Self.SUB_MENU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRANGTHAI_HOTRO" EntityType="Self.TRANGTHAI_HOTRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRANGTHAI_HS" EntityType="Self.TRANGTHAI_HS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VAITRO_NV" EntityType="Self.VAITRO_NV" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="XETXU" EntityType="Self.XETXU" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DUONGSU_LOAI_DS" Association="Self.FK_DUONGSU_LOAI_DS">
+            <End Role="LOAI_DS" EntitySet="LOAI_DS" />
+            <End Role="DUONGSU" EntitySet="DUONGSU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_LOAI_VUAN" Association="Self.FK_HOSO_VUAN_LOAI_VUAN">
+            <End Role="LOAI_VUAN" EntitySet="LOAI_VUAN" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_NHANVIEN" Association="Self.FK_HOSO_VUAN_NHANVIEN">
+            <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_TRANGTHAI_HS" Association="Self.FK_HOSO_VUAN_TRANGTHAI_HS">
+            <End Role="TRANGTHAI_HS" EntitySet="TRANGTHAI_HS" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_VAITRO_NV" Association="Self.FK_HOSO_VUAN_VAITRO_NV">
+            <End Role="VAITRO_NV" EntitySet="VAITRO_NV" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HT_TrangThaiHT" Association="Self.FK_HT_TrangThaiHT">
+            <End Role="TRANGTHAI_HOTRO" EntitySet="TRANGTHAI_HOTRO" />
+            <End Role="HOTRO" EntitySet="HOTRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_CHUCVU" Association="Self.FK_NHANVIEN_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_PHONGBAN" Association="Self.FK_NHANVIEN_PHONGBAN">
+            <End Role="PHONGBAN" EntitySet="PHONGBAN" />
+            <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_QUYEN_NSD" Association="Self.FK_NHANVIEN_QUYEN_NSD">
+            <End Role="QUYEN_NSD" EntitySet="QUYEN_NSD" />
+            <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUB_MAIN" Association="Self.FK_SUB_MAIN">
+            <End Role="MAIN_MENU" EntitySet="MAIN_MENU" />
+            <End Role="SUB_MENU" EntitySet="SUB_MENU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUB_QUYEN" Association="Self.FK_SUB_QUYEN">
+            <End Role="QUYEN_NSD" EntitySet="QUYEN_NSD" />
+            <End Role="SUB_MENU" EntitySet="SUB_MENU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_XetXu_DiaDiem" Association="Self.FK_XetXu_DiaDiem">
+            <End Role="DIADIEM_XX" EntitySet="DIADIEM_XX" />
+            <End Role="XETXU" EntitySet="XETXU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_XETXU_DUONGSU" Association="Self.FK_XETXU_DUONGSU">
+            <End Role="DUONGSU" EntitySet="DUONGSU" />
+            <End Role="XETXU" EntitySet="XETXU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_XETXU_HOSO" Association="Self.FK_XETXU_HOSO">
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+            <End Role="XETXU" EntitySet="XETXU" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModelNL2" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="NL2_QLVAEntities1" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ModelNL2.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ModelNL2.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="CHUCVUs" EntityType="ModelNL2.CHUCVU" />
+          <EntitySet Name="DIADIEM_XX" EntityType="ModelNL2.DIADIEM_XX" />
+          <EntitySet Name="DUONGSUs" EntityType="ModelNL2.DUONGSU" />
+          <EntitySet Name="HOSO_VUAN" EntityType="ModelNL2.HOSO_VUAN" />
+          <EntitySet Name="HOTROes" EntityType="ModelNL2.HOTRO" />
+          <EntitySet Name="LOAI_DS" EntityType="ModelNL2.LOAI_DS" />
+          <EntitySet Name="LOAI_VUAN" EntityType="ModelNL2.LOAI_VUAN" />
+          <EntitySet Name="MAIN_MENU" EntityType="ModelNL2.MAIN_MENU" />
+          <EntitySet Name="MAUDONs" EntityType="ModelNL2.MAUDON" />
+          <EntitySet Name="NHANVIENs" EntityType="ModelNL2.NHANVIEN" />
+          <EntitySet Name="PHONGBANs" EntityType="ModelNL2.PHONGBAN" />
+          <EntitySet Name="QUYEN_NSD" EntityType="ModelNL2.QUYEN_NSD" />
+          <EntitySet Name="SUB_MENU" EntityType="ModelNL2.SUB_MENU" />
+          <EntitySet Name="sysdiagrams" EntityType="ModelNL2.sysdiagram" />
+          <EntitySet Name="TRANGTHAI_HOTRO" EntityType="ModelNL2.TRANGTHAI_HOTRO" />
+          <EntitySet Name="TRANGTHAI_HS" EntityType="ModelNL2.TRANGTHAI_HS" />
+          <EntitySet Name="VAITRO_NV" EntityType="ModelNL2.VAITRO_NV" />
+          <EntitySet Name="XETXUs" EntityType="ModelNL2.XETXU" />
+          <AssociationSet Name="FK_NHANVIEN_CHUCVU" Association="ModelNL2.FK_NHANVIEN_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVUs" />
+            <End Role="NHANVIEN" EntitySet="NHANVIENs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_XetXu_DiaDiem" Association="ModelNL2.FK_XetXu_DiaDiem">
+            <End Role="DIADIEM_XX" EntitySet="DIADIEM_XX" />
+            <End Role="XETXU" EntitySet="XETXUs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUONGSU_LOAI_DS" Association="ModelNL2.FK_DUONGSU_LOAI_DS">
+            <End Role="LOAI_DS" EntitySet="LOAI_DS" />
+            <End Role="DUONGSU" EntitySet="DUONGSUs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_XETXU_DUONGSU" Association="ModelNL2.FK_XETXU_DUONGSU">
+            <End Role="DUONGSU" EntitySet="DUONGSUs" />
+            <End Role="XETXU" EntitySet="XETXUs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_LOAI_VUAN" Association="ModelNL2.FK_HOSO_VUAN_LOAI_VUAN">
+            <End Role="LOAI_VUAN" EntitySet="LOAI_VUAN" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_NHANVIEN" Association="ModelNL2.FK_HOSO_VUAN_NHANVIEN">
+            <End Role="NHANVIEN" EntitySet="NHANVIENs" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_TRANGTHAI_HS" Association="ModelNL2.FK_HOSO_VUAN_TRANGTHAI_HS">
+            <End Role="TRANGTHAI_HS" EntitySet="TRANGTHAI_HS" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HOSO_VUAN_VAITRO_NV" Association="ModelNL2.FK_HOSO_VUAN_VAITRO_NV">
+            <End Role="VAITRO_NV" EntitySet="VAITRO_NV" />
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_XETXU_HOSO" Association="ModelNL2.FK_XETXU_HOSO">
+            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
+            <End Role="XETXU" EntitySet="XETXUs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HT_TrangThaiHT" Association="ModelNL2.FK_HT_TrangThaiHT">
+            <End Role="TRANGTHAI_HOTRO" EntitySet="TRANGTHAI_HOTRO" />
+            <End Role="HOTRO" EntitySet="HOTROes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUB_MAIN" Association="ModelNL2.FK_SUB_MAIN">
+            <End Role="MAIN_MENU" EntitySet="MAIN_MENU" />
+            <End Role="SUB_MENU" EntitySet="SUB_MENU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_PHONGBAN" Association="ModelNL2.FK_NHANVIEN_PHONGBAN">
+            <End Role="PHONGBAN" EntitySet="PHONGBANs" />
+            <End Role="NHANVIEN" EntitySet="NHANVIENs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_QUYEN_NSD" Association="ModelNL2.FK_NHANVIEN_QUYEN_NSD">
+            <End Role="QUYEN_NSD" EntitySet="QUYEN_NSD" />
+            <End Role="NHANVIEN" EntitySet="NHANVIENs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUB_QUYEN" Association="ModelNL2.FK_SUB_QUYEN">
+            <End Role="QUYEN_NSD" EntitySet="QUYEN_NSD" />
+            <End Role="SUB_MENU" EntitySet="SUB_MENU" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="MA_ChucVu" />
+          </Key>
+          <Property Name="MA_ChucVu" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="TEN_ChucVu" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NHANVIENs" Relationship="ModelNL2.FK_NHANVIEN_CHUCVU" FromRole="CHUCVU" ToRole="NHANVIEN" />
+        </EntityType>
+        <EntityType Name="DIADIEM_XX">
+          <Key>
+            <PropertyRef Name="MA_DiaDiem" />
+          </Key>
+          <Property Name="MA_DiaDiem" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_DiaDiem" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="XETXUs" Relationship="ModelNL2.FK_XetXu_DiaDiem" FromRole="DIADIEM_XX" ToRole="XETXU" />
+        </EntityType>
+        <EntityType Name="DUONGSU">
+          <Key>
+            <PropertyRef Name="MA_DuongSu" />
+          </Key>
+          <Property Name="MA_DuongSu" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_LoaiDS" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="CMND" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="HoTen_DS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NamSinh_DS" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="QueQuan_DS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChi_DS" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SoDienThoai_DS" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="GioiTinh_DS" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LOAI_DS" Relationship="ModelNL2.FK_DUONGSU_LOAI_DS" FromRole="DUONGSU" ToRole="LOAI_DS" />
+          <NavigationProperty Name="XETXUs" Relationship="ModelNL2.FK_XETXU_DUONGSU" FromRole="DUONGSU" ToRole="XETXU" />
+        </EntityType>
+        <EntityType Name="HOSO_VUAN">
+          <Key>
+            <PropertyRef Name="MA_HoSo" />
+          </Key>
+          <Property Name="MA_HoSo" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_NhanVien" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="MA_TrangThai" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_LoaiVA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_VuAn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoiDung_VA" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Loai_HS" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MA_VaiTro" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="NgayNhan_HS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LOAI_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_LOAI_VUAN" FromRole="HOSO_VUAN" ToRole="LOAI_VUAN" />
+          <NavigationProperty Name="NHANVIEN" Relationship="ModelNL2.FK_HOSO_VUAN_NHANVIEN" FromRole="HOSO_VUAN" ToRole="NHANVIEN" />
+          <NavigationProperty Name="TRANGTHAI_HS" Relationship="ModelNL2.FK_HOSO_VUAN_TRANGTHAI_HS" FromRole="HOSO_VUAN" ToRole="TRANGTHAI_HS" />
+          <NavigationProperty Name="VAITRO_NV" Relationship="ModelNL2.FK_HOSO_VUAN_VAITRO_NV" FromRole="HOSO_VUAN" ToRole="VAITRO_NV" />
+          <NavigationProperty Name="XETXUs" Relationship="ModelNL2.FK_XETXU_HOSO" FromRole="HOSO_VUAN" ToRole="XETXU" />
+        </EntityType>
+        <EntityType Name="HOTRO">
+          <Key>
+            <PropertyRef Name="MA_HT" />
+          </Key>
+          <Property Name="MA_HT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen_HT" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cau_Hoi" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="SDT_HT" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="Email_HT" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="MA_TT_HT" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TRANGTHAI_HOTRO" Relationship="ModelNL2.FK_HT_TrangThaiHT" FromRole="HOTRO" ToRole="TRANGTHAI_HOTRO" />
+        </EntityType>
+        <EntityType Name="LOAI_DS">
+          <Key>
+            <PropertyRef Name="MA_LoaiDS" />
+          </Key>
+          <Property Name="MA_LoaiDS" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_LoaiDS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DUONGSUs" Relationship="ModelNL2.FK_DUONGSU_LOAI_DS" FromRole="LOAI_DS" ToRole="DUONGSU" />
+        </EntityType>
+        <EntityType Name="LOAI_VUAN">
+          <Key>
+            <PropertyRef Name="MA_LoaiVA" />
+          </Key>
+          <Property Name="MA_LoaiVA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_LoaiVA" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_LOAI_VUAN" FromRole="LOAI_VUAN" ToRole="HOSO_VUAN" />
+        </EntityType>
+        <EntityType Name="MAIN_MENU">
+          <Key>
+            <PropertyRef Name="ID_Main" />
+          </Key>
+          <Property Name="ID_Main" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_Main" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SUB_MENU" Relationship="ModelNL2.FK_SUB_MAIN" FromRole="MAIN_MENU" ToRole="SUB_MENU" />
+        </EntityType>
+        <EntityType Name="MAUDON">
+          <Key>
+            <PropertyRef Name="MA_MauDon" />
+          </Key>
+          <Property Name="MA_MauDon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenMauDon" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Link_MD" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NHANVIEN">
+          <Key>
+            <PropertyRef Name="MA_NhanVien" />
+          </Key>
+          <Property Name="MA_NhanVien" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="MA_ChucVu" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_QNSD" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_PhongBan" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="HoTen_NV" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NamSinh_NV" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="GioiTinh_NV" Type="Boolean" Nullable="false" />
+          <Property Name="QueQuan_NV" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CMND_NV" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="SoDienThoai_NV" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="MatKhau" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="String" MaxLength="300" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="CHUCVU" Relationship="ModelNL2.FK_NHANVIEN_CHUCVU" FromRole="NHANVIEN" ToRole="CHUCVU" />
+          <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_NHANVIEN" FromRole="NHANVIEN" ToRole="HOSO_VUAN" />
+          <NavigationProperty Name="PHONGBAN" Relationship="ModelNL2.FK_NHANVIEN_PHONGBAN" FromRole="NHANVIEN" ToRole="PHONGBAN" />
+          <NavigationProperty Name="QUYEN_NSD" Relationship="ModelNL2.FK_NHANVIEN_QUYEN_NSD" FromRole="NHANVIEN" ToRole="QUYEN_NSD" />
+        </EntityType>
+        <EntityType Name="PHONGBAN">
+          <Key>
+            <PropertyRef Name="MA_PhongBan" />
+          </Key>
+          <Property Name="MA_PhongBan" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_PB" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NHANVIENs" Relationship="ModelNL2.FK_NHANVIEN_PHONGBAN" FromRole="PHONGBAN" ToRole="NHANVIEN" />
+        </EntityType>
+        <EntityType Name="QUYEN_NSD">
+          <Key>
+            <PropertyRef Name="MA_QNSD" />
+          </Key>
+          <Property Name="MA_QNSD" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_QNSD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NHANVIENs" Relationship="ModelNL2.FK_NHANVIEN_QUYEN_NSD" FromRole="QUYEN_NSD" ToRole="NHANVIEN" />
+          <NavigationProperty Name="SUB_MENU" Relationship="ModelNL2.FK_SUB_QUYEN" FromRole="QUYEN_NSD" ToRole="SUB_MENU" />
+        </EntityType>
+        <EntityType Name="SUB_MENU">
+          <Key>
+            <PropertyRef Name="ID_SUB" />
+          </Key>
+          <Property Name="ID_SUB" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_SUB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Controller_SUB" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Action_SUB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MA_QNSD" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Main" Type="Int32" />
+          <NavigationProperty Name="MAIN_MENU" Relationship="ModelNL2.FK_SUB_MAIN" FromRole="SUB_MENU" ToRole="MAIN_MENU" />
+          <NavigationProperty Name="QUYEN_NSD" Relationship="ModelNL2.FK_SUB_QUYEN" FromRole="SUB_MENU" ToRole="QUYEN_NSD" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TRANGTHAI_HOTRO">
+          <Key>
+            <PropertyRef Name="MA_TT_HT" />
+          </Key>
+          <Property Name="MA_TT_HT" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_TT_HT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="HOTROes" Relationship="ModelNL2.FK_HT_TrangThaiHT" FromRole="TRANGTHAI_HOTRO" ToRole="HOTRO" />
+        </EntityType>
+        <EntityType Name="TRANGTHAI_HS">
+          <Key>
+            <PropertyRef Name="MA_TrangThai" />
+          </Key>
+          <Property Name="MA_TrangThai" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_TT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_TRANGTHAI_HS" FromRole="TRANGTHAI_HS" ToRole="HOSO_VUAN" />
+        </EntityType>
+        <EntityType Name="VAITRO_NV">
+          <Key>
+            <PropertyRef Name="MA_VaiTro" />
+          </Key>
+          <Property Name="MA_VaiTro" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Ten_VT" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_VAITRO_NV" FromRole="VAITRO_NV" ToRole="HOSO_VUAN" />
+        </EntityType>
+        <EntityType Name="XETXU">
+          <Key>
+            <PropertyRef Name="STT_XX" />
+          </Key>
+          <Property Name="STT_XX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ngay_XetXu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Lan_XetXu" Type="Int32" Nullable="false" />
+          <Property Name="MA_DiaDiem" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_HoSo" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_DuongSu" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="KetQua_XX" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DIADIEM_XX" Relationship="ModelNL2.FK_XetXu_DiaDiem" FromRole="XETXU" ToRole="DIADIEM_XX" />
+          <NavigationProperty Name="DUONGSU" Relationship="ModelNL2.FK_XETXU_DUONGSU" FromRole="XETXU" ToRole="DUONGSU" />
+          <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_XETXU_HOSO" FromRole="XETXU" ToRole="HOSO_VUAN" />
+        </EntityType>
+        <Association Name="FK_NHANVIEN_CHUCVU">
+          <End Type="ModelNL2.CHUCVU" Role="CHUCVU" Multiplicity="1" />
+          <End Type="ModelNL2.NHANVIEN" Role="NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MA_ChucVu" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MA_ChucVu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_XetXu_DiaDiem">
+          <End Type="ModelNL2.DIADIEM_XX" Role="DIADIEM_XX" Multiplicity="0..1" />
+          <End Type="ModelNL2.XETXU" Role="XETXU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIADIEM_XX">
+              <PropertyRef Name="MA_DiaDiem" />
+            </Principal>
+            <Dependent Role="XETXU">
+              <PropertyRef Name="MA_DiaDiem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUONGSU_LOAI_DS">
+          <End Type="ModelNL2.LOAI_DS" Role="LOAI_DS" Multiplicity="1" />
+          <End Type="ModelNL2.DUONGSU" Role="DUONGSU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAI_DS">
+              <PropertyRef Name="MA_LoaiDS" />
+            </Principal>
+            <Dependent Role="DUONGSU">
+              <PropertyRef Name="MA_LoaiDS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_XETXU_DUONGSU">
+          <End Type="ModelNL2.DUONGSU" Role="DUONGSU" Multiplicity="0..1" />
+          <End Type="ModelNL2.XETXU" Role="XETXU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUONGSU">
+              <PropertyRef Name="MA_DuongSu" />
+            </Principal>
+            <Dependent Role="XETXU">
+              <PropertyRef Name="MA_DuongSu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_LOAI_VUAN">
+          <End Type="ModelNL2.LOAI_VUAN" Role="LOAI_VUAN" Multiplicity="1" />
+          <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAI_VUAN">
+              <PropertyRef Name="MA_LoaiVA" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_LoaiVA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_NHANVIEN">
+          <End Type="ModelNL2.NHANVIEN" Role="NHANVIEN" Multiplicity="1" />
+          <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NHANVIEN">
+              <PropertyRef Name="MA_NhanVien" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_NhanVien" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_TRANGTHAI_HS">
+          <End Type="ModelNL2.TRANGTHAI_HS" Role="TRANGTHAI_HS" Multiplicity="1" />
+          <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRANGTHAI_HS">
+              <PropertyRef Name="MA_TrangThai" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_TrangThai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HOSO_VUAN_VAITRO_NV">
+          <End Type="ModelNL2.VAITRO_NV" Role="VAITRO_NV" Multiplicity="0..1" />
+          <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VAITRO_NV">
+              <PropertyRef Name="MA_VaiTro" />
+            </Principal>
+            <Dependent Role="HOSO_VUAN">
+              <PropertyRef Name="MA_VaiTro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_XETXU_HOSO">
+          <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="0..1" />
+          <End Type="ModelNL2.XETXU" Role="XETXU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOSO_VUAN">
+              <PropertyRef Name="MA_HoSo" />
+            </Principal>
+            <Dependent Role="XETXU">
+              <PropertyRef Name="MA_HoSo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HT_TrangThaiHT">
+          <End Type="ModelNL2.TRANGTHAI_HOTRO" Role="TRANGTHAI_HOTRO" Multiplicity="0..1" />
+          <End Type="ModelNL2.HOTRO" Role="HOTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRANGTHAI_HOTRO">
+              <PropertyRef Name="MA_TT_HT" />
+            </Principal>
+            <Dependent Role="HOTRO">
+              <PropertyRef Name="MA_TT_HT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUB_MAIN">
+          <End Type="ModelNL2.MAIN_MENU" Role="MAIN_MENU" Multiplicity="0..1" />
+          <End Type="ModelNL2.SUB_MENU" Role="SUB_MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAIN_MENU">
+              <PropertyRef Name="ID_Main" />
+            </Principal>
+            <Dependent Role="SUB_MENU">
+              <PropertyRef Name="ID_Main" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NHANVIEN_PHONGBAN">
+          <End Type="ModelNL2.PHONGBAN" Role="PHONGBAN" Multiplicity="1" />
+          <End Type="ModelNL2.NHANVIEN" Role="NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONGBAN">
+              <PropertyRef Name="MA_PhongBan" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MA_PhongBan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NHANVIEN_QUYEN_NSD">
+          <End Type="ModelNL2.QUYEN_NSD" Role="QUYEN_NSD" Multiplicity="1" />
+          <End Type="ModelNL2.NHANVIEN" Role="NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUYEN_NSD">
+              <PropertyRef Name="MA_QNSD" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MA_QNSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUB_QUYEN">
+          <End Type="ModelNL2.QUYEN_NSD" Role="QUYEN_NSD" Multiplicity="0..1" />
+          <End Type="ModelNL2.SUB_MENU" Role="SUB_MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUYEN_NSD">
+              <PropertyRef Name="MA_QNSD" />
+            </Principal>
+            <Dependent Role="SUB_MENU">
+              <PropertyRef Name="MA_QNSD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelNL2StoreContainer" CdmEntityContainer="NL2_QLVAEntities1">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ModelNL2.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ModelNL2.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ModelNL2.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ModelNL2.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModelNL2.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ModelNL2.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ModelNL2.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ModelNL2.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ModelNL2.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="CHUCVUs">
+            <EntityTypeMapping TypeName="ModelNL2.CHUCVU">
+              <MappingFragment StoreEntitySet="CHUCVU">
+                <ScalarProperty Name="TEN_ChucVu" ColumnName="TEN_ChucVu" />
+                <ScalarProperty Name="MA_ChucVu" ColumnName="MA_ChucVu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DIADIEM_XX">
+            <EntityTypeMapping TypeName="ModelNL2.DIADIEM_XX">
+              <MappingFragment StoreEntitySet="DIADIEM_XX">
+                <ScalarProperty Name="Ten_DiaDiem" ColumnName="Ten_DiaDiem" />
+                <ScalarProperty Name="MA_DiaDiem" ColumnName="MA_DiaDiem" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DUONGSUs">
+            <EntityTypeMapping TypeName="ModelNL2.DUONGSU">
+              <MappingFragment StoreEntitySet="DUONGSU">
+                <ScalarProperty Name="GioiTinh_DS" ColumnName="GioiTinh_DS" />
+                <ScalarProperty Name="SoDienThoai_DS" ColumnName="SoDienThoai_DS" />
+                <ScalarProperty Name="DiaChi_DS" ColumnName="DiaChi_DS" />
+                <ScalarProperty Name="QueQuan_DS" ColumnName="QueQuan_DS" />
+                <ScalarProperty Name="NamSinh_DS" ColumnName="NamSinh_DS" />
+                <ScalarProperty Name="HoTen_DS" ColumnName="HoTen_DS" />
+                <ScalarProperty Name="CMND" ColumnName="CMND" />
+                <ScalarProperty Name="MA_LoaiDS" ColumnName="MA_LoaiDS" />
+                <ScalarProperty Name="MA_DuongSu" ColumnName="MA_DuongSu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HOSO_VUAN">
+            <EntityTypeMapping TypeName="ModelNL2.HOSO_VUAN">
+              <MappingFragment StoreEntitySet="HOSO_VUAN">
+                <ScalarProperty Name="NgayNhan_HS" ColumnName="NgayNhan_HS" />
+                <ScalarProperty Name="MA_VaiTro" ColumnName="MA_VaiTro" />
+                <ScalarProperty Name="Loai_HS" ColumnName="Loai_HS" />
+                <ScalarProperty Name="NoiDung_VA" ColumnName="NoiDung_VA" />
+                <ScalarProperty Name="Ten_VuAn" ColumnName="Ten_VuAn" />
+                <ScalarProperty Name="MA_LoaiVA" ColumnName="MA_LoaiVA" />
+                <ScalarProperty Name="MA_TrangThai" ColumnName="MA_TrangThai" />
+                <ScalarProperty Name="MA_NhanVien" ColumnName="MA_NhanVien" />
+                <ScalarProperty Name="MA_HoSo" ColumnName="MA_HoSo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HOTROes">
+            <EntityTypeMapping TypeName="ModelNL2.HOTRO">
+              <MappingFragment StoreEntitySet="HOTRO">
+                <ScalarProperty Name="MA_TT_HT" ColumnName="MA_TT_HT" />
+                <ScalarProperty Name="Email_HT" ColumnName="Email_HT" />
+                <ScalarProperty Name="SDT_HT" ColumnName="SDT_HT" />
+                <ScalarProperty Name="Cau_Hoi" ColumnName="Cau_Hoi" />
+                <ScalarProperty Name="HoTen_HT" ColumnName="HoTen_HT" />
+                <ScalarProperty Name="MA_HT" ColumnName="MA_HT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOAI_DS">
+            <EntityTypeMapping TypeName="ModelNL2.LOAI_DS">
+              <MappingFragment StoreEntitySet="LOAI_DS">
+                <ScalarProperty Name="Ten_LoaiDS" ColumnName="Ten_LoaiDS" />
+                <ScalarProperty Name="MA_LoaiDS" ColumnName="MA_LoaiDS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOAI_VUAN">
+            <EntityTypeMapping TypeName="ModelNL2.LOAI_VUAN">
+              <MappingFragment StoreEntitySet="LOAI_VUAN">
+                <ScalarProperty Name="Ten_LoaiVA" ColumnName="Ten_LoaiVA" />
+                <ScalarProperty Name="MA_LoaiVA" ColumnName="MA_LoaiVA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MAIN_MENU">
+            <EntityTypeMapping TypeName="ModelNL2.MAIN_MENU">
+              <MappingFragment StoreEntitySet="MAIN_MENU">
+                <ScalarProperty Name="Ten_Main" ColumnName="Ten_Main" />
+                <ScalarProperty Name="ID_Main" ColumnName="ID_Main" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MAUDONs">
+            <EntityTypeMapping TypeName="ModelNL2.MAUDON">
+              <MappingFragment StoreEntitySet="MAUDON">
+                <ScalarProperty Name="Link_MD" ColumnName="Link_MD" />
+                <ScalarProperty Name="TenMauDon" ColumnName="TenMauDon" />
+                <ScalarProperty Name="MA_MauDon" ColumnName="MA_MauDon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NHANVIENs">
+            <EntityTypeMapping TypeName="ModelNL2.NHANVIEN">
+              <MappingFragment StoreEntitySet="NHANVIEN">
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="SoDienThoai_NV" ColumnName="SoDienThoai_NV" />
+                <ScalarProperty Name="CMND_NV" ColumnName="CMND_NV" />
+                <ScalarProperty Name="QueQuan_NV" ColumnName="QueQuan_NV" />
+                <ScalarProperty Name="GioiTinh_NV" ColumnName="GioiTinh_NV" />
+                <ScalarProperty Name="NamSinh_NV" ColumnName="NamSinh_NV" />
+                <ScalarProperty Name="HoTen_NV" ColumnName="HoTen_NV" />
+                <ScalarProperty Name="MA_PhongBan" ColumnName="MA_PhongBan" />
+                <ScalarProperty Name="MA_QNSD" ColumnName="MA_QNSD" />
+                <ScalarProperty Name="MA_ChucVu" ColumnName="MA_ChucVu" />
+                <ScalarProperty Name="MA_NhanVien" ColumnName="MA_NhanVien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHONGBANs">
+            <EntityTypeMapping TypeName="ModelNL2.PHONGBAN">
+              <MappingFragment StoreEntitySet="PHONGBAN">
+                <ScalarProperty Name="Ten_PB" ColumnName="Ten_PB" />
+                <ScalarProperty Name="MA_PhongBan" ColumnName="MA_PhongBan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QUYEN_NSD">
+            <EntityTypeMapping TypeName="ModelNL2.QUYEN_NSD">
+              <MappingFragment StoreEntitySet="QUYEN_NSD">
+                <ScalarProperty Name="Ten_QNSD" ColumnName="Ten_QNSD" />
+                <ScalarProperty Name="MA_QNSD" ColumnName="MA_QNSD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUB_MENU">
+            <EntityTypeMapping TypeName="ModelNL2.SUB_MENU">
+              <MappingFragment StoreEntitySet="SUB_MENU">
+                <ScalarProperty Name="ID_Main" ColumnName="ID_Main" />
+                <ScalarProperty Name="MA_QNSD" ColumnName="MA_QNSD" />
+                <ScalarProperty Name="Action_SUB" ColumnName="Action_SUB" />
+                <ScalarProperty Name="Controller_SUB" ColumnName="Controller_SUB" />
+                <ScalarProperty Name="Ten_SUB" ColumnName="Ten_SUB" />
+                <ScalarProperty Name="ID_SUB" ColumnName="ID_SUB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ModelNL2.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRANGTHAI_HOTRO">
+            <EntityTypeMapping TypeName="ModelNL2.TRANGTHAI_HOTRO">
+              <MappingFragment StoreEntitySet="TRANGTHAI_HOTRO">
+                <ScalarProperty Name="Ten_TT_HT" ColumnName="Ten_TT_HT" />
+                <ScalarProperty Name="MA_TT_HT" ColumnName="MA_TT_HT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRANGTHAI_HS">
+            <EntityTypeMapping TypeName="ModelNL2.TRANGTHAI_HS">
+              <MappingFragment StoreEntitySet="TRANGTHAI_HS">
+                <ScalarProperty Name="Ten_TT" ColumnName="Ten_TT" />
+                <ScalarProperty Name="MA_TrangThai" ColumnName="MA_TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VAITRO_NV">
+            <EntityTypeMapping TypeName="ModelNL2.VAITRO_NV">
+              <MappingFragment StoreEntitySet="VAITRO_NV">
+                <ScalarProperty Name="Ten_VT" ColumnName="Ten_VT" />
+                <ScalarProperty Name="MA_VaiTro" ColumnName="MA_VaiTro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="XETXUs">
+            <EntityTypeMapping TypeName="ModelNL2.XETXU">
+              <MappingFragment StoreEntitySet="XETXU">
+                <ScalarProperty Name="KetQua_XX" ColumnName="KetQua_XX" />
+                <ScalarProperty Name="MA_DuongSu" ColumnName="MA_DuongSu" />
+                <ScalarProperty Name="MA_HoSo" ColumnName="MA_HoSo" />
+                <ScalarProperty Name="MA_DiaDiem" ColumnName="MA_DiaDiem" />
+                <ScalarProperty Name="Lan_XetXu" ColumnName="Lan_XetXu" />
+                <ScalarProperty Name="Ngay_XetXu" ColumnName="Ngay_XetXu" />
+                <ScalarProperty Name="STT_XX" ColumnName="STT_XX" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

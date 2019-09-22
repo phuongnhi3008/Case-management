@@ -1,0 +1,27 @@
+﻿<nav class="sidebar navbar-nav">
+    <div class="nav-item dropdown">
+        <ul class="nav navbar-nav">
+            @if (Session["MenuMaster"] != null)
+            {
+
+                var MenuMaster = (List<NienLuan2.Models.MenuModel>)Session["MenuMaster"];
+                var groupByMenu = MenuMaster.GroupBy(x => x.Ten_Main).ToList();
+
+                foreach (var MenuList in groupByMenu)
+                {
+
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class=""></i><span>@MenuList.Key</span></a>
+                        <ul class="dropdown-menu">
+                            @foreach (var SubMenuList in MenuList)
+                            {
+                                <li><a class="dropdown-item" href=@Url.Action(@SubMenuList.Action_SUB, @SubMenuList.Controller_SUB)>@SubMenuList.Ten_SUB</a></li>
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</nav>
+

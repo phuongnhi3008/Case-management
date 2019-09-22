@@ -1,0 +1,107 @@
+﻿@model NienLuan2.Models.NHANVIEN
+
+@{
+    ViewBag.Title = "chitiet_NV";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chi tiết nhân viên</h2>
+
+<div>
+ 
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Mã nhân viên
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MA_NhanVien)
+        </dd>
+
+        <dt>
+            Mã chức vụ
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MA_ChucVu)
+        </dd>
+
+        <dt>
+            Mã quyền sử dụng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MA_QNSD)
+        </dd>
+
+        <dt>
+            Mã phòng ban
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MA_PhongBan)
+        </dd>
+
+        <dt>
+            Họ tên nhân viên
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoTen_NV)
+        </dd>
+
+        <dt>
+            Năm sinh nhân viên
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NamSinh_NV)
+        </dd>
+
+        <dt>
+            Nữ
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GioiTinh_NV)
+        </dd>
+
+        <dt>
+            Quê quán
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QueQuan_NV)
+        </dd>
+
+        <dt>
+            Số chứng minh nhân dân
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CMND_NV)
+        </dd>
+
+        <dt>
+            Số điện thoại
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoDienThoai_NV)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.MatKhau)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MatKhau)
+        </dd>*@
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh sửa", "sua_NV", new { id = Model.MA_NhanVien }) |
+    @Html.ActionLink("Trở về", "ListNV")
+</p>

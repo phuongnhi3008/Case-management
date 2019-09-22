@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "MauDon";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+}
+
+@model PagedList.IPagedList<NienLuan2.Models.MAUDON>
+@using PagedList.Mvc;
+<div class="wrap-slide clearfix">
+    <div class="top">
+        <div class="content-header">
+            <div class="one-half">
+                <ul class="contact-info inline pull-left">
+                    <li class="phone"><a href="#">012345678</a></li>
+                    <li class="email"><a href="#">nhiB1507284@student.ctu.edu.vn</a></li>
+                </ul>
+            </div><!-- /.one-half -->
+            <div class="one-half">
+                <ul class="contact-info inline pull-right clearfix">
+                    @* <li class="terms"><a href="#">Terms of Use</a></li>*@
+                    <li class="contact"><a href="#">Liên hệ</a></li>
+                    <li class="singin">@Html.ActionLink("Đăng nhập", "DangNhap", "DangNhap")</li>
+                    <li class="search"><a href="#"><span class="icon-zoom-outline"></span></a></li>
+
+                </ul>
+            </div><!-- /.one-half -->
+        </div><!-- /.content-header -->
+    </div><!-- /.top -->
+    </div>
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="header-wrap">
+            <div class="content-header">
+                <div class="wrap-nav">
+                    <div class="btn-menu"></div><!-- //mobile menu button -->
+                    <nav id="mainnav" class="mainnav">
+                        <ul class="menu">
+                            <li class="active">
+                                <a href="index-2.html">Trang chủ</a>
+
+                            </li>
+                            <li>
+                                <a href="blog_post_sidebar.html">Giới thiệu</a>
+                                <ul class="submenu">
+                                    <li><a href="blog_left_sidebar.html">Lịch sử hình thành</a></li>
+                                    <li><a href="blog_full_width.html">Cơ cấu tổ chức</a></li>
+                                </ul><!-- /.submenu -->
+                            </li>
+                            <li>
+                                <a href="event.html">Tin tức - Sự kiện</a>
+                                <ul class="submenu">
+                                    <li><a href="event1.html">Tin hoạt động TAND tỉnh</a></li>
+                                    <li><a href="event2.html">Tin hoạt động TAND cấp huyện</a></li>
+                                    <li><a href="event3.html">Tin trong nước</a></li>
+                                    <li><a href="event4.html">Tin quốc tế</a></li>
+                                </ul><!-- /.submenu -->
+                            </li>
+                            <li>
+                                <a href="gallery_regular.html">Xét xử</a>
+                                <ul class="submenu">
+                                    <li><a href=@Url.Action("ListXX","XetXu")>Lịch xét xử</a></li>
+                                    <li><a href="event2.html">Kết quả</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                
+                                <a href="event.html">Mẫu đơn</a>
+                                <ul class="submenu">
+                                    <li><a href="@Url.Action("MauDon","NguoiDung")">Hướng dẫn khởi kiện</a></li>
+                                    <li><a href="event2.html">Hướng dẫn kháng cáo</a></li>
+                                    <li><a href="event3.html">Hướng dẫn xóa án tích và hoãn chấp hành hình phạt tù</a></li>
+                                    <li><a href="event4.html">Hướng dẫn sao lục</a></li>
+                                    <li><a href="event4.html">Thời hạn tố tụng</a></li>
+                                </ul><!-- /.submenu -->
+                            </li>
+                            <li>
+                                <a href="contact.html">Liên hệ</a>
+                            </li>
+                        </ul><!-- /.menu -->
+                    </nav><!-- /.mainnav -->
+                </div><!-- /.wrap-nav -->
+                <div class="wrap-social clearfix">
+                    <ul class="besmart-socials">
+                        <li><a href="https://www.facebook.com/"><span class="icon-social facebook">F</span></a></li>
+                        <li><a href="#"><span class="icon-social">G</span></a></li>
+                        <li><a href="#"><span class="icon-social linkedin">I</span></a></li>
+                        <li><a href="#"><span class="icon-social pinterest">:</span></a></li>
+                    </ul>
+                </div><!-- /.social-wrap -->
+            </div><!-- /.content-header -->
+        </div><!-- /.header-wrap -->
+    </header><!-- /.header -->
+    <div class="footer">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-light">
+                        <tr class="group-header" data-toggle="collapse">
+                            <th>
+                                STT
+                            </th>
+                            <th>
+                                Tên mẫu đơn
+                            </th>
+                            <th>
+                                Download
+                            </th>
+                        </tr>
+
+                        @{
+                            int count = 1;
+                        }
+                        @foreach (var item in Model)
+            {
+                            <tr>
+                                <td>
+                                    @count
+                                    @{
+                                        count++;
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenMauDon)
+                                </td>
+                                <td>
+                                    <button class="item btn_Sua btn btn-success btn-sm" href="@Url.Action(@item.Link_MD)">
+
+                                        <i class="fas fa-edit"></i>
+                                    </button>         
+                                </td>
+
+                            </tr>
+                                        }
+                    </table>
+                    @Html.PagedListPager(Model, page => Url.Action("MauDon", new { page, @searchString = @ViewBag.SearchString }))
+                </div>
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>twitter</td>
+                </tr>
+            </tbody>
+        </table>
+ </div>
+

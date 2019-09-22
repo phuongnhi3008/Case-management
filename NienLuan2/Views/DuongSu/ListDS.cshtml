@@ -1,0 +1,385 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.DUONGSU>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+
+@{
+    ViewBag.Title = "ListDS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            DANH SÁCH ĐƯƠNG SỰ
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
+                Thêm đương sự
+            </button>
+            @using (Html.BeginForm("ListDS", "DuongSu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            {
+                <div class="input-group">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã nhân viên cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Mã số đương sự
+                        </th>
+                        <th>
+                            Họ tên
+                        </th>
+                        <th>
+                            Loại đương sự
+                        </th>
+                        <th>
+                            Năm sinh
+                        </th>
+                        <th>
+                            Quê quán
+                        </th>
+                        <th>
+                            Địa chỉ
+                        </th>
+                        <th>
+                            Nữ
+                        </th>
+                        <th>
+                            CMND
+                        </th>
+                        <th>
+                            Số điện thoại
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @count
+                                @{
+                                    count++;
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MA_DuongSu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoTen_DS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LOAI_DS.Ten_LoaiDS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NamSinh_DS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QueQuan_DS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DiaChi_DS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GioiTinh_DS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CMND)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SoDienThoai_DS)
+                            </td>
+                            <td>
+                                
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_DuongSu')">
+
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                |
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_DS1", new { id = item.MA_DuongSu })">
+
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                                    }
+
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("ListDS", new { page, @searchString = @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm đương sự</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("them_DS", "DuongSu", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:700px">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã đương sự :</label>
+                                    <input type="text" class="form-control" id="MA_DuongSu" name="MA_DuongSu" placeholder="Mã đương sự">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Họ tên :</label>
+                                    <input type="text" class="form-control" id="HoTen_DS" name="HoTen_DS" placeholder="Họ tên">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Loại đương sự :</label>
+                                    @Html.DropDownList("lds", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Năm sinh :</label>
+                                    <input type="date" class="form-control" id="NamSinh_NV" name="NamSinh_NV">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Địa chỉ :</label>
+                                    <input type="text" class="form-control" id="DiaChi_DS" name="DiaChi_DS">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                           
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" id="GioiTinh_DS" name="GioiTinh_DS" for="exampleCheck1">Nữ</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">CMND :</label>
+                                    <input type="text" class="form-control" id="CMND" name="CMND">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số điện thoại :</label>
+                                    <input type="text" class="form-control" id="SoDienThoai_DS" name="SoDienThoai_DS">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Quê quán :</label>
+                                    <input type="text" class="form-control" id="QueQuan_DS" name="QueQuan_DS">
+                                </div>
+                            </div>
+                            
+
+                            <div class="clearfix"></div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn_them">Thêm</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-Update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa đương sự</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:750px">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("sua_DS1", "DuongSu", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã số đương sự :</label>
+                                    <input type="text" class="form-control" id="txtId" name="MA_DuongSu" placeholder="Mã số đương sự">
+                                    <label for="exampleInputEmail1">Họ tên đương sự :</label>
+                                    <input type="text" class="form-control" id="txtTenDS" name="HoTen_DS" placeholder="Họ tên đương sự">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" id="GioiTinh_DS" name="GioiTinh_DS" for="exampleCheck1">Nữ</label>
+                                    <br />
+                                    <label for="exampleInputEmail1">Loại đương sự :</label>
+                                    @Html.DropDownList("lds", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Năm sinh :</label>
+                                    <input type="date" class="form-control" id="txtNamSinh" name="NamSinh_DS">
+                                    <label for="exampleInputEmail1">Địa chỉ :</label>
+                                    <input type="text" class="form-control" id="txtDiaChi" name="txtDiaChi" placeholder="Địa chỉ">
+                                    <label for="exampleInputEmail1">Quê quán :</label>
+                                    <input type="text" class="form-control" id="txtQueQuan" name="QueQuan_DS" placeholder="Quê quán">
+                                    <label for="exampleInputEmail1">Số điện thoại :</label>
+                                    <input type="text" class="form-control" id="txtSDT" name="SoDienThoai_DS" placeholder="Số điện thoại">
+                                    <label for="exampleInputEmail1">Số CMND :</label>
+                                    <input type="text" class="form-control" id="txtCMND" name="CMND" placeholder="Số CMND">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+    function GetDetails(id) {
+    $.ajax({
+
+        url: "/DuongSu/Edit_DS/" + id,
+        typr: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            $('#txtId').val(response.MA_DuongSu);
+            $('#txtTenDS').val(response.HoTen_DS);
+            $('#txtLoaiDS').val(response.MA_LoaiDS);
+            $('#txtQueQuan').val(response.QueQuan_DS);
+            $('#txtNamSinh').val(response.NamSinh_DS);
+            $('#txtDiaChi').val(response.DiaChi_DS);
+            $('#txtSDT').val(response.SoDienThoai_DS);
+            $('#txtCMND').val(response.CMND);
+            $('#txtGioiTinh').val(response.GioiTinh_DS);
+            $('#modal-Update').modal('show');
+        },
+        error: function (response) {
+
+            alert(response.responseText);
+        }
+    });
+    return false;
+    }
+
+    //bat loi khoa ngoai khi xoa
+    var loi = $(".LoiKhoaNgoai").val();
+    if (loi === '1')
+        alert("Vui lòng xóa nhân viên thuộc phòng ban trước !!");
+
+
+    //bat loi khi them
+
+    $(".btn_them").on('click', function () {
+        var maDuongSu = $('#MA_DuongSu').val();
+        var namsinh = $('#NamSinh_DS').val();
+        var hotenDS = $('#HoTen_DS').val();
+        var quequan = $('#QueQuan_DS').val();
+        var diachi = $('#DiaChi_DS').val();
+        var sdt = $('#SoDienThoai_DS').val();
+        var cmnd = $('#CMND').val();
+
+        if (maDuongSu === '')
+        {
+            alert("Mã đương sự không được rỗng!!");
+            return false;
+        }
+
+        if (maDuongSu.length > 5)
+        {
+            alert("Mã đương sự không được lớn hơn 5 ký tự!!");
+            return false;
+        }
+        if (namsinh === '') {
+            alert("Năm sinh đương sự không được rỗng!!");
+            return false;
+        }
+
+        if (hotenDS === '') {
+            alert("Họ tên không được rỗng!!");
+            return false;
+        }
+
+        if (hotenDS.length > 50) {
+            alert("Họ tên không được lớn hơn 50 ký tự!!");
+            return false;
+        }
+        if (quequan === '') {
+            alert("Quê quán không được rỗng!!");
+            return false;
+        }
+
+        if (quequan.length > 50) {
+            alert("Quê quán không được lớn hơn 50 ký tự!!");
+            return false;
+        }
+        if (diachi === '') {
+            alert("Địa chỉ không được rỗng!!");
+            return false;
+        }
+
+        if (diachi.length > 255) {
+            alert("Địa chỉ không được lớn hơn 255 ký tự!!");
+            return false;
+        }
+        if (sdt === '') {
+            alert("Số điện thoại không được rỗng!!");
+            return false;
+        }
+
+        if (sdt.length > 11) {
+            alert("Số điện thoại không được lớn hơn 11 ký tự!!");
+            return false;
+        }
+        if (cmnd === '') {
+            alert("CMND không được rỗng!!");
+            return false;
+        }
+
+        if (cmnd.length > 12) {
+            alert("CMND không được lớn hơn 12 ký tự!!");
+            return false;
+        }
+    });
+    </script>
+}
+
+
+
+

@@ -1,0 +1,172 @@
+﻿@using NienLuan2.Models
+@model NHANVIEN
+<style>
+    img {
+        border-radius: 50%;
+    }
+</style>
+<title>Tòa án nhân dân tỉnh X</title>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- TrangCaNhan Image -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user-circle fa-fw"></i>
+                    ẢNH ĐẠI DIỆN
+                    <br /><br />
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("ChangeAvatar", "TrangCaNhan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <label class="img-responsive"><img class="card-img" src="@Url.Content("~/Content/images" + Model.Avatar) " alt="Avatar" id="file" height="117" width="100" /><input type="file" style="display: none;" id="File" name="File"></label>
+                        <h3 class="TrangCaNhan-username text-center">@Model.HoTen_NV</h3>
+                        <p class="text-muted text-center">@Model.CHUCVU.TEN_ChucVu</p>
+                        <button class="btn btn-primary btn-block" type="submit" name="submit" value="upload">Lưu</button>
+                    }
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-vcard"></i>
+                    THÔNG TIN NHÂN VIÊN
+                    <label class="btn btn-primary pull-right " onclick="GetDetails('@Model.MA_NhanVien')">Đổi mật khẩu</label>
+                    <br /><br />
+                </div>
+                <div class="tab-content">
+                    <!-- /.tab-pane -->
+                    <table id="example2" class="table table-border table-hover" border="0">
+                        <tr>
+                            <td><label for="inputName" class="form-control" style="border: 0px;">Tên nhân viên:</label></td>
+                            <td>
+                                <label for="inputName" class="form-control" style="border: 0px; color:darkgrey;">@Model.HoTen_NV</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="inputName" class="form-control" style="border: 0px;">Phòng ban:</label></td>
+                            <td>
+                                <label for="inputName" class="form-control" style="border: 0px; color:darkgrey;">@Model.PHONGBAN.Ten_PB</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="inputName" class="form-control" style="border: 0px;">Năm sinh:</label></td>
+                            <td>
+                                <label for="inputName" class="form-control" style="border: 0px; color:darkgrey;">@Model.NamSinh_NV.ToString("dd/MM/yyy")</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="inputName" class="form-control" style="border: 0px;">Quê quán:</label></td>
+                            <td>
+                                <label for="inputName" class="form-control" style="border: 0px; color:darkgrey;">@Model.QueQuan_NV</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="inputName" class="form-control" style="border: 0px;">Số điện thoại:</label></td>
+                            <td>
+                                <label for="inputName" class="form-control" style="border: 0px; color:darkgrey;">@Model.SoDienThoai_NV</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="inputName" class="form-control" style="border: 0px;">Quyền sử dụng:</label></td>
+                            <td>
+                                <label for="inputName" class="form-control" style="border: 0px; color:darkgrey;">@Model.QUYEN_NSD.Ten_QNSD</label>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-Update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:auto">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("Change_Password1", "TrangCaNhan", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="txtId" name="MA_NhanVien" style="background-color:lightgrey" placeholder="Tài khoản nhân viên">
+                                    <input type="text" class="form-control" id="txtmatkhaucu" name="MatKhau" placeholder="Mật khẩu cũ" disabled hidden>
+                                    <label for="exampleInputEmail1">Mật khẩu cũ:</label>
+                                    <input type="password" class="form-control" id="txtmatkhau2" name="MatKhau2" placeholder="Mật khẩu cũ" required>
+                                    <label for="exampleInputEmail1">Mật khẩu mới:</label>
+                                    <input type="password" class="form-control" id="txtmatkhau" name="MatKhau" placeholder="Mật khẩu mới" required>
+                                    <label for="exampleInputEmail1">Nhập lại mật khẩu:</label>
+                                    <input type="password" class="form-control" id="txtmatkhau1" name="MatKhau1" placeholder="Nhập lại mật khẩu" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" onClick="return checkpass('txtmatkhau', 'txtmatkhau1');">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+                        //sua
+                        function GetDetails(id) {
+                            $.ajax({
+
+                                url: "/TrangCaNhan/ChangePassword/" + id,
+                                typr: "GET",
+                                contentType: "application/json;charset=UTF-8",
+                                dataType: "json",
+                                success: function (response) {
+                                    $('#txtId').val(response.MA_NhanVien);
+                                    $('#txtmatkhaucu').val(response.MatKhau);
+                                    $('#txtmatkhau').val('');
+                                    $('#txtmatkhau1').val('');
+                                    $('#txtmatkhau2').val('');
+                                    $('#modal-Update').modal('show');
+                                },
+                                error: function (response) {
+                                    alert(response.responseText);
+                                }
+                            });
+                            return false;
+                        }
+                        function checkpass() {
+                            {
+                                if (document.getElementById('txtmatkhau').value != document.getElementById('txtmatkhau1').value) {
+                                    alert('Mật khẩu xác nhận không đúng với mật khẩu mới');
+                                    return false;
+                                } if (document.getElementById('txtmatkhau2').value != document.getElementById('txtmatkhaucu').value) {
+                                    alert('Mật khẩu cũ không đúng');
+                                    return false;
+                                }if (document.getElementById('txtmatkhau').value == document.getElementById('txtmatkhaucu').value) {
+                                        alert('Mật khẩu mới trùng với mật khẩu cũ');
+                                        return false;
+                                }else {
+                                        return true
+                                    }
+                                }
+                            }
+
+    </script>
+}

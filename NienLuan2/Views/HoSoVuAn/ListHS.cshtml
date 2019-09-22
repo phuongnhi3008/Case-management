@@ -1,0 +1,360 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.HOSO_VUAN>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "ListHS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            DANH SÁCH HỒ SƠ
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
+                Thêm hồ sơ
+            </button>
+            @using (Html.BeginForm("ListHS", "HoSoVuAn", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            {
+                <div class="input-group">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã hồ sơ cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+          
+        </div>
+
+        <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        @foreach (var group in Model.GroupBy(x => x.TRANGTHAI_HS.Ten_TT))
+                        {
+                            <tr class="group-header" data-toggle="collapse">
+                                <td colspan="6">
+                                    <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;@group.Key</span></i>
+                                </td>
+                            </tr>                    
+                    <tr>
+                       
+                        <th>
+                            Mã số hồ sơ
+                        </th>
+                        <th>
+                            Tên vụ án
+                        </th>
+                        <th>
+                            Ngày nhận
+                        </th>
+                        <th>
+                            Loại vụ án
+                        </th>
+                        <th>
+                            Loại hồ sơ
+                        </th>
+                        <th>
+                            Trạng thái HS
+                        </th>
+                        <th>
+                            Thẩm phán
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    foreach (var item in group)
+                    {
+                        <tr >                          
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MA_HoSo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ten_VuAn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NgayNhan_HS)
+                           </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Loai_HS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TRANGTHAI_HS.Ten_TT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
+                            </td>
+                            <td>
+                                <button class="item btn_ChiTiet btn btn-success btn-sm" href=@Url.Action("ChiTiet_HS", new { @id = item.MA_HoSo })>
+
+                                    <i class="fas fa-info"></i>
+                                </button>
+                                |
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
+
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                |
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_HS1", new { id = item.MA_HoSo })">
+
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                                    }
+                                }
+
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action( "ListHS", new { page, @searchString = @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm hồ sơ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("them_HS", "HoSoVuAn", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:730px">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Ngày nhận :</label>
+                                    <input type="text" class="form-control" id="NgayNhan_HS" name="NgayNhan_HS" value="@DateTime.Today.ToString("dd/MM/yyyy")" readonly>
+                                </div>
+                            </div>                      
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã hồ sơ :</label>
+                                    <input type="text" class="form-control" id="MA_HoSo" name="MA_HoSo" placeholder="Mã hồ sơ">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên vụ án :</label>
+                                    <input type="text" class="form-control" id="Ten_VuAn" name="Ten_VuAn" placeholder="Tên vụ án">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Thẩm phán :</label>
+                                    @Html.DropDownList("mnv", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            @*<div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Vai trò nhân viên :</label>
+                                    @Html.DropDownList("vtnv", null, new { @class = "form-control" })
+                                </div>
+                            </div>*@
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Loại vụ án :</label>
+                                    @Html.DropDownList("lva", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Trạng thái :</label>
+                                    <!--input type="text" class="form-control" id="MA_TrangThai" name="MA_TrangThai" placeholder="Trạng thái">-->
+
+                                    @Html.DropDownList("tths", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Nội dung :</label>
+                                    <input type="text" class="form-control" id="NoiDung_VA" name="NoiDung_VA" placeholder="Nội dung">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Loại hồ sơ :</label>
+                                    <input type="text" class="form-control" id="Loai_HS" name="Loai_HS" placeholder="Loại hồ sơ">
+                                </div>
+                            </div>
+                            
+                            <div class="clearfix"></div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn_them">Thêm</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>      
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modal-Update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa hồ sơ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:750px">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("sua_HS1", "HoSoVuAn", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã hồ sơ :</label>
+                                    <input type="text" class="form-control" id="txtId" name="MA_HoSo" placeholder="Mã phòng ban">
+                                    <label for="exampleInputEmail1">Tên vụ án :</label>
+                                    <input type="text" class="form-control" id="txtTenVA" name="Ten_VuAn" placeholder="Tên vụ án">
+                                    <label for="exampleInputEmail1">Nhân viên :</label>
+                                    @Html.DropDownList("mnv", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Loại vụ án :</label>
+                                    @Html.DropDownList("lva", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Trạng thái :</label>
+                                    @Html.DropDownList("tths", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Nội dung :</label>
+                                    <input type="text" class="form-control" id="txtNoiDung" name="NoiDung_VA" placeholder="Nội dung">
+                                    <label for="exampleInputEmail1">Loại hồ sơ :</label>
+                                    <input type="text" class="form-control" id="txtLoaiHS" name="Loai_HS" placeholder="Loại hồ sơ">
+                                    <label for="exampleInputEmail1">Vai trò nhân viên :</label>
+                                    @Html.DropDownList("vtnv", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    <script type="text/javascript">
+    function GetDetails(id) {
+    $.ajax({
+
+        url: "/HoSoVuAn/Edit_HS/" + id,
+        typr: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            $('#txtId').val(response.MA_HoSo);
+            $('#txtTenVA').val(response.Ten_VuAn);
+            $('#txtNhanVien').val(response.MA_NhanVien);
+            $('#txtTrangThai').val(response.MA_TrangThai);
+            $('#txtLoaiVA').val(response.MA_LoaiVA);
+            $('#txtNoiDung').val(response.NoiDung_VA);
+            $('#txtLoaiHS').val(response.Loai_HS);
+            $('#txtVaiTroNV').val(response.MA_VaiTro);
+            $('#modal-Update').modal('show');
+        },
+        error: function (response) {
+
+            alert(response.responseText);
+        }
+    });
+    return false;
+    }
+
+    //bat loi khoa ngoai khi xoa
+    var loi = $(".TonTaiMa").val();
+    if (loi === '1')
+        alert("Mã hồ sơ này đã tồn tại!!!");
+
+
+    //bat loi khi them
+
+    $(".btn_them").on('click', function () {
+        var maHS = $('#MA_HoSo').val();
+        var TenVuAn = $('#Ten_VuAn').val();
+        var ndVuAn = $('#NoiDung_VA').val();
+        var loaiHS = $('#Loai_HS').val();
+
+        if (maHS === '')
+        {
+            alert("Mã hồ sơ không được rỗng!!");
+            return false;
+        }
+
+        if (maHS.length > 5)
+        {
+            alert("Mã hồ sơ không được lớn hơn 5 ký tự!!");
+            return false;
+        }
+
+        if (TenVuAn === '') {
+            alert("Tên vụ án không được rỗng!!");
+            return false;
+        }
+
+        if (TenVuAn.length > 50) {
+            alert("Tên vụ án không được lớn hơn 50 ký tự!!");
+            return false;
+        }
+
+        if (ndVuAn === '') {
+            alert("Nội dung vụ án không được rỗng!!");
+            return false;
+        }
+
+        if (ndVuAn.length > 350) {
+            alert("Nội dung vụ án không được lớn hơn 350 ký tự!!");
+            return false;
+        }
+
+        if (loaiHS === '') {
+            alert("Loại hồ sơ không được rỗng!!");
+            return false;
+        }
+
+        if (loaiHS.length > 100) {
+            alert("Loại hồ sơ không được lớn hơn 100 ký tự!!");
+            return false;
+        }
+    });
+
+    $(function () {
+        $('.group-header').click(function () {
+            $(this).nextUntil('.group-header').toggle();
+        });
+    });
+
+    function addPaging() {
+        $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
+        $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
+            $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
+        });
+    }
+    </script>
+}
+
+

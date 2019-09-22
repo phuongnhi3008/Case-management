@@ -1,0 +1,182 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.XETXU>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "ListXX";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            LỊCH XÉT XỬ
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
+                Thêm lịch xét xử
+            </button>
+            @using (Html.BeginForm("ListXX", "XetXu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            {
+                <div class="input-group">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã hồ sơ cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+        <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">                 
+                            <tr>
+                                <th>
+                                    Số thứ tự
+                                </th>
+                                <th>
+                                    Ngày xét xử
+                                </th>
+                                <th>
+                                    Tên đương sự
+                                </th>
+                                <th>
+                                    Tên vụ án
+                                </th>
+                                <th>
+                                    Thẩm phán chủ tọa
+                                </th>
+                                <th>
+                                    Lần xét xử
+                                </th>
+                                <th>
+                                    Địa điểm
+                                </th>
+                                <th>
+                                    Thao tác
+                                </th>
+                            </tr>
+                       @foreach (var item in Model)
+            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.STT_XX)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ngay_XetXu)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DUONGSU.HoTen_DS)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Lan_XetXu)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
+                                </td>
+                                <td>
+                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
+
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    |
+                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
+
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade" id="examplemodal" tabindex="-1" role="dialog" aria-labelledby="examplemodallabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">thêm lịch xét xử</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (html.beginform("themlxx", "xetxu", formmethod.post))
+                    {
+                        <div class="modal-body" style="height:730px">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">mã xét xử :</label>
+                                    <input type="text" class="form-control" id="stt_xx" name="stt_xx" placeholder="mã xét xử">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">ngày xét xử :</label>
+                                    <input type="date" class="form-control" id="ngay_xetxu" name="ngay_xetxu" placeholder="ngày xét xử">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">nhân viên :</label>
+                                    @html.dropdownlist("nv", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">địa điểm :</label>
+                                    @html.dropdownlist("dd", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">loại vụ án :</label>
+                                    @html.dropdownlist("lva", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">trạng thái :</label>
+                                    input type="text" class="form-control" id="ma_trangthai" name="ma_trangthai" placeholder="trạng thái">
+
+                                    @html.dropdownlist("tths", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">nội dung :</label>
+                                    <input type="text" class="form-control" id="noidung_va" name="noidung_va" placeholder="nội dung">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">loại hồ sơ :</label>
+                                    <input type="text" class="form-control" id="loai_hs" name="loai_hs" placeholder="loại hồ sơ">
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn_them">thêm</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+

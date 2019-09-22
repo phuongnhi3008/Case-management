@@ -1,0 +1,491 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.NHANVIEN>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "ListNV";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            DANH SÁCH NHÂN VIÊN
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
+                Thêm nhân viên
+            </button>
+            @using (Html.BeginForm("ListNV", "NhanVien", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            {
+                <div class="input-group">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã nhân viên cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Mã số nhân viên
+                        </th>
+                        <th>
+                            Họ tên
+                        </th>
+                        <th>
+                            Chức vụ
+                        </th>
+                        <th>
+                            Phòng ban
+                        </th>
+                        <th>
+                            Nữ
+                        </th>
+                        <th>
+                            Số điện thoại
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @count
+                                @{
+                                    count++;
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MA_NhanVien)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoTen_NV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CHUCVU.TEN_ChucVu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PHONGBAN.Ten_PB)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GioiTinh_NV)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SoDienThoai_NV)
+                            </td>
+                            <td>
+                                <button class="item btn_ChiTiet btn btn-success btn-sm" onclick="GetDetails1('@item.MA_NhanVien')">
+
+                                    <i class="fas fa-info"></i>
+                                </button>
+                                |
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_NhanVien')">
+
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                |
+                                <a class="item btn_Xoa btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_NV1", new { id = item.MA_NhanVien })">
+
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                                    }
+
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("ListNV", new { page, @searchString = @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm nhân viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("them_NV", "NhanVien", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:940px">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã nhân viên :</label>
+                                    <input type="text" class="form-control" id="MA_NhanVien" name="MA_NhanVien" placeholder="Mã nhân viên">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Họ tên :</label>
+                                    <input type="text" class="form-control" id="HoTen_NV" name="HoTen_NV" placeholder="Họ tên">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Chức vụ :</label>
+                                    @Html.DropDownList("cv", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Phòng ban :</label>
+                                    @Html.DropDownList("pb", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Quyền sử dụng :</label>
+                                    @Html.DropDownList("qsd", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Năm sinh :</label>
+                                    <input type="date" class="form-control" id="NamSinh_NV_Them" name="NamSinh_NV" >
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                @*<div class="form-group">
+                                    <label for="exampleInputEmail1">Nữ :</label>
+                                    <input type="radio" class="form-check-input" id="GioiTinh_NV" name="GioiTinh_NV" >
+                                </div>*@
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" id="GioiTinh_NV" name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Quê quán :</label>
+                                    <input type="text" class="form-control" id="QueQuan_NV" name="QueQuan_NV" placeholder="Quê quán">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số CMND :</label>
+                                    <input type="text" class="form-control" id="CMND_NV" name="CMND_NV" placeholder="Số chứng minh nhân dân">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số điện thoại :</label>
+                                    <input type="text" class="form-control" id="SoDienThoai_NV" name="SoDienThoai_NV" placeholder="Số điện thoại">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mật khẩu :</label>
+                                    <input type="text" class="form-control" id="MatKhau" name="MatKhau" placeholder="Mật khẩu">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="avatar" name="avatar" value="noavatar.png" hidden>
+
+                            <div class="clearfix"></div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn_them">Thêm</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-Update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa nhân viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:750px">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("Sua_NV1", "NhanVien", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã số nhân viên :</label>
+                                    <input type="text" class="form-control" id="txtId" name="MA_NhanVien" placeholder="Mã nhân viên">
+                                    <label for="exampleInputEmail1">Họ tên nhân viên :</label>
+                                    <input type="text" class="form-control" id="txtTenNV" name="HoTen_NV" placeholder="Họ tên nhân viên">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+
+                                    <label class="form-check-label" id="GioiTinh_NV" name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
+                                    <br />
+                                    <label for="exampleInputEmail1">Chức vụ :</label>
+                                    @Html.DropDownList("cv", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Quyền sử dụng :</label>
+                                    @Html.DropDownList("qsd", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Phòng ban :</label>
+                                    @Html.DropDownList("pb", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Năm sinh :</label>
+                                    <input type="date" class="form-control" id="NamSinh_NV_Sua" name="NamSinh_NV">
+                                    <label for="exampleInputEmail1">Quê quán :</label>
+                                    <input type="text" class="form-control" id="txtquequan" name="QueQuan_NV" placeholder="Quê quán">
+                                    <label for="exampleInputEmail1">Số điện thoại :</label>
+                                    <input type="text" class="form-control" id="txtsdt" name="SoDienThoai_NV" placeholder="Số điện thoại">
+                                    <label for="exampleInputEmail1">Số CMND :</label>
+                                    <input type="text" class="form-control" id="txtcmnd" name="CMND_NV" placeholder="Số CMND">
+                                    <label for="exampleInputEmail1">Mật khẩu :</label>
+                                    <input type="text" class="form-control" id="txtmatkhau" name="MatKhau" placeholder="Mật khẩu">
+                                    <input type="text" class="form-control" id="txtavatar" name="Avatar" placeholder="Avatar">
+                                   
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết nhân viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:750px">
+                <div class="box box-primary">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã số nhân viên :</label>
+                                    <input type="text" class="form-control" id="txtId1" disabled name="MA_NhanVien" placeholder="Mã nhân viên">
+                                    <label for="exampleInputEmail1">Họ tên nhân viên :</label>
+                                    <input type="text" class="form-control" id="txtTenNV1" disabled name="HoTen_NV" placeholder="Họ tên nhân viên">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">                                  
+                                    <label class="form-check-label" id="GioiTinh_NV" disabled name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
+                                    <br />
+                                    <label for="exampleInputEmail1">Chức vụ :</label>
+                                    <input type="text" class="form-control" id="txtChucVu1" disabled name="MA_ChucVu" placeholder="Chức vụ">
+                                    <label for="exampleInputEmail1">Quyền sử dụng :</label>
+                                    <input type="text" class="form-control" id="txtQSD1" disabled name="MA_QNSD" placeholder="Quyền sử dụng">
+                                    <label for="exampleInputEmail1">Phòng ban :</label>
+                                    <input type="text" class="form-control" id="txtPB1" disabled name="MA_PhongBan" placeholder="Phòng ban" >
+                                    <label for="exampleInputEmail1">Năm sinh :</label>
+                                    <input type="text" class="form-control" id="txtnamsinh1" disabled name="NamSinh_NV">
+                                    <label for="exampleInputEmail1">Quê quán :</label>
+                                    <input type="text" class="form-control" id="txtquequan1" disabled name="QueQuan_NV" placeholder="Quê quán">
+                                    <label for="exampleInputEmail1">Số điện thoại :</label>
+                                    <input type="text" class="form-control" id="txtsdt1" disabled name="SoDienThoai_NV" placeholder="Số điện thoại">
+                                    <label for="exampleInputEmail1">Số CMND :</label>
+                                    <input type="text" class="form-control" id="txtcmnd1" disabled name="CMND_NV" placeholder="Số CMND">
+                                    <label for="exampleInputEmail1">Mật khẩu :</label>
+                                    <input type="text" class="form-control" id="txtmatkhau1" disabled name="MatKhau" placeholder="Mật khẩu">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+
+    <script type="text/javascript">
+        //sua
+    function GetDetails(id) {
+    $.ajax({
+
+        url: "/NhanVien/Edit_NV/" + id,
+        typr: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
+            $('#txtId').val(response.MA_NhanVien);
+            $('#txtTenNV').val(response.HoTen_NV);
+            $('#txtQSD').val(response.MA_QNSD);
+            $('#txtPB').val(response.MA_PhongBan);
+            $('#txtChucVu').val(response.MA_ChucVu);
+            $('#txtGioiTinh').val(response.GioiTinh_NV);
+            $('#NamSinh_NV_Sua').val(response.NamSinh_NV);
+            $('#txtquequan').val(response.QueQuan_NV);
+            $('#txtcmnd').val(response.CMND_NV);
+            $('#txtsdt').val(response.SoDienThoai_NV);
+            $('#txtmatkhau').val(response.MatKhau);
+            $('#txtavatar').val(response.Avatar);
+
+
+            $('#modal-Update').modal('show');
+        },
+        error: function (response) {
+
+            alert(response.responseText);
+        }
+    });
+    return false;
+    }
+        //chitiet
+    function GetDetails1(id) {
+        $.ajax({
+
+            url: "/NhanVien/detail_NV/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
+                //var ns = Date.parse(response.NamSinh_NV);
+                $('#txtId1').val(response.MA_NhanVien);
+                $('#txtTenNV1').val(response.HoTen_NV);
+                $('#txtQSD1').val(response.MA_QNSD);
+                $('#txtPB1').val(response.MA_PhongBan);
+                $('#txtChucVu1').val(response.MA_ChucVu);
+                $('#txtGioiTinh1').val(response.GioiTinh_NV);
+                $('#txtnamsinh1').val(date.toDateString("{0:yyyy/MM/dd}"));
+                $('#txtquequan1').val(response.QueQuan_NV);
+                $('#txtcmnd1').val(response.CMND_NV);
+                $('#txtsdt1').val(response.SoDienThoai_NV);
+                $('#txtmatkhau1').val(response.MatKhau);
+
+                $('#modal-detail').modal('show');
+            },
+            error: function (response) {
+
+                alert(response.responseText);
+            }
+        });
+        return false;
+    }
+    function dateFormat(d) {
+        return ((d.getMonth() + 1) + "").padStart(2, "0")
+           + "/" + (d.getDate() + "").padStart(2, "0")
+           + "/" + d.getFullYear();
+    }
+    //bat loi khoa ngoai khi xoa
+    var loi = $(".TonTaiMa").val();
+    if (loi === '1')
+        alert("Mã nhân viên này đã tồn tại!!!");
+
+
+    //bat loi khi them
+
+    $(".btn_them").on('click', function () {
+        var maNV = $('#MA_NhanVien').val();
+        var TenNV = $('#HoTen_NV').val();
+        var NamSinh = $('#NamSinh_NV').val();
+        var QueQuan = $('#QueQuan_NV').val();
+        var cmnd = $('#CMND_NV').val();
+        var Sdt = $('#SoDienThoai_NV').val();
+        var MatKhau = $('#MatKhau').val();
+
+        if (maNV === '')
+        {
+            alert("Mã nhân viên không được rỗng!!");
+            return false;
+        }
+
+        if (maNV.length > 8)
+        {
+            alert("Mã nhân viên không được lớn hơn 8 ký tự!!");
+            return false;
+        }
+
+        if (TenNV === '') {
+            alert("Tên nhân viên không được rỗng!!");
+            return false;
+        }
+
+        if (TenNV.length > 50) {
+            alert("Tên nhân viên không được lớn hơn 50 ký tự!!");
+            return false;
+        }
+
+        if (NamSinh === '') {
+            alert("Năm sinh không được rỗng!!");
+            return false;
+        }
+
+        if (QueQuan === '') {
+            alert("Quê quán không được rỗng!!");
+            return false;
+        }
+
+        if (QueQuan.length > 250) {
+            alert("Quê quán không được lớn hơn 250 ký tự!!");
+            return false;
+        }
+        if (cmnd === '') {
+            alert("Số CMND không được rỗng!!");
+            return false;
+        }
+
+        if (cmnd.length > 12) {
+            alert("Số CMND không được lớn hơn 12 ký tự!!");
+            return false;
+        }
+        if (Sdt === '') {
+            alert("Số điện thoại không được rỗng!!");
+            return false;
+        }
+
+        if (Sdt.length > 11) {
+            alert("Số điện thoại không được lớn hơn 11 ký tự!!");
+            return false;
+        }
+        if (MatKhau === '') {
+            alert("Mật khẩu không được rỗng!!");
+            return false;
+        }
+
+        if (MatKhau.length > 50) {
+            alert("Mật khẩu không được lớn hơn 50 ký tự!!");
+            return false;
+        }
+    });
+</script>
+}
+
+

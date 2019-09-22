@@ -1,0 +1,131 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.QUYEN_NSD>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<title>Tòa án nhân dân tỉnh X</title>
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="box">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                DANH SÁCH QUYỀN
+                <a class="item btn_Xoa btn btn-default pull-right btn-sm" href="@Url.Action("ListMenu", new {})">
+                    <i class="fas fa-chevron-circle-left"></i>
+                    Quay về danh sách menu
+                </a>
+            </div>
+            <div class="card-header">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-mrole" style="margin-right:20px" ;>Thêm quyền</button>
+                @using (Html.BeginForm("ListVT", "Menu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            {
+                    <div class="input-group">
+                        <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
+
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="dataTable">
+                            <tr>
+                                <th>
+                                    STT
+                                </th>
+                                <th>
+                                    Mã quyền
+                                </th>
+                                <th>
+                                    Tên quyền
+                                </th>
+                                <th>
+                                    Thao tác
+                                </th>
+                            </tr>
+
+                            @{
+                                int count = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @count
+                                        @{
+                                            count++;
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MA_QNSD)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ten_QNSD)
+                                    </td>
+                                    <td>
+                                        <a class="item btn_Xoa btn btn-primary btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_VT1", new { id = item.MA_QNSD})">
+
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                            }
+                        </table>
+                        @Html.PagedListPager(Model, page => Url.Action("ListMenu", new { page, @searchString = @ViewBag.SearchString }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-mrole">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm vai trò người dùng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("AddVT", "Menu", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:auto">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mã vai trò :</label>
+                                    <input type="text" class="form-control" id="MA_QNSD" name="MA_QNSD" placeholder="Mã quyền">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên vai trò :</label>
+                                    <input type="text" class="form-control" id="Ten_QNSD" name="Ten_QNSD" placeholder="Tên quyền">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn_them">Thêm</button>
+                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+            //bat loi khoa ngoai khi xoa
+            var loi = $(".LoiKhoaNgoai").val();
+            if (loi === '1')
+                alert("Vui lòng xóa,thay đổi nhân viên đang có vai trò này !!");
+
+    </script>
+}

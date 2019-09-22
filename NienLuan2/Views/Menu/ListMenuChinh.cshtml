@@ -1,0 +1,100 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.MAIN_MENU>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<title>Tòa án nhân dân tỉnh X</title>
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="box">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                DANH SÁCH MENU CHÍNH
+                <a class="item btn_Xoa btn btn-default pull-right btn-sm" href="@Url.Action("ListMenu", new {})">
+                    <i class="fas fa-chevron-circle-left"></i>
+                    Quay về danh sách menu
+                </a>
+            </div>
+            <div class="card-header">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-mrole" style="margin-right:20px" ;>Thêm menu chính</button>
+                <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="dataTable">
+                            <tr>
+                                <th>
+                                    Mã menu
+                                </th>
+                                <th>
+                                    Tên menu
+                                </th>
+                                <th>
+                                    Thao tác
+                                </th>
+                            </tr>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_Main)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Ten_Main)
+                                    </td>
+                                    <td>
+                                        <a class="item btn_Xoa btn btn-primary btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_MAIN1", new { id = item.ID_Main})">
+
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        @Html.PagedListPager(Model, page => Url.Action("ListMenuChinh", new { page, @searchString = @ViewBag.SearchString }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-mrole">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm menu chính</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("them_Main", "Menu", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:auto">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên menu :</label>
+                                    <input type="text" class="form-control" id="Ten_Main" name="Ten_Main" placeholder="Tên menu chinh">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn_them">Thêm</button>
+                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+            //bat loi khoa ngoai khi xoa
+            var loi = $(".LoiKhoaNgoai").val();
+            if (loi === '1')
+                alert("Vui lòng xóa,thay đổi menu phụ nằm trong menu chính này !!");
+
+    </script>
+}

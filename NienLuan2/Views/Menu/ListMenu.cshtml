@@ -1,0 +1,233 @@
+﻿@using NienLuan2.Models
+@model IEnumerable<SUB_MENU>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<title>Tòa án nhân dân tỉnh X</title>
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="box">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                DANH SÁCH PHÂN QUYỀN MENU
+            </div>
+            <div class="card-header">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-mrole">Thêm người dùng Menu</button>
+                - &nbsp;<a class="btn btn-primary" @Html.ActionLink("Danh sách vai trò", "ListVT", "Menu", null, new { @class = "btn btn-sucesss" })</a>
+                - &nbsp;<a class="btn btn-primary" @Html.ActionLink("Danh sách menu chính", "ListMenuChinh", "Menu", null, new { @class = "btn btn-sucesss" })</a>
+                @using (Html.BeginForm("ListMN", "Menu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+                {
+                    <div class="input-group">
+                        <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+                <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="dataTable">
+                            @foreach (var group in Model.GroupBy(x => x.QUYEN_NSD.Ten_QNSD))
+                            {
+                                <tr class="group-header" data-toggle="collapse">
+                                    <td colspan="6">
+                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;@group.Key</span></i>
+                                    </td>
+                                </tr>
+                                <tr class="panel-collapse collapse">
+                                    <th>
+                                        Tên menu chính
+                                    </th>
+                                    <th>
+                                        Tên menu phụ
+                                    </th>
+                                    <th>
+                                        Tên controller
+                                    </th>
+                                    <th>
+                                        Tên action
+                                    </th>
+                                    <th>
+                                        Thao tác
+                                    </th>
+                                </tr>
+                                foreach (var item in group.OrderBy(x => x.ID_Main))
+                                {
+                                    <tr class="panel-collapse collapse">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MAIN_MENU.Ten_Main)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ten_SUB)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Controller_SUB)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Action_SUB)
+                                        </td>
+                                        <td>
+                                            <button class="item btn_Sua btn btn-primary btn-sm" onclick="GetDetails('@item.ID_SUB')">
+
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            |
+                                            <a class="item btn_Xoa btn btn-primary btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_Menu1", new { id = item.ID_SUB})">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-mrole">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm menu cho người dùng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("them_Menu", "Menu", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:auto">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Vai trò :</label>
+                                    @Html.DropDownList("vt", null, new { @class = "form-control" })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên menu chính :</label>
+                                    @Html.DropDownList("main", null, new { @class = "form-control" })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên menu phụ :</label>
+                                    <input type="text" class="form-control" id="Ten_SUB" name="Ten_SUB" placeholder="Tên menu phụ">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên controller :</label>
+                                    <input type="text" class="form-control" id="Controller_SUB" name="Controller_SUB" placeholder="Tên controller">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên action :</label>
+                                    <input type="text" class="form-control" id="Action_SUB" name="Action_SUB" placeholder="Tên action">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn_them">Thêm</button>
+                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-Update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa menu cho người dùng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:auto">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("sua_Menu1", "Menu", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="txtId" name="SUB_ID" placeholder="Mã menu phụ" hidden>
+                                    <label for="exampleInputEmail1">Vai trò :</label>
+                                    @Html.DropDownList("vt1", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Tên menu chính:</label>
+                                    @Html.DropDownList("main1", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Tên menu phụ :</label>
+                                    <input type="text" class="form-control" id="txtName" name="Ten_SUB" placeholder="Tên menu phụ">
+                                    <label for="exampleInputEmail1">Tên controller :</label>
+                                    <input type="text" class="form-control" id="txtController" name="Controller_SUB" placeholder="Tên controller">
+                                    <label for="exampleInputEmail1">Tên action :</label>
+                                    <input type="text" class="form-control" id="txtAction" name="Action_SUB" placeholder="Tên action">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+        //sua
+        function GetDetails(id) {
+            $.ajax({
+
+                url: "/Menu/suaMenu/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#txtId').val(response.ID_SUB);
+                    $('#vt1').val(response.MA_QNSD);
+                    $('#main1').val(response.ID_Main);
+                    $('#txtName').val(response.Ten_SUB);
+                    $('#txtController').val(response.Controller_SUB);
+                    $('#txtAction').val(response.Action_SUB);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        $(function () {
+            $('.group-header').click(function () {
+                $(this).nextUntil('.group-header').toggle();
+            });
+        });
+
+        function addPaging() {
+            $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
+            $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
+                $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
+            });
+        }
+    </script>
+}

@@ -1,0 +1,175 @@
+﻿@model PagedList.IPagedList<NienLuan2.Models.HOTRO>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "ListHT";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            HỖ TRỢ
+            @using (Html.BeginForm("ListHT", "HoTro", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            {
+                <div class="input-group">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã hồ sơ cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+        <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th>
+                            Số thứ tự
+                        </th>
+                        <th>
+                            Họ tên
+                        </th>
+                        <th>
+                            Số điện thoại
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Câu hỏi
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                    @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MA_HT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoTen_HT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SDT_HT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email_HT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cau_Hoi)
+                            </td>
+                            <td>
+                                @{  string tt;
+                                    tt = item.MA_TT_HT;
+                                    if (tt == "01")
+                                    {
+                                        <label class="item  btn btn-success btn-sm" name="MA_TT_HT" value="01">Đã phản hồi</label>
+                                    }
+                                    else
+                                    { <label class="item  btn btn-danger btn-sm" name="MA_TT_HT" value="02">Chưa phản hồi</label>}
+                                }
+                            </td>
+                            <td>
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HT')">
+
+                                    <i class="fas fa-edit"></i>
+                                </button>|
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_HT1", new { id = item.MA_HT })">
+
+
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("ListHT", new { page, @searchString = @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-Update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa trạng thái</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height:750px">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("sua_TT_HT1", "HoTro", FormMethod.Post))
+                    {
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="txtId" name="MA_HT">
+                                    <input type="text" class="form-control" id="txtTen" name="HoTen_HT" >                                   
+                                    <input type="date" class="form-control" id="txtCauHoi" name="Cau_Hoi">
+                                    <input type="text" class="form-control" id="txtSDT" name="SDT_HT" >
+                                    <input type="text" class="form-control" id="txtEmail" name="Email_HT" >
+                                    <input type="date" class="form-control trangthai" id="tt" name="MA_TT_HT">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="Oke" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    <script type="text/javascript">
+        //sua
+        function GetDetails(id) {
+            $.ajax({
+
+                url: "/HoTro/Edit_TT_HT/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
+                    $('#txtId').val(response.MA_HT);
+                    $('#txtTen').val(response.HoTen_HT);
+                    $('#txtCauHoi').val(response.Cau_Hoi);
+                    $('#txtSDT').val(response.SDT_HT);
+                    $('#txtEmail').val(response.Email_HT);
+                    $('#tt').val(response.MA_TT_HT);
+                    $('#modal-Update').modal('show');
+                },
+                error: function (response) {
+
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+
+        document.getElementById('Oke').onclick = function (e) {
+            if (this.checked) {
+                $(".trangthai").val("01");
+            } else {
+                $(".trangthai").val("02");
+            }
+            }
+</script>
+}
