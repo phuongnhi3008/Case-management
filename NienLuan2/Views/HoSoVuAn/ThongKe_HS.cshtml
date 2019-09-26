@@ -1,0 +1,67 @@
+﻿@using NienLuan2.Models
+@model IEnumerable<ModelsXetXu>
+@using Microsoft.Ajax.Utilities;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<title>Tòa án nhân dân tỉnh X</title>
+<div class="container-fluid">
+    <div class="box">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            THỐNG KÊ HỒ SƠ
+        </div>
+        <div class="card-header">
+            &nbsp;&nbsp;&nbsp;&nbsp; @Html.DropDownList("MA_LoaiVA", ViewBag.loaiva as SelectList, "Chọn loại vụ án", new { @style = "border:1px solid silver; background: white;", @class = "btn btn-default", @required = "required" })           
+            <input type="submit" id="thongke" class="btn btn-primary" value="Chọn" />
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tblChiSoNuoc" class="table table-bordered table-hover">
+                        <tbody></tbody>
+                    </table>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#thongke').click(function () {
+            $("#tblChiSoNuoc tbody tr").remove();
+            $.ajax({
+                type: 'GET',
+                url: "/HoSoVuAn/GetThongKe_HS",
+                dataType: 'json',
+                data: { id: $('#MA_LoaiVA').val() },
+                success: function (data) {
+                    var items = '';
+                    console.log(data);
+                    var rows = "<tr>"
+                        + "<th align='left' class='ChiSoNuocTableTH'>Mã hồ sơ</th><th align='left' class='ChiSoNuocTableTH'>Tên vụ án</th><th align='left' class='ChiSoNuocTableTH'>Ngày nhận hồ sơ</th><th align='left' class='ChiSoNuocTableTH'>Tên nhân viên</th><th align='left' class='ChiSoNuocTableTH'>Tên trạng thái</th><th align='left' class='ChiSoNuocTableTH'>Loại hồ sơ</th>"
+                        + "</tr>";
+                    $('#tblChiSoNuoc tbody').append(rows);
+
+                    $.each(data, function (i, item) {
+                        var rows = "<tr>"
+                            + "<td class='ChiSoNuocTableTD'>" + item.MA_HoSo + "</td>"
+                            + "<td class='ChiSoNuocTableTD'>" + item.Ten_VuAn + "</td>"
+                            + "<td class='ChiSoNuocTableTD'>" + item.NgayNhan_HS + "</td>"
+                            + "<td class='ChiSoNuocTableTD'>" + item.HoTen_NV + "</td>"
+                            + "<td class='ChiSoNuocTableTD'>" + item.Ten_TT + "</td>"
+                            + "<td class='ChiSoNuocTableTD'>" + item.Loai_HS + "</td>"
+                            + "</tr>";
+                        $('#tblChiSoNuoc tbody').append(rows);
+                    });
+                },
+                error: function (ex) {
+
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>
+

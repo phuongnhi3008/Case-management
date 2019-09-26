@@ -12,18 +12,14 @@ namespace NienLuan2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class XETXU
+    public partial class CHITIET_XX
     {
-        public int STT_XX { get; set; }
-        public string Ngay_XetXu { get; set; }
-        public int Lan_XetXu { get; set; }
-        public string MA_DiaDiem { get; set; }
-        public string MA_HoSo { get; set; }
-        public string KetQua_XX { get; set; }
-        public string MA_CapXetXu { get; set; }
+        public string MA_ChiTietXX { get; set; }
+        public Nullable<int> STT_XX { get; set; }
+        public string MA_NhanVien { get; set; }
+        public string MA_VaiTro { get; set; }
     
-        public virtual CAPXETXU CAPXETXU { get; set; }
-        public virtual DIADIEM_XX DIADIEM_XX { get; set; }
-        public virtual HOSO_VUAN HOSO_VUAN { get; set; }
+        public virtual NHANVIEN NHANVIEN { get; set; }
+        public virtual VAITRO_NV VAITRO_NV { get; set; }
     }
 }

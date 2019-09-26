@@ -30,8 +30,8 @@ namespace NienLuan2.Models
         public int Lan_XetXu { get; set; }
         public string MA_DiaDiem { get; set; }
         public string KetQua_XX { get; set; }
-
         public string HoTen_NV { get; set; }
         public string Ten_TT { get; set; }
+
     }
 }

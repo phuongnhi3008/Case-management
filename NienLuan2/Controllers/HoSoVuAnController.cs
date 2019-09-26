@@ -20,7 +20,7 @@ namespace NienLuan2.Controllers
         //{
         //    var
         //}
-        public ActionResult ListHS(string searchString, int? error, int page= 1, int pageSize = 10)
+        public ActionResult ListHS(string searchString, int? error, int page = 1, int pageSize = 10)
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
@@ -31,20 +31,20 @@ namespace NienLuan2.Controllers
                 ViewBag.Loi = 1;
 
             IEnumerable<HOSO_VUAN> model = db.HOSO_VUAN;
-           
-            if(!string.IsNullOrEmpty(searchString))
+
+            if (!string.IsNullOrEmpty(searchString))
             {
                 model = model.Where(x => x.Ten_VuAn.Contains(searchString) || x.MA_HoSo.Contains(searchString)).OrderByDescending(x => x.Ten_VuAn);
             }
 
             ViewBag.SearchString = searchString;
-            return View(model.OrderByDescending(x=> x.Ten_VuAn).ToPagedList(page, pageSize));
+            return View(model.OrderByDescending(x => x.Ten_VuAn).ToPagedList(page, pageSize));
         }
         public ActionResult them_HS()
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-  
+
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
             return View();
@@ -55,11 +55,11 @@ namespace NienLuan2.Controllers
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-            
+
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
 
-            if(db.HOSO_VUAN.Any(x => x.MA_HoSo == hs.MA_HoSo))
+            if (db.HOSO_VUAN.Any(x => x.MA_HoSo == hs.MA_HoSo))
             {
                 //ViewBag.error = "Mã hồ sơ này đã tồn tại!!!";
                 return RedirectToAction("ListHS", new { error = 1 });
@@ -67,7 +67,7 @@ namespace NienLuan2.Controllers
 
             hs.MA_LoaiVA = form["lva"].ToString(); ;
             hs.MA_TrangThai = form["tths"].ToString();
-          
+
             hs.MA_NhanVien = form["mnv"].ToString();
 
             if (!ModelState.IsValid)
@@ -78,11 +78,11 @@ namespace NienLuan2.Controllers
             var list_HS = from s in db.HOSO_VUAN select s;
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-        
+
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             return RedirectToAction("ListHS");
         }
-        
+
         public JsonResult Edit_HS(string id)
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -96,7 +96,7 @@ namespace NienLuan2.Controllers
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-   
+
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
             if (id == null)
@@ -114,12 +114,12 @@ namespace NienLuan2.Controllers
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-          
+
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
             hs.MA_LoaiVA = form["lva"].ToString(); ;
             hs.MA_TrangThai = form["tths"].ToString();
-          
+
             hs.MA_NhanVien = form["mnv"].ToString();
             //hs.MA_HoSo = id;
 
@@ -167,7 +167,6 @@ namespace NienLuan2.Controllers
         {
             var model = (from hsva in db.HOSO_VUAN
                          join xx in db.XETXUs on hsva.MA_HoSo equals xx.MA_HoSo
-                         join ds in db.DUONGSUs on xx.MA_DuongSu equals ds.MA_DuongSu
                          join nv in db.NHANVIENs on hsva.MA_NhanVien equals nv.MA_NhanVien
                          join tt in db.TRANGTHAI_HS on hsva.MA_TrangThai equals tt.MA_TrangThai
                          select new ModelsXetXu
@@ -185,18 +184,48 @@ namespace NienLuan2.Controllers
                              Ngay_XetXu = xx.Ngay_XetXu,
                              Lan_XetXu = xx.Lan_XetXu,
                              MA_DiaDiem = xx.MA_DiaDiem,
-                             MA_DuongSu = xx.MA_DuongSu,
                              KetQua_XX = xx.KetQua_XX,
-                             MA_LoaiDS = ds.MA_LoaiDS,
-                             CMND = ds.CMND,
-                             HoTen_DS = ds.HoTen_DS,
-                             NamSinh_DS = ds.NamSinh_DS,
-                             QueQuan_DS = ds.QueQuan_DS,
-                             DiaChi_DS = ds.DiaChi_DS,
-                             SoDienThoai_DS = ds.SoDienThoai_DS,
-                             GioiTinh_DS = ds.GioiTinh_DS,
                          }).SingleOrDefault(m => m.MA_HoSo == id);
             return View(model);
+        }
+
+        public JsonResult GetThongKe_HS(string id)
+        {
+            using (NL2_QLVAEntities1 db = new NL2_QLVAEntities1())
+            {
+                var a = (from hs in db.HOSO_VUAN
+                         join ds in db.DUONGSUs on hs.MA_DuongSu equals ds.MA_DuongSu
+                         join nv in db.NHANVIENs on hs.MA_NhanVien equals nv.MA_NhanVien
+                         join lva in db.LOAI_VUAN on hs.MA_LoaiVA equals lva.MA_LoaiVA
+                         join tt in db.TRANGTHAI_HS on hs.MA_TrangThai equals tt.MA_TrangThai
+                         select new ModelsXetXu
+                         {
+                             MA_HoSo = hs.MA_HoSo,
+                             Ten_VuAn = hs.Ten_VuAn,
+                             Loai_HS = hs.Loai_HS,
+                             NgayNhan_HS = hs.NgayNhan_HS,
+                             MA_TrangThai = hs.MA_TrangThai,
+                             MA_NhanVien = hs.MA_NhanVien,
+                             Ten_TT = tt.Ten_TT,
+                             MA_LoaiVA = hs.MA_LoaiVA,
+                             MA_DuongSu = hs.MA_DuongSu,
+                             HoTen_NV = nv.HoTen_NV,
+                             HoTen_DS = ds.HoTen_DS
+                         }).ToList();
+                return Json(a, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public List<LOAI_VUAN> GetThongKe_HS()
+        {
+            NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
+            List<LOAI_VUAN> loaiva = db.LOAI_VUAN.OrderByDescending(x => x.MA_LoaiVA).ToList();
+            return loaiva;
+        }
+        public ActionResult ThongKe_HS()
+        {
+            ViewBag.loaiva = new SelectList(GetThongKe_HS(), "MA_LoaiVA", "Ten_LoaiVA");
+            ModelsXetXu xx = new ModelsXetXu();
+            return View();
         }
     }
 }

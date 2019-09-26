@@ -17,6 +17,12 @@ namespace NienLuan2.Controllers
         // GET: XetXu
         public ActionResult ListXX(string searcxxtring, int? error, int page = 1, int pageSize = 10)
         {
+            ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.Ten_VuAn), "MA_HoSo", "Ten_VuAn");
+            ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
+            ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
+
             var listXetXu = from s in db.XETXUs select s;
 
             if (error == 1)
@@ -26,26 +32,27 @@ namespace NienLuan2.Controllers
 
             if (!string.IsNullOrEmpty(searcxxtring))
             {
-                model = model.Where(x => x.DUONGSU.HoTen_DS.Contains(searcxxtring) || x.MA_HoSo.Contains(searcxxtring)).OrderByDescending(x => x.DUONGSU.HoTen_DS);
+                model = model.Where(x => x.HOSO_VUAN.Ten_VuAn.Contains(searcxxtring) || x.HOSO_VUAN.DUONGSU.HoTen_DS.Contains(searcxxtring)).OrderByDescending(x => x.HOSO_VUAN.Ten_VuAn);
             }
 
             ViewBag.Searcxxtring = searcxxtring;
-            return View(model.OrderByDescending(x => x.DUONGSU.HoTen_DS).ToPagedList(page, pageSize));   
+            return View(model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize));   
         }
         public ActionResult them_xx()
         {
-            ViewBag.nv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-            ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
-            return View();
+          return View();
         }
 
         [HttpPost, ActionName("themLXX")]
         public ActionResult themLXX(XETXU xx, FormCollection form)
         {
-            ViewBag.nv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
-            ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.MA_HoSo), "MA_HoSo", "MA_HoSo");
-            
+            ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
+            //ViewBag.hs = new SelectList(db.h.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
+            ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
+        
 
             if (db.XETXUs.Any(x => x.STT_XX == xx.STT_XX))
             {
@@ -54,14 +61,67 @@ namespace NienLuan2.Controllers
             }
 
             xx.MA_DiaDiem = form["dd"].ToString();
-            xx.HOSO_VUAN.MA_NhanVien = form["nv"].ToString();
+            xx.MA_HoSo = form["hs"].ToString();
 
             if (!ModelState.IsValid)
                 return View(xx);
 
             db.XETXUs.Add(xx);
             db.SaveChanges();
+
+            CHITIET_XX kiemSat = new CHITIET_XX
+            {
+               
+                MA_NhanVien = form["ks"].ToString(),
+                MA_VaiTro = "C3",
+                STT_XX = xx.STT_XX,
+                MA_ChiTietXX = xx.STT_XX + form["ks"].ToString() + "C3"
+            };
+
+            themChiTietXetXu(kiemSat);
+
+            CHITIET_XX thuky = new CHITIET_XX
+            {
+
+                MA_NhanVien = form["tk"].ToString(),
+                MA_VaiTro = "C1",
+                STT_XX = xx.STT_XX,
+                MA_ChiTietXX = xx.STT_XX + form["tk"].ToString() + "C1"
+            };
+
+            themChiTietXetXu(kiemSat);
+
+
             return RedirectToAction("ListXX");
+        }
+
+        public List<DUONGSU> Get_DS(string ds_ma)
+        {
+            NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
+            List<DUONGSU> duongsu = db.DUONGSUs.ToList();
+            return duongsu;
+        }
+
+        public void themChiTietXetXu(CHITIET_XX ctxx)
+        {
+            db.CHITIET_XX.Add(ctxx);
+            db.SaveChanges();
+        }
+
+        public NHANVIEN getNhanVien(XETXU xx, VAITRO_NV vt)
+        {
+            try
+            {
+                CHITIET_XX chiTietXetXu = db.CHITIET_XX.Single(x => x.STT_XX.Equals(xx.STT_XX) && x.MA_VaiTro.Equals(vt.MA_VaiTro));
+                NHANVIEN nhanVien = db.NHANVIENs.Single(x => x.MA_NhanVien.Equals(chiTietXetXu.MA_NhanVien));
+                return nhanVien;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+           
+
         }
     }
 }

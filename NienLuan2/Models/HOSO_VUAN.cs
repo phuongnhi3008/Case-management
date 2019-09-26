@@ -29,7 +29,9 @@ namespace NienLuan2.Models
         public string Loai_HS { get; set; }
         public string MA_VaiTro { get; set; }
         public string NgayNhan_HS { get; set; }
+        public string MA_DuongSu { get; set; }
     
+        public virtual DUONGSU DUONGSU { get; set; }
         public virtual LOAI_VUAN LOAI_VUAN { get; set; }
         public virtual NHANVIEN NHANVIEN { get; set; }
         public virtual TRANGTHAI_HS TRANGTHAI_HS { get; set; }

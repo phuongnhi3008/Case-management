@@ -5,28 +5,30 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d748f43523604624a345e90767b8438b" Name="Diagram1">
-        <EntityTypeShape EntityType="ModelNL2.CHUCVU" Width="1.5" PointX="3.75" PointY="8.25" />
-        <EntityTypeShape EntityType="ModelNL2.DIADIEM_XX" Width="1.5" PointX="8.25" PointY="1.125" />
-        <EntityTypeShape EntityType="ModelNL2.DUONGSU" Width="1.5" PointX="8.25" PointY="14.5" />
-        <EntityTypeShape EntityType="ModelNL2.HOSO_VUAN" Width="1.5" PointX="8.25" PointY="4" />
-        <EntityTypeShape EntityType="ModelNL2.HOTRO" Width="1.5" PointX="11" PointY="9" />
-        <EntityTypeShape EntityType="ModelNL2.LOAI_DS" Width="1.5" PointX="6" PointY="15.25" />
-        <EntityTypeShape EntityType="ModelNL2.LOAI_VUAN" Width="1.5" PointX="6" PointY="9.125" />
-        <EntityTypeShape EntityType="ModelNL2.MAIN_MENU" Width="1.5" PointX="0.75" PointY="2.125" />
-        <EntityTypeShape EntityType="ModelNL2.MAUDON" Width="1.5" PointX="0.75" PointY="8.75" />
-        <EntityTypeShape EntityType="ModelNL2.NHANVIEN" Width="1.5" PointX="6" PointY="3.875" />
-        <EntityTypeShape EntityType="ModelNL2.PHONGBAN" Width="1.5" PointX="3.75" PointY="1.875" />
-        <EntityTypeShape EntityType="ModelNL2.QUYEN_NSD" Width="1.5" PointX="0.75" PointY="5" />
-        <EntityTypeShape EntityType="ModelNL2.SUB_MENU" Width="1.5" PointX="3" PointY="4.625" />
-        <EntityTypeShape EntityType="ModelNL2.sysdiagram" Width="1.5" PointX="2.75" PointY="10.75" />
-        <EntityTypeShape EntityType="ModelNL2.TRANGTHAI_HOTRO" Width="1.5" PointX="8.75" PointY="9.375" />
-        <EntityTypeShape EntityType="ModelNL2.TRANGTHAI_HS" Width="1.5" PointX="6" PointY="11.5" />
-        <EntityTypeShape EntityType="ModelNL2.VAITRO_NV" Width="1.5" PointX="6" PointY="0.75" />
-        <EntityTypeShape EntityType="ModelNL2.XETXU" Width="1.5" PointX="10.5" PointY="4.375" />
+        <EntityTypeShape EntityType="ModelNL2.CAPXETXU" Width="1.5" PointX="8.25" PointY="0.75" />
+        <EntityTypeShape EntityType="ModelNL2.CHUCVU" Width="1.5" PointX="0.75" PointY="1.75" />
+        <EntityTypeShape EntityType="ModelNL2.DIADIEM_XX" Width="1.5" PointX="8.25" PointY="9.125" />
+        <EntityTypeShape EntityType="ModelNL2.DUONGSU" Width="1.5" PointX="6" PointY="9.625" />
+        <EntityTypeShape EntityType="ModelNL2.HOSO_VUAN" Width="1.5" PointX="8.25" PointY="3.625" />
+        <EntityTypeShape EntityType="ModelNL2.HOTRO" Width="1.5" PointX="13" PointY="8.75" />
+        <EntityTypeShape EntityType="ModelNL2.LOAI_DS" Width="1.5" PointX="3.75" PointY="10.375" />
+        <EntityTypeShape EntityType="ModelNL2.LOAI_VUAN" Width="1.5" PointX="6" PointY="18.125" />
+        <EntityTypeShape EntityType="ModelNL2.MAIN_MENU" Width="1.5" PointX="3.75" PointY="0.875" />
+        <EntityTypeShape EntityType="ModelNL2.MAUDON" Width="1.5" PointX="0.75" PointY="10.625" />
+        <EntityTypeShape EntityType="ModelNL2.NHANVIEN" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="ModelNL2.PHONGBAN" Width="1.5" PointX="0.75" PointY="8.125" />
+        <EntityTypeShape EntityType="ModelNL2.QUYEN_NSD" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="ModelNL2.SUB_MENU" Width="1.5" PointX="6" PointY="4.5" />
+        <EntityTypeShape EntityType="ModelNL2.sysdiagram" Width="1.5" PointX="8.75" PointY="11.625" />
+        <EntityTypeShape EntityType="ModelNL2.TRANGTHAI_HOTRO" Width="1.5" PointX="10.75" PointY="9.125" />
+        <EntityTypeShape EntityType="ModelNL2.TRANGTHAI_HS" Width="1.5" PointX="6" PointY="13.5" />
+        <EntityTypeShape EntityType="ModelNL2.VAITRO_NV" Width="1.5" PointX="6" PointY="15.875" />
+        <EntityTypeShape EntityType="ModelNL2.XETXU" Width="1.5" PointX="10.5" PointY="4.25" />
+        <AssociationConnector Association="ModelNL2.XETXU_CAPXETXU" />
         <AssociationConnector Association="ModelNL2.FK_NHANVIEN_CHUCVU" />
         <AssociationConnector Association="ModelNL2.FK_XetXu_DiaDiem" />
+        <AssociationConnector Association="ModelNL2.DuongSu_HSVA" />
         <AssociationConnector Association="ModelNL2.FK_DUONGSU_LOAI_DS" />
-        <AssociationConnector Association="ModelNL2.FK_XETXU_DUONGSU" />
         <AssociationConnector Association="ModelNL2.FK_HOSO_VUAN_LOAI_VUAN" />
         <AssociationConnector Association="ModelNL2.FK_HOSO_VUAN_NHANVIEN" />
         <AssociationConnector Association="ModelNL2.FK_HOSO_VUAN_TRANGTHAI_HS" />
@@ -37,6 +39,9 @@
         <AssociationConnector Association="ModelNL2.FK_NHANVIEN_PHONGBAN" />
         <AssociationConnector Association="ModelNL2.FK_NHANVIEN_QUYEN_NSD" />
         <AssociationConnector Association="ModelNL2.FK_SUB_QUYEN" />
+        <EntityTypeShape EntityType="ModelNL2.CHITIET_XX" Width="1.5" PointX="11.25" PointY="12.5" />
+        <AssociationConnector Association="ModelNL2.MA_NhanVien" />
+        <AssociationConnector Association="ModelNL2.MA_VaiTro" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

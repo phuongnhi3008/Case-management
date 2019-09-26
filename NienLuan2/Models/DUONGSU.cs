@@ -17,7 +17,7 @@ namespace NienLuan2.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DUONGSU()
         {
-            this.XETXUs = new HashSet<XETXU>();
+            this.HOSO_VUAN = new HashSet<HOSO_VUAN>();
         }
     
         public string MA_DuongSu { get; set; }
@@ -30,8 +30,8 @@ namespace NienLuan2.Models
         public string SoDienThoai_DS { get; set; }
         public bool GioiTinh_DS { get; set; }
     
-        public virtual LOAI_DS LOAI_DS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<XETXU> XETXUs { get; set; }
+        public virtual ICollection<HOSO_VUAN> HOSO_VUAN { get; set; }
+        public virtual LOAI_DS LOAI_DS { get; set; }
     }
 }

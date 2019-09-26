@@ -18,6 +18,7 @@ namespace NienLuan2.Models
         public NHANVIEN()
         {
             this.HOSO_VUAN = new HashSet<HOSO_VUAN>();
+            this.CHITIET_XX = new HashSet<CHITIET_XX>();
         }
     
         public string MA_NhanVien { get; set; }
@@ -38,5 +39,7 @@ namespace NienLuan2.Models
         public virtual ICollection<HOSO_VUAN> HOSO_VUAN { get; set; }
         public virtual PHONGBAN PHONGBAN { get; set; }
         public virtual QUYEN_NSD QUYEN_NSD { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CHITIET_XX> CHITIET_XX { get; set; }
     }
 }
