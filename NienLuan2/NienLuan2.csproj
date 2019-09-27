@@ -245,6 +245,7 @@
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LichXetXuModel.cs" />
     <Compile Include="Models\LOAI_DS.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>

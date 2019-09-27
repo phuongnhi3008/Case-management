@@ -1,4 +1,5 @@
-﻿@model PagedList.IPagedList<NienLuan2.Models.XETXU>
+﻿@*@model PagedList.IPagedList<NienLuan2.Models.XETXU>*@
+@model NienLuan2.Models.LichXetXuModel
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 @{
@@ -28,102 +29,131 @@
         <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" cellspacing="0">                 
-                            <tr>
-                                <th>
-                                    Số thứ tự
-                                </th>
-                                <th>
-                                    Ngày xét xử
-                                </th>
-                                <th>
-                                    Tên vụ án
-                                </th>
-                                <th>
-                                    Tên đương sự
-                                </th>
-                                <th>
-                                    Thẩm phán chủ tọa
-                                </th>
-                                <th>
-                                    Hội đồng
-                                </th>
-                                <th>
-                                    Kiểm sát
-                                </th>
-                                <th>
-                                    Thư ký
-                                </th>
-                                <th>
-                                    Cấp xét xử
-                                </th>
-                                <th>
-                                    Lần xét xử
-                                </th>
-                                <th>
-                                    Địa điểm
-                                </th>
-                                <th>
-                                    Kết quả
-                                </th>
-                                <th>
-                                    Thao tác
-                                </th>
-                            </tr>
-                       @foreach (var item in Model)
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th>
+                            Số thứ tự
+                        </th>
+                        <th>
+                            Ngày xét xử
+                        </th>
+                        <th>
+                            Tên vụ án
+                        </th>
+                        <th>
+                            Tên đương sự
+                        </th>
+                        <th>
+                            Thẩm phán chủ tọa
+                        </th>
+                        <th>
+                            Hội đồng
+                        </th>
+                        <th>
+                            Kiểm sát
+                        </th>
+                        <th>
+                            Thư ký
+                        </th>
+                        <th>
+                            Cấp xét xử
+                        </th>
+                        <th>
+                            Lần xét xử
+                        </th>
+                        <th>
+                            Địa điểm
+                        </th>
+                        <th>
+                            Kết quả
+                        </th>
+                        <th>
+                            Thao tác
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.listXetXu)
             {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.STT_XX)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ngay_XetXu)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor( modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Lan_XetXu)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.KetQua_XX)
-                                </td>
-                                <td>
-                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.STT_XX)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ngay_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
+                            </td>
 
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    |
-                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
+                            </td>
 
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
+                            @foreach (var nhanVien in Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX)))
+                            {
+                                if (nhanVien.MA_VaiTro == "C1")
+                                {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => nhanVien.NHANVIEN.HoTen_NV)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+
+                                    if (nhanVien.MA_VaiTro == "C3")
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => nhanVien.NHANVIEN.HoTen_NV)
+                                        </td> 
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+
+                                if (Model.listChiTietXetXu.Count == 0)
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            }
+                            @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
+      
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lan_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KetQua_XX)
+                            </td>
+                            <td>
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
+
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                |
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
+
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 </table>
-                @Html.PagedListPager(Model, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))
+                @*@Html.PagedListPager(Model, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))*@
             </div>
         </div>
     </div>
@@ -146,7 +176,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Ngày xét xử: </label>
-                                    <input type="date" class="form-control" id="Ngay_XetXu" name="Ngay_XetXu"  value="@DateTime.Today.ToString("dd/MM/yyyy")">
+                                    <input type="date" class="form-control" id="Ngay_XetXu" name="Ngay_XetXu" value="@DateTime.Today.ToString("dd/MM/yyyy")">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -162,11 +192,11 @@
                                 </div>
                             </div>
                             @*<div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleinputemail1">Hội đồng: </label>
-                                    @Html.DropDownList("hs", null, new { @class = "form-control" })
-                                </div>
-                            </div>*@
+                                    <div class="form-group">
+                                        <label for="exampleinputemail1">Hội đồng: </label>
+                                        @Html.DropDownList("hs", null, new { @class = "form-control" })
+                                    </div>
+                                </div>*@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Kiểm sát: </label>
@@ -197,8 +227,8 @@
                                     <input type="text" class="form-control" id="KetQua_XX" name="KetQua_XX" placeholder="Kết quả">
                                 </div>
                             </div>
-                            
-                           
+
+
                             <div class="clearfix"></div>
 
                         </div>

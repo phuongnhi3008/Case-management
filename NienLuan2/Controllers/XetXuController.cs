@@ -36,7 +36,12 @@ namespace NienLuan2.Controllers
             }
 
             ViewBag.Searcxxtring = searcxxtring;
-            return View(model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize));   
+
+            LichXetXuModel lichXetXuModel = new LichXetXuModel();
+            lichXetXuModel.listXetXu = model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize);
+            lichXetXuModel.listChiTietXetXu = db.CHITIET_XX.ToList();
+            return View(lichXetXuModel);
+            //return View(model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize));   
         }
         public ActionResult them_xx()
         {
