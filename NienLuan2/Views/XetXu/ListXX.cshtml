@@ -72,85 +72,76 @@
                         </th>
                     </tr>
                     @foreach (var item in Model.listXetXu)
-            {
-                        <tr>
+                    {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.STT_XX)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ngay_XetXu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
+                    </td>
+                    @{
+                        try
+                        {
+                            var thuky = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C1")).FirstOrDefault();
                             <td>
-                                @Html.DisplayFor(modelItem => item.STT_XX)
+                                @Html.DisplayFor(modelItem => thuky.NHANVIEN.HoTen_NV)
                             </td>
+                        }
+                        catch (Exception)
+                        {
                             <td>
-                                @Html.DisplayFor(modelItem => item.Ngay_XetXu)
                             </td>
+                        }
+                        try
+                        {
+                            var kiemsat = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C3")).FirstOrDefault();
                             <td>
-                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
+                                @Html.DisplayFor(modelItem => kiemsat.NHANVIEN.HoTen_NV)
                             </td>
+                        }
+                        catch (Exception)
+                        {
                             <td>
-                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                            </td>
+                        }
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Lan_XetXu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KetQua_XX)
+                    </td>
+                    <td>
+                        <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                            </td>
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        |
+                        <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
 
-                            @foreach (var nhanVien in Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX)))
-                            {
-                                if (nhanVien.MA_VaiTro == "C1")
-                                {
-                                        <td>
-                                            @Html.DisplayFor(modelItem => nhanVien.NHANVIEN.HoTen_NV)
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
-
-                                    if (nhanVien.MA_VaiTro == "C3")
-                                    {
-                                        <td>
-                                            @Html.DisplayFor(modelItem => nhanVien.NHANVIEN.HoTen_NV)
-                                        </td> 
-                                    {
-                                        <td></td>
-                                    }
-                                }
-                                else
-                                {
-                                    <td></td>
-                                    <td></td>
-                                }
-
-                                if (Model.listChiTietXetXu.Count == 0)
-                                {
-                                    <td></td>
-                                    <td></td>
-                                }
-                            }
-                            @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
-      
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Lan_XetXu)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KetQua_XX)
-                            </td>
-                            <td>
-                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
-
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                |
-                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
-
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
                     }
                 </table>
                 @*@Html.PagedListPager(Model, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))*@
