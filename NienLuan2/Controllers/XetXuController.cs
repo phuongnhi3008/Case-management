@@ -63,13 +63,7 @@ namespace NienLuan2.Controllers
             ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
-  
-          
-
-
-
-
+            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");     
             if (db.XETXUs.Any(x => x.STT_XX == xx.STT_XX))
             {
 
@@ -119,6 +113,30 @@ namespace NienLuan2.Controllers
             themChiTietXetXu(thuky);
             return RedirectToAction("ListXX");
         }
+
+        [HttpPost, ActionName("xoaLXX")]
+        public ActionResult xoaLXX(XETXU xx, FormCollection form)
+        {
+            // xóa mấy thằng nhân viên trong bảng chi tiết xét xử trước (xóa data trong bang ChiTietXetXu)
+            // select list bảng ChiTietXetXu, check STT_XX (thằng nào bằng xx.STT_XX thì xóa hết)
+            // sau đó mới xóa xetxu
+
+
+
+            return RedirectToAction("ListXX");
+        }
+
+        [HttpPost, ActionName("capNhatLXX")]
+        public ActionResult capNhatLXX(XETXU xx, FormCollection form)
+        {
+            //Tương tự xóa
+            //Nếu có cập nhật nhân viên thì chỉ cập nhật trong bảng ChiTietXetXu
+            //Còn ko thì cập nhật trong XETXU
+
+            return RedirectToAction("ListXX");
+        }
+
+
 
         public List<DUONGSU> Get_DS(string ds_ma)
         {
