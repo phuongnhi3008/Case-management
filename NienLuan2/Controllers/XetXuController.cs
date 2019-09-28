@@ -51,7 +51,7 @@ namespace NienLuan2.Controllers
         }
         public ActionResult them_xx()
         {
-          return View();
+            return View();
         }
 
         [HttpPost, ActionName("themLXX")]
@@ -63,7 +63,7 @@ namespace NienLuan2.Controllers
             ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");     
+            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
             if (db.XETXUs.Any(x => x.STT_XX == xx.STT_XX))
             {
 
@@ -75,13 +75,13 @@ namespace NienLuan2.Controllers
 
             if (!ModelState.IsValid)
                 return View(xx);
-        
+
             db.XETXUs.Add(xx);
             db.SaveChanges();
 
             List<string> selectedHoiDongList = form["hd"].Split(',').ToList();
 
-            for(int i = 0; i < selectedHoiDongList.Count; i++)
+            for (int i = 0; i < selectedHoiDongList.Count; i++)
             {
                 CHITIET_XX hoidong = new CHITIET_XX
                 {
@@ -121,8 +121,6 @@ namespace NienLuan2.Controllers
             // select list bảng ChiTietXetXu, check STT_XX (thằng nào bằng xx.STT_XX thì xóa hết)
             // sau đó mới xóa xetxu
 
-
-
             return RedirectToAction("ListXX");
         }
 
@@ -136,8 +134,6 @@ namespace NienLuan2.Controllers
             return RedirectToAction("ListXX");
         }
 
-
-
         public List<DUONGSU> Get_DS(string ds_ma)
         {
             NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
@@ -149,22 +145,6 @@ namespace NienLuan2.Controllers
         {
             db.CHITIET_XX.Add(ctxx);
             db.SaveChanges();
-        }
-
-        public NHANVIEN getNhanVien(XETXU xx, VAITRO_NV vt)
-        {
-            try
-            {
-                CHITIET_XX chiTietXetXu = db.CHITIET_XX.Single(x => x.STT_XX.Equals(xx.STT_XX) && x.MA_VaiTro.Equals(vt.MA_VaiTro));
-                NHANVIEN nhanVien = db.NHANVIENs.Single(x => x.MA_NhanVien.Equals(chiTietXetXu.MA_NhanVien));
-                return nhanVien;
-            }
-            catch(Exception)
-            {
-                return null;
-            }
-           
-
         }
     }
 }
