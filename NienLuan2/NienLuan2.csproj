@@ -222,6 +222,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\UUID.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CAPXETXU.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
@@ -1963,6 +1964,7 @@
     </EntityDeploy>
     <Content Include="Models\ModelNL2.edmx.diagram">
       <DependentUpon>ModelNL2.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -2061,7 +2063,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59885</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

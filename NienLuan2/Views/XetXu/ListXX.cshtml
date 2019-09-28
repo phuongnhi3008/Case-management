@@ -1,6 +1,7 @@
 ﻿@*@model PagedList.IPagedList<NienLuan2.Models.XETXU>*@
 @model NienLuan2.Models.LichXetXuModel
 @using PagedList.Mvc;
+@using NienLuan2.Models;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 @{
     ViewBag.Title = "ListXX";
@@ -73,76 +74,93 @@
                     </tr>
                     @foreach (var item in Model.listXetXu)
                     {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.STT_XX)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ngay_XetXu)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                    </td>
-                    @{
-                        try
-                        {
-                            var thuky = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C1")).FirstOrDefault();
+                        <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => thuky.NHANVIEN.HoTen_NV)
+                                @Html.DisplayFor(modelItem => item.STT_XX)
                             </td>
-                        }
-                        catch (Exception)
-                        {
                             <td>
+                                @Html.DisplayFor(modelItem => item.Ngay_XetXu)
                             </td>
-                        }
-                        try
-                        {
-                            var kiemsat = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C3")).FirstOrDefault();
                             <td>
-                                @Html.DisplayFor(modelItem => kiemsat.NHANVIEN.HoTen_NV)
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
                             </td>
-                        }
-                        catch (Exception)
-                        {
                             <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
                             </td>
-                        }
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Lan_XetXu)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.KetQua_XX)
-                    </td>
-                    <td>
-                        <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
+                            </td>
+                            @{
+                                try
+                                {
+                                    List<CHITIET_XX> listHoiDong = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C4")).ToList();
+                                    var showListHoiDong = "";
+                                    for (int i = 0; i < listHoiDong.Count; i++)
+                                    {
+                                        showListHoiDong += listHoiDong[i].NHANVIEN.HoTen_NV;
+                                        if (i != listHoiDong.Count - 1)
+                                        {
+                                            showListHoiDong += ", ";
+                                        }
+                                    }
+                                    <td>
+                                        @Html.DisplayFor(modelItem => showListHoiDong)
+                                    </td>
+                                }
+                                catch (Exception)
+                                {
+                                    <td></td>
+                                }
+                            }
+                            @{
+                                try
+                                {
+                                    var kiemsat = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C3")).FirstOrDefault();
+                                    <td>
+                                        @Html.DisplayFor(modelItem => kiemsat.NHANVIEN.HoTen_NV)
+                                    </td>
+                                }
+                                catch (Exception)
+                                {
+                                    <td></td>
+                                }
+                                try
+                                {
+                                    var thuky = Model.listChiTietXetXu.Where(x => (x.STT_XX == item.STT_XX) && (x.MA_VaiTro == "C1")).FirstOrDefault();
+                                    <td>
+                                        @Html.DisplayFor(modelItem => thuky.NHANVIEN.HoTen_NV)
+                                    </td>
+                                }
+                                catch (Exception)
+                                {
+                                    <td></td>
+                                }
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lan_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KetQua_XX)
+                            </td>
+                            <td>
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.STT_XX')">
 
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        |
-                        <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                |
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.STT_XX })">
 
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-                    }
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                                }
                 </table>
                 @*@Html.PagedListPager(Model, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))*@
             </div>
@@ -150,8 +168,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="examplemodal" tabindex="-1" role="dialog" aria-labelledby="examplemodallabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="examplemodal" tabindex="-1" role="dialog" aria-labelledby="examplemodallabel" aria-hidden="true" style="height: 100%;overflow-y: auto;">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Thêm lịch xét xử</h5>
@@ -182,12 +200,12 @@
                                     @Html.DropDownList("hs", null, new { @class = "form-control" })
                                 </div>
                             </div>
-                            @*<div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="exampleinputemail1">Hội đồng: </label>
-                                        @Html.DropDownList("hs", null, new { @class = "form-control" })
-                                    </div>
-                                </div>*@
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Hội đồng: </label>
+                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple" })
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Kiểm sát: </label>
@@ -218,10 +236,7 @@
                                     <input type="text" class="form-control" id="KetQua_XX" name="KetQua_XX" placeholder="Kết quả">
                                 </div>
                             </div>
-
-
                             <div class="clearfix"></div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary btn_them">Thêm</button>

@@ -1,4 +1,5 @@
-﻿using NienLuan2.Models;
+﻿using NienLuan2.Helper;
+using NienLuan2.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace NienLuan2.Controllers
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+
+            ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            //List<SelectListItem> selectsHoiDong
+
+            //ViewBag.selectsHoiDong = null;
             ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
 
             var listXetXu = from s in db.XETXUs select s;
@@ -54,49 +60,63 @@ namespace NienLuan2.Controllers
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
             ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
             //ViewBag.hs = new SelectList(db.h.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
+            ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
-        
+  
+          
+
+
+
 
             if (db.XETXUs.Any(x => x.STT_XX == xx.STT_XX))
             {
 
                 return RedirectToAction("ListXX", new { error = 1 });
             }
-
+            xx.MA_CapXetXu = form["cxx"].ToString();
             xx.MA_DiaDiem = form["dd"].ToString();
             xx.MA_HoSo = form["hs"].ToString();
 
             if (!ModelState.IsValid)
                 return View(xx);
-
+        
             db.XETXUs.Add(xx);
             db.SaveChanges();
 
+            List<string> selectedHoiDongList = form["hd"].Split(',').ToList();
+
+            for(int i = 0; i < selectedHoiDongList.Count; i++)
+            {
+                CHITIET_XX hoidong = new CHITIET_XX
+                {
+
+                    MA_NhanVien = selectedHoiDongList[i],
+                    MA_VaiTro = "C4",
+                    STT_XX = xx.STT_XX,
+                    MA_ChiTietXX = UUID.GetUUID(5)
+                };
+                themChiTietXetXu(hoidong);
+            }
             CHITIET_XX kiemSat = new CHITIET_XX
             {
-               
+
                 MA_NhanVien = form["ks"].ToString(),
                 MA_VaiTro = "C3",
                 STT_XX = xx.STT_XX,
-                MA_ChiTietXX = xx.STT_XX + form["ks"].ToString() + "C3"
+                MA_ChiTietXX = UUID.GetUUID(5)
             };
-
             themChiTietXetXu(kiemSat);
-
             CHITIET_XX thuky = new CHITIET_XX
             {
 
                 MA_NhanVien = form["tk"].ToString(),
                 MA_VaiTro = "C1",
                 STT_XX = xx.STT_XX,
-                MA_ChiTietXX = xx.STT_XX + form["tk"].ToString() + "C1"
+                MA_ChiTietXX = UUID.GetUUID(5)
             };
-
-            themChiTietXetXu(kiemSat);
-
-
+            themChiTietXetXu(thuky);
             return RedirectToAction("ListXX");
         }
 
