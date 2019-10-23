@@ -80,7 +80,7 @@
                                 }
                             </td>
                             <td>
-                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HT')">
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="EditTTHT('@item.MA_HT')">
 
                                     <i class="fas fa-edit"></i>
                                 </button>|
@@ -156,20 +156,37 @@
                     $('#tt').val(response.MA_TT_HT);
                     $('#modal-Update').modal('show');
                 },
-                error: function (response) {
-
-                    alert(response.responseText);
+                error: function (response)    {               
+                        alert(response.responseText);
                 }
             });
             return false;
         }
 
+        //sua trang thai
+        function EditTTHT(id) {
+            $.ajax({
+                url: "/HoTro/EditTTHT/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response == true)
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+            return false;
+        }
+        
         document.getElementById('Oke').onclick = function (e) {
             if (this.checked) {
                 $(".trangthai").val("01");
-            } else {
+                } else {
                 $(".trangthai").val("02");
-            }
+                }
             }
 </script>
 }

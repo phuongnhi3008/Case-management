@@ -22,23 +22,21 @@ namespace NienLuan2.Controllers
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-
             ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.ds = new SelectList(db.DUONGSUs, "MA_DuongSu", "Hoten_DS");
             //List<SelectListItem> selectsHoiDong
 
             //ViewBag.selectsHoiDong = null;
             ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
-
-            var listXetXu = from s in db.XETXUs select s;
+   
 
             if (error == 1)
                 ViewBag.Loi = 1;
 
             IEnumerable<XETXU> model = db.XETXUs;
-
             if (!string.IsNullOrEmpty(searcxxtring))
             {
-                model = model.Where(x => x.HOSO_VUAN.Ten_VuAn.Contains(searcxxtring) || x.HOSO_VUAN.DUONGSU.HoTen_DS.Contains(searcxxtring)).OrderByDescending(x => x.HOSO_VUAN.Ten_VuAn);
+                model = model.Where(x => x.HOSO_VUAN.Ten_VuAn.Contains(searcxxtring) || x.HOSO_VUAN.CHITIET_DS.Contains(db.CHITIET_DS.Where(ds => ds.DUONGSU.HoTen_DS.Equals(searcxxtring)).FirstOrDefault())).OrderByDescending(x => x.HOSO_VUAN.Ten_VuAn);
             }
 
             ViewBag.Searcxxtring = searcxxtring;
@@ -46,6 +44,9 @@ namespace NienLuan2.Controllers
             LichXetXuModel lichXetXuModel = new LichXetXuModel();
             lichXetXuModel.listXetXu = model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize);
             lichXetXuModel.listChiTietXetXu = db.CHITIET_XX.ToList();
+            //duongsuModel.listXetXu = model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize);
+            lichXetXuModel.listXetXu = model.OrderBy(x => x.MA_HoSo).ToPagedList(page, pageSize);
+            lichXetXuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
             return View(lichXetXuModel);
             //return View(model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize));   
         }
@@ -114,13 +115,26 @@ namespace NienLuan2.Controllers
             return RedirectToAction("ListXX");
         }
 
-        [HttpPost, ActionName("xoaLXX")]
-        public ActionResult xoaLXX(XETXU xx, FormCollection form)
+        public ActionResult xoaLXX(int? id)
         {
+            XETXU xetxu = db.XETXUs.SingleOrDefault(s => s.STT_XX == id);
+                if(xetxu == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            return View();
+        }
+
+        //[HttpPost, ActionName("xoaLXX")]
+        public ActionResult xoaLXX1(XETXU xx,int? id)
+        {
+            XETXU xetxu = db.XETXUs.SingleOrDefault(x => x.STT_XX == id);
+            db.XETXUs.Remove(xetxu);
+            db.SaveChanges();     
             // xóa mấy thằng nhân viên trong bảng chi tiết xét xử trước (xóa data trong bang ChiTietXetXu)
             // select list bảng ChiTietXetXu, check STT_XX (thằng nào bằng xx.STT_XX thì xóa hết)
             // sau đó mới xóa xetxu
-
             return RedirectToAction("ListXX");
         }
 
@@ -130,6 +144,8 @@ namespace NienLuan2.Controllers
             //Tương tự xóa
             //Nếu có cập nhật nhân viên thì chỉ cập nhật trong bảng ChiTietXetXu
             //Còn ko thì cập nhật trong XETXU
+
+           
 
             return RedirectToAction("ListXX");
         }

@@ -2,6 +2,7 @@
 @model NienLuan2.Models.LichXetXuModel
 @using PagedList.Mvc;
 @using NienLuan2.Models;
+@using PagedList;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 @{
     ViewBag.Title = "ListXX";
@@ -84,9 +85,28 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.DUONGSU.HoTen_DS)
-                            </td>
+                       @{
+                           try
+                           {
+                               List<CHITIET_DS> listDuongSu = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo)).ToList();
+                               var showListDuongSu = "";
+                               for (int i = 0; i < listDuongSu.Count; i++)
+                               {
+                                   showListDuongSu += listDuongSu[i].DUONGSU.HoTen_DS;
+                                   if (i != listDuongSu.Count - 1)
+                                   {
+                                       showListDuongSu += ", ";
+                                   }
+                               }
+                                    <td>
+                                        @Html.DisplayFor(modelItem => showListDuongSu)
+                                    </td>
+                                }
+                                catch (Exception)
+                                {
+                                    <td></td>
+                                }
+                            }
                             <td>
                                 @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
                             </td>
@@ -162,7 +182,7 @@
                         </tr>
                                 }
                 </table>
-                @*@Html.PagedListPager(Model, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))*@
+                @Html.PagedListPager((IPagedList)Model.listXetXu, page => Url.Action("ListXX", new { page, @searchString = @ViewBag.SearchString }))
             </div>
         </div>
     </div>
@@ -185,49 +205,49 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Ngày xét xử: </label>
-                                    <input type="date" class="form-control" id="Ngay_XetXu" name="Ngay_XetXu" value="@DateTime.Today.ToString("dd/MM/yyyy")">
+                                    <input type="date" class="form-control" id="Ngay_XetXu" name="Ngay_XetXu" value="@DateTime.Today.ToString("dd/MM/yyyy")" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Lần xét xử: </label>
-                                    <input type="text" class="form-control" id="Lan_XetXu" name="Lan_XetXu" placeholder="Lần xét xử">
+                                    <input type="text" class="form-control" id="Lan_XetXu" name="Lan_XetXu" placeholder="Lần xét xử" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Tên vụ án: </label>
-                                    @Html.DropDownList("hs", null, new { @class = "form-control" })
+                                    @Html.DropDownList("hs", null, new { @class = "form-control", @required= "required" })
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Hội đồng: </label>
-                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple" })
+                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @required = "required" })
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Kiểm sát: </label>
-                                    @Html.DropDownList("ks", null, new { @class = "form-control" })
+                                    @Html.DropDownList("ks", null, new { @class = "form-control", @required = "required" })
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Thư ký: </label>
-                                    @Html.DropDownList("tk", null, new { @class = "form-control" })
+                                    @Html.DropDownList("tk", null, new { @class = "form-control", @required = "required" })
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Cấp xét xử: </label>
-                                    @Html.DropDownList("cxx", null, new { @class = "form-control" })
+                                    @Html.DropDownList("cxx", null, new { @class = "form-control", @required = "required" })
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Địa điểm :</label>
-                                    @Html.DropDownList("dd", null, new { @class = "form-control" })
+                                    @Html.DropDownList("dd", null, new { @class = "form-control", @required = "required" })
                                 </div>
                             </div>
                             <div class="col-md-12">

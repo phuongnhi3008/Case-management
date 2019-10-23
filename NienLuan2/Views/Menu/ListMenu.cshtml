@@ -43,12 +43,6 @@
                                         Tên menu phụ
                                     </th>
                                     <th>
-                                        Tên controller
-                                    </th>
-                                    <th>
-                                        Tên action
-                                    </th>
-                                    <th>
                                         Thao tác
                                     </th>
                                 </tr>
@@ -59,13 +53,7 @@
                                             @Html.DisplayFor(modelItem => item.MAIN_MENU.Ten_Main)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Ten_SUB)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Controller_SUB)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Action_SUB)
+                                            @Html.DisplayFor(modelItem => item.ACTION.Ten_Action_Viet)
                                         </td>
                                         <td>
                                             <button class="item btn_Sua btn btn-primary btn-sm" onclick="GetDetails('@item.ID_SUB')">
@@ -125,14 +113,17 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Tên controller :</label>
-                                    <input type="text" class="form-control" id="Controller_SUB" name="Controller_SUB" placeholder="Tên controller">
+                                    <label for="exampleInputEmail1">Tên controller :</label>      
+                                   @Html.DropDownList("controller", null, new { @class = "form-control", @id = "idController" })
+                                    @*<input type="text" class="form-control" id="Controller_SUB" name="Controller_SUB" placeholder="Tên controller">*@
                                 </div>
                             </div>
+
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên action :</label>
-                                    <input type="text" class="form-control" id="Action_SUB" name="Action_SUB" placeholder="Tên action">
+                                    @Html.DropDownList("action", null, new { @class = "form-control", @id = "idAction" })
+                                    @*<input type="text" class="form-control" id="Action_SUB" name="Action_SUB" placeholder="Tên action">*@
                                 </div>
                             </div>
 
@@ -192,7 +183,6 @@
 
 @section scripts {
     <script type="text/javascript">
-
         //sua
         function GetDetails(id) {
             $.ajax({
@@ -229,5 +219,23 @@
                 $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
             });
         }
+
+        $('#idController').change(function () {
+            var selectedController = $("#idController").val();
+            var selectedAction = $('#idAction');
+            selectedAction.empty();
+            if (selectedController != null && selectedController != '') {
+                $.getJSON('@Url.Action("GetActions")', { iso3: selectedController }, function (actions) {
+                    if (actions != null && !jQuery.isEmptyObject(actions)) {
+                        $.each(actions, function (index, action) {
+                            selectedAction.append($('<option/>', {
+                                value: action.Value,
+                                text: action.Text
+                            }));
+                        });
+                    };
+                });
+            }
+        });
     </script>
 }

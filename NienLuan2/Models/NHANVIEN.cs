@@ -17,8 +17,8 @@ namespace NienLuan2.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public NHANVIEN()
         {
-            this.HOSO_VUAN = new HashSet<HOSO_VUAN>();
             this.CHITIET_XX = new HashSet<CHITIET_XX>();
+            this.HOSO_VUAN = new HashSet<HOSO_VUAN>();
         }
     
         public string MA_NhanVien { get; set; }
@@ -34,12 +34,12 @@ namespace NienLuan2.Models
         public string MatKhau { get; set; }
         public string Avatar { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CHITIET_XX> CHITIET_XX { get; set; }
         public virtual CHUCVU CHUCVU { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HOSO_VUAN> HOSO_VUAN { get; set; }
         public virtual PHONGBAN PHONGBAN { get; set; }
         public virtual QUYEN_NSD QUYEN_NSD { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CHITIET_XX> CHITIET_XX { get; set; }
     }
 }

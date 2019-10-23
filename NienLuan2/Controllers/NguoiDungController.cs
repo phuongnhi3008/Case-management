@@ -2,6 +2,7 @@
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,9 +20,27 @@ namespace NienLuan2.Controllers
         }
 
         [HttpGet]
-        public ActionResult DowloadDon(string link)
+        public FileResult DowloadDon(int id)
         {
-            return Redirect(link);
+            MAUDON maudon = db.MAUDONs.Where(md => md.MA_MauDon == id).FirstOrDefault();
+            string path = AppDomain.CurrentDomain.BaseDirectory + "/Content/MauDon/";
+            string fileName = maudon.Link_MD;
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path + fileName);
+            string contentType = MimeMapping.GetMimeMapping(path + fileName);
+
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = fileName,
+                Inline = true,
+            };
+            string header = "attachment; filename=\"" + fileName +"\"";
+            Response.ContentType = "application/ms-word";
+            Response.AppendHeader("Content-Disposition", header);
+            Response.TransmitFile(Server.MapPath("~/Content/MauDon/" + fileName));
+            Response.End();
+            MemoryStream mStream = new MemoryStream();
+            mStream.Write(fileBytes, 0, fileBytes.Length);
+            return File(mStream, contentType, fileName);
         }
     }
 }

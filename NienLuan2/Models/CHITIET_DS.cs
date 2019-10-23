@@ -12,12 +12,15 @@ namespace NienLuan2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class CHITIET_DS
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string MA_ChiTietDS { get; set; }
+        public string MA_DuongSu { get; set; }
+        public string MA_LoaiDS { get; set; }
+        public string MA_HoSo { get; set; }
+    
+        public virtual HOSO_VUAN HOSO_VUAN { get; set; }
+        public virtual DUONGSU DUONGSU { get; set; }
+        public virtual LOAI_DS LOAI_DS { get; set; }
     }
 }

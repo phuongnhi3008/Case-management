@@ -1,7 +1,9 @@
 ﻿using NienLuan2.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,9 +21,12 @@ namespace NienLuan2.Controllers
         [HttpGet]
         public ActionResult Index1()
         {
+            
             NHANVIEN nv = (NHANVIEN)Session["TaiKhoan"];
-
-            return View(nv);
+            if (nv == null)
+                return RedirectToAction("DangNhap", "DangNhap");
+            else
+                return View(nv);
         }
 
         [HttpPost]
@@ -54,7 +59,7 @@ namespace NienLuan2.Controllers
             return View(nhanvien);
         }
 
-        [HttpPost, ActionName("Change_Password1")]
+        [HttpPost, ActionName("Change_Password1"),AllowAnonymous]
         public ActionResult Change_Password1(string id, string password)
         {
             NHANVIEN nv = new NHANVIEN();
@@ -65,16 +70,16 @@ namespace NienLuan2.Controllers
             {
                 try
                 {
-                    NL2_QLVAEntities1 NL2_QLVAEntities = new NL2_QLVAEntities1();
-                    NL2_QLVAEntities.NHANVIENs.Attach(nv);
-                    NL2_QLVAEntities.Entry(nv).Property(x => x.MatKhau).IsModified = true;
-                    NL2_QLVAEntities.SaveChanges();
+                    NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
+                    var nhanVienCu = db.NHANVIENs.FirstOrDefault(nvc => nvc.MA_NhanVien == nv.MA_NhanVien);
+                    nhanVienCu.MatKhau = nv.MatKhau;
+                    db.SaveChanges();
+ 
                 }
                 catch (RetryLimitExceededException)
                 {
                     ModelState.AddModelError("", "Lỗi");
                 }
-
             }
             return RedirectToAction("Index1", "TrangCaNhan");
         }

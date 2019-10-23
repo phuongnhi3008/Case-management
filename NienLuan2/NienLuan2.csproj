@@ -224,7 +224,13 @@
     </Compile>
     <Compile Include="Helper\UUID.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ACTION.cs">
+      <DependentUpon>ModelNL2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CAPXETXU.cs">
+      <DependentUpon>ModelNL2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHITIET_DS.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CHITIET_XX.cs">
@@ -233,12 +239,16 @@
     <Compile Include="Models\CHUCVU.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CONTROLLER.cs">
+      <DependentUpon>ModelNL2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DIADIEM_XX.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DUONGSU.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DuongSuModel.cs" />
     <Compile Include="Models\HOSO_VUAN.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
@@ -293,9 +303,6 @@
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SUB_MENU.cs">
-      <DependentUpon>ModelNL2.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRANGTHAI_HOTRO.cs">
@@ -1966,6 +1973,15 @@
       <DependentUpon>ModelNL2.edmx</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\MauDon\Mẫu đơn khởi kiện DS.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn khởi kiện HC.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn khởi kiện HN.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn khởi kiện KDTM.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn khởi kiện LĐ.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn yêu cầu DS.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn yêu cầu HN.doc" />
+    <Content Include="Content\MauDon\Mẫu đơn yêu cầu KDTM.doc" />
+    <Content Include="Content\MauDon\test.doc" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

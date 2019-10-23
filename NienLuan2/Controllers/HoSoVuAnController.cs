@@ -1,4 +1,5 @@
-﻿using NienLuan2.Models;
+﻿using NienLuan2.Helper;
+using NienLuan2.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace NienLuan2.Controllers
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
             ViewBag.vtnv = new SelectList(db.VAITRO_NV.OrderBy(x => x.Ten_VT), "MA_VaiTro", "Ten_VT");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-
+            ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
+            ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
             if (error == 1)
                 ViewBag.Loi = 1;
 
@@ -35,18 +37,21 @@ namespace NienLuan2.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 model = model.Where(x => x.Ten_VuAn.Contains(searchString) || x.MA_HoSo.Contains(searchString)).OrderByDescending(x => x.Ten_VuAn);
-            }
-
+            }        
             ViewBag.SearchString = searchString;
-            return View(model.OrderByDescending(x => x.Ten_VuAn).ToPagedList(page, pageSize));
+            DuongSuModel duongSuModel = new DuongSuModel();
+            duongSuModel.listHoSoVuAn = model.OrderByDescending(x => x.MA_HoSo).ToPagedList(page, pageSize);
+            duongSuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
+       
+            return View(duongSuModel);
+        }
+        public void themChiTietDuongSu(CHITIET_DS ctds)
+        {
+            db.CHITIET_DS.Add(ctds);
+            db.SaveChanges();
         }
         public ActionResult them_HS()
         {
-            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
-            ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-
-            ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-
             return View();
         }
 
@@ -55,7 +60,8 @@ namespace NienLuan2.Controllers
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-
+            ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
+            ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
 
@@ -65,20 +71,64 @@ namespace NienLuan2.Controllers
                 return RedirectToAction("ListHS", new { error = 1 });
             }
 
-            hs.MA_LoaiVA = form["lva"].ToString(); ;
+            hs.MA_LoaiVA = form["lva"].ToString();
             hs.MA_TrangThai = form["tths"].ToString();
-
             hs.MA_NhanVien = form["mnv"].ToString();
 
             if (!ModelState.IsValid)
                 return View(hs);
-
+            hs.MA_HoSo = UUID.GetUUID(5);
             db.HOSO_VUAN.Add(hs);
             db.SaveChanges();
+            List<string> selectedNguyenDonList = form["nd"].Split(',').ToList();
+
+            for (int i = 0; i < selectedNguyenDonList.Count; i++)
+            {
+                CHITIET_DS nguyendon = new CHITIET_DS
+                {
+
+                    MA_DuongSu = selectedNguyenDonList[i],
+                    MA_LoaiDS = "ND",
+                    MA_HoSo = hs.MA_HoSo,
+                    MA_ChiTietDS = UUID.GetUUID(5)
+                };
+                themChiTietDuongSu(nguyendon);
+            }
+            List<string> selectedBiDonList = form["bd"].Split(',').ToList();
+
+            for (int i = 0; i < selectedBiDonList.Count; i++)
+            {
+                CHITIET_DS bidon = new CHITIET_DS
+                {
+
+                    MA_DuongSu = selectedBiDonList[i],
+                    MA_LoaiDS = "BD",
+                    MA_HoSo = hs.MA_HoSo,
+                    MA_ChiTietDS = UUID.GetUUID(5)
+                };
+                themChiTietDuongSu(bidon);
+            }
+            //CHITIET_DS bidon = new CHITIET_DS
+            //{
+
+            //    MA_DuongSu = form["bd"].ToString(),
+            //    MA_LoaiDS = "BD",
+            //    MA_ChiTietDS = UUID.GetUUID(5)
+            //};
+            //themChiTietDuongSu(bidon);
+            //CHITIET_DS nguyendon = new CHITIET_DS
+            //{
+
+            //    MA_DuongSu = form["nd"].ToString(),
+            //    MA_LoaiDS = "ND",
+            //    MA_ChiTietDS = UUID.GetUUID(5)
+            //};
+            //themChiTietDuongSu(nguyendon);
             var list_HS = from s in db.HOSO_VUAN select s;
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-
+            ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
+            ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             return RedirectToAction("ListHS");
         }
@@ -193,8 +243,7 @@ namespace NienLuan2.Controllers
         {
             using (NL2_QLVAEntities1 db = new NL2_QLVAEntities1())
             {
-                var a = (from hs in db.HOSO_VUAN
-                         join ds in db.DUONGSUs on hs.MA_DuongSu equals ds.MA_DuongSu
+                var a = (from hs in db.HOSO_VUAN            
                          join nv in db.NHANVIENs on hs.MA_NhanVien equals nv.MA_NhanVien
                          join lva in db.LOAI_VUAN on hs.MA_LoaiVA equals lva.MA_LoaiVA
                          join tt in db.TRANGTHAI_HS on hs.MA_TrangThai equals tt.MA_TrangThai
@@ -207,10 +256,8 @@ namespace NienLuan2.Controllers
                              MA_TrangThai = hs.MA_TrangThai,
                              MA_NhanVien = hs.MA_NhanVien,
                              Ten_TT = tt.Ten_TT,
-                             MA_LoaiVA = hs.MA_LoaiVA,
-                             MA_DuongSu = hs.MA_DuongSu,
-                             HoTen_NV = nv.HoTen_NV,
-                             HoTen_DS = ds.HoTen_DS
+                             MA_LoaiVA = hs.MA_LoaiVA,                  
+                             HoTen_NV = nv.HoTen_NV,                 
                          }).ToList();
                 return Json(a, JsonRequestBehavior.AllowGet);
             }

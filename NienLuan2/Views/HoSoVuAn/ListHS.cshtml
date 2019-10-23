@@ -1,5 +1,8 @@
-﻿@model PagedList.IPagedList<NienLuan2.Models.HOSO_VUAN>
+﻿@*odel PagedList.IPagedList<NienLuan2.Models.HOSO_VUAN>*@
+@model NienLuan2.Models.DuongSuModel
+@using NienLuan2.Models;
 @using PagedList.Mvc;
+@using PagedList;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 @{
     ViewBag.Title = "ListHS";
@@ -34,7 +37,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" cellspacing="0">
-                        @foreach (var group in Model.GroupBy(x => x.TRANGTHAI_HS.Ten_TT))
+                        @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.Ten_TT))
                         {
                             <tr class="group-header" data-toggle="collapse">
                                 <td colspan="6">
@@ -53,10 +56,10 @@
                             Ngày nhận
                         </th>
                         <th>
-                            Loại vụ án
+                            Nguyên đơn
                         </th>
                         <th>
-                            Loại hồ sơ
+                            Bị đơn
                         </th>
                         <th>
                             Trạng thái HS
@@ -81,13 +84,51 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.NgayNhan_HS)
-                           </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Loai_HS)
-                            </td>
+                            
+                                @{
+                                    try
+                                    {
+                                        List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
+                                        var showlistNguyenDon = "";
+                                        for (int i = 0; i < listNguyenDon.Count; i++)
+                                        {
+                                            showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
+                                            if (i != listNguyenDon.Count - 1)
+                                            {
+                                                showlistNguyenDon += ", ";
+                                            }
+                                        }
+                                        <td>
+                                            @Html.DisplayFor(modelItem => showlistNguyenDon)
+                                        </td>
+                                    }
+                                    catch (Exception)
+                                    {
+                                    }
+
+
+                                    try
+                                    {
+                                        List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
+                                        var showlistBiDon = "";
+                                        for (int i = 0; i < listBiDon.Count; i++)
+                                        {
+                                            showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
+                                            if (i != listBiDon.Count - 1)
+                                            {
+                                                showlistBiDon += ", ";
+                                            }
+                                        }
+                                        <td>
+                                            @Html.DisplayFor(modelItem => showlistBiDon)
+                                        </td>
+                                    }
+                                    catch (Exception)
+                                    {
+                                    }
+                                }
+                            
                             <td>
                                 @Html.DisplayFor(modelItem => item.TRANGTHAI_HS.Ten_TT)
                             </td>
@@ -115,14 +156,14 @@
                                 }
 
                 </table>
-                @Html.PagedListPager(Model, page => Url.Action( "ListHS", new { page, @searchString = @ViewBag.SearchString }))
+                @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action( "ListHS", new { page, @searchString = @ViewBag.SearchString }))
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Thêm hồ sơ</h5>
@@ -144,12 +185,6 @@
                             </div>                      
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã hồ sơ :</label>
-                                    <input type="text" class="form-control" id="MA_HoSo" name="MA_HoSo" placeholder="Mã hồ sơ">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
                                     <label for="exampleInputEmail1">Tên vụ án :</label>
                                     <input type="text" class="form-control" id="Ten_VuAn" name="Ten_VuAn" placeholder="Tên vụ án">
                                 </div>
@@ -160,27 +195,24 @@
                                     @Html.DropDownList("mnv", null, new { @class = "form-control" })
                                 </div>
                             </div>
-                            @*<div class="col-md-12">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Vai trò nhân viên :</label>
-                                    @Html.DropDownList("vtnv", null, new { @class = "form-control" })
+                                    <label for="exampleinputemail1">Nguyên đơn: </label>
+                                    @Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control", @multiple = "multiple" })
                                 </div>
-                            </div>*@
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Bị đơn: </label>
+                                    @Html.DropDownList("bd", (List<SelectListItem>)ViewBag.selectsBiDon, new { @class = "form-control", @multiple = "multiple" })
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Loại vụ án :</label>
                                     @Html.DropDownList("lva", null, new { @class = "form-control" })
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Trạng thái :</label>
-                                    <!--input type="text" class="form-control" id="MA_TrangThai" name="MA_TrangThai" placeholder="Trạng thái">-->
-
-                                    @Html.DropDownList("tths", null, new { @class = "form-control" })
-                                </div>
-                            </div>
-
+                            </div>      
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nội dung :</label>
@@ -191,6 +223,13 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Loại hồ sơ :</label>
                                     <input type="text" class="form-control" id="Loai_HS" name="Loai_HS" placeholder="Loại hồ sơ">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Trang thai ho so :</label>
+                                    @Html.DropDownList("tths", null, new { @class = "form-control" })
                                 </div>
                             </div>
                             

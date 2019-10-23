@@ -12,25 +12,21 @@ namespace NienLuan2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DUONGSU
+    public partial class ACTION
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DUONGSU()
+        public ACTION()
         {
-            this.CHITIET_DS = new HashSet<CHITIET_DS>();
+            this.SUB_MENU = new HashSet<SUB_MENU>();
         }
     
-        public string MA_DuongSu { get; set; }
-        public string MA_LoaiDS { get; set; }
-        public string CMND { get; set; }
-        public string HoTen_DS { get; set; }
-        public System.DateTime NamSinh_DS { get; set; }
-        public string QueQuan_DS { get; set; }
-        public string DiaChi_DS { get; set; }
-        public string SoDienThoai_DS { get; set; }
-        public bool GioiTinh_DS { get; set; }
+        public string MA_Action { get; set; }
+        public string Ten_Action_code { get; set; }
+        public string Ten_Action_Viet { get; set; }
+        public string MA_Controller { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CHITIET_DS> CHITIET_DS { get; set; }
+        public virtual ICollection<SUB_MENU> SUB_MENU { get; set; }
+        public virtual CONTROLLER CONTROLLER { get; set; }
     }
 }

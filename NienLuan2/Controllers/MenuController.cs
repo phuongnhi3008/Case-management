@@ -20,6 +20,10 @@ namespace NienLuan2.Controllers
             ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
             ViewBag.vt1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
             ViewBag.main1 = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
+            ViewBag.controller = new SelectList(db.CONTROLLERs.OrderBy(x => x.MA_Controller), "MA_Controller", "Ten_Controller_VietSub");
+
+            ViewBag.action = new SelectList(db.ACTIONs.OrderBy(x => x.MA_Action), "MA_Action", "Ten_Action_Viet");
+
             if (error == 1)
                 ViewBag.Loi = 1;
 
@@ -27,7 +31,7 @@ namespace NienLuan2.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                model = model.Where(x => x.Controller_SUB.Contains(searchString) || x.Action_SUB.Contains(searchString) || x.MAIN_MENU.Ten_Main.Contains(searchString) || x.QUYEN_NSD.Ten_QNSD.Contains(searchString)).OrderBy(x => x.MA_QNSD);
+                model = model.Where(x => x.ACTION.CONTROLLER.Ten_Controller_code.Contains(searchString) || x.ACTION.Ten_Action_code.Contains(searchString) || x.MAIN_MENU.Ten_Main.Contains(searchString) || x.QUYEN_NSD.Ten_QNSD.Contains(searchString)).OrderBy(x => x.MA_QNSD);
             }
 
             ViewBag.SearchString = searchString;
@@ -36,24 +40,23 @@ namespace NienLuan2.Controllers
 
         public ActionResult them_Menu()
         {
-            ViewBag.vt = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
-            ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
+            //ViewBag.vt = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
+            //ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
             return View();
         }
 
         [HttpPost, ActionName("them_Menu")]
         public ActionResult them_VT(SUB_MENU sub, FormCollection form)
         {
-            if (db.SUB_MENU.Any(x => x.ID_SUB == sub.ID_SUB))
-            {
-                return View(sub);
-            }
-
+            //if (db.SUB_MENU.Any(x => x.ID_SUB == sub.ID_SUB))
+            //{
+            //    return View(sub);
+            //}
             sub.MA_QNSD = form["vt"].ToString();
             sub.ID_Main = int.Parse(form["main"].ToString());
-
-            if (!ModelState.IsValid)
-                return View(sub);
+            sub.MA_Action = form["action"].ToString();
+            //if (!ModelState.IsValid)
+            //    return View(sub);
             db.SUB_MENU.Add(sub);
             db.SaveChanges();
             return RedirectToAction("ListMenu");
@@ -244,6 +247,29 @@ namespace NienLuan2.Controllers
             db.MAIN_MENU.Remove(main);
             db.SaveChanges();
             return RedirectToAction("ListMenuChinh");
+        }
+
+        [HttpGet]
+        public ActionResult GetActions(string iso3)
+        {
+            try
+            {
+                db.ACTIONs.Where(x => x.MA_Controller.Equals(iso3)).ToList();
+                IEnumerable<SelectListItem> actions = db.ACTIONs.AsNoTracking()
+                        .OrderBy(n => n.Ten_Action_Viet)
+                        .Where(n => n.MA_Controller == iso3)
+                        .Select(n =>
+                           new SelectListItem
+                           {
+                               Value = n.MA_Action,
+                               Text = n.Ten_Action_Viet
+                           }).ToList();
+                return Json(new SelectList(actions, "Value", "Text"), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
     }

@@ -6,6 +6,7 @@
 
 @model PagedList.IPagedList<NienLuan2.Models.MAUDON>
 @using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 <div class="wrap-slide clearfix">
     <div class="top" style="background-color: #fff">
         <div class="content-header">
@@ -29,14 +30,14 @@
 </div>
 <!-- Header -->
 <header id="header" class="header">
-    <div class="header-wrap">
-        <div class="content-header">
-            <div class="wrap-nav">
+    <div class="header-wrap" style="background-color:cornflowerblue" >
+        <div class="content-header" >
+            <div class="wrap-nav" >
                 <div class="btn-menu"></div><!-- //mobile menu button -->
                 <nav id="mainnav" class="mainnav">
-                    <ul class="menu">
-                        <li class="active">
-                            <a href="index-2.html">Trang chủ</a>
+                    <ul class="menu" >
+                        <li  >
+                            <a href="@Url.Action("Index","Home")">Trang chủ</a>
 
                         </li>
                         <li>
@@ -64,9 +65,9 @@
                         </li>
                         <li>
 
-                            <a href="event.html">Mẫu đơn</a>
+                            <a hhref="@Url.Action("MauDon","NguoiDung")">Mẫu đơn</a>
                             <ul class="submenu">
-                                <li><a href="@Url.Action("MauDon","NguoiDung")">Hướng dẫn khởi kiện</a></li>
+                                <li><a href="event2.html">Hướng dẫn khởi kiện</a></li>
                                 <li><a href="event2.html">Hướng dẫn kháng cáo</a></li>
                                 <li><a href="event3.html">Hướng dẫn xóa án tích và hoãn chấp hành hình phạt tù</a></li>
                                 <li><a href="event4.html">Hướng dẫn sao lục</a></li>
@@ -92,52 +93,78 @@
 </header><!-- /.header -->
 <div class="footer" style="background: #fff">
 </div>
-    @{
-        int count = 1;
-    }
-    <div class="footer" style="background: #fff">
-        <div class="table-responsive">
-            <table class="table table-hover table-light">
-                <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Tên mẫu đơn</th>
-                        <th scope="col">Download</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @count
-                                @{
-                                    count++;
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TenMauDon)
-                            </td>
-                            <td>
-                                @*<button class="item btn btn-success btn-sm" onclick="@Url.Action("DowloadDon", "NguoiDung", new { link = item.Link_MD })">*@
-                                <a href="@item.Link_MD">
-                                    <i class="fa download"></i>
-                                </a>
-                        @Html.ActionLink("Dowload", "DowloadDon", new { link = item.Link_MD })
-            
-                       
-                                   
-                                @*</button>*@
-                        
-              
-</td>
-                        </tr>
-                                    }
-                </tbody>
-            </table>
-            @Html.PagedListPager(Model, page => Url.Action("MauDon", new { page, @searchString = @ViewBag.SearchString }))
+@{
+    int count = 1;
+}
+<div class="container-fluid">
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            DANH SÁCH MẪU ĐƠN
+            <div class="footer" style="background: #fff">
+                <div class="table-responsive">
+                    <table class="table table-hover table-light">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên mẫu đơn</th>
+                                <th scope="col">Tải về</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @count
+                                        @{
+                                            count++;
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TenMauDon)
+                                    </td>
+                                    <td>
+                                        @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.Link_MD')">
+                                            Download
+                                        </button>*@   
+                                        <a href="@item.Link_MD">
+                                            <i class="fa download">Download</i>
+                                        </a> 
+                                        @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.MA_MauDon')">
+                                            Download
+                                        </button>*@                                       
+                                    </td>
+                                </tr>
+                                            }
+                        </tbody>
+                    </table>
+                    @Html.PagedListPager(Model, page => Url.Action("MauDon", new { page, @searchString = @ViewBag.SearchString }))
+                </div>
+            </div>
+
+
+            </div>
         </div>
     </div>
-
-
-
+@section scripts {
+    <script type="text/javascript">
+        function DownloadDon(id) {
+            $.ajax({
+                url: id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    //if (response == true)
+                    //    location.reload();
+                },
+                error: function (response) {
+                    //alert(response.responseText);
+                }
+            });
+            return false;
+        }
+    </script>
+}

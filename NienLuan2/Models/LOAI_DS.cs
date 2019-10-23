@@ -17,13 +17,13 @@ namespace NienLuan2.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LOAI_DS()
         {
-            this.DUONGSUs = new HashSet<DUONGSU>();
+            this.CHITIET_DS = new HashSet<CHITIET_DS>();
         }
     
         public string MA_LoaiDS { get; set; }
         public string Ten_LoaiDS { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DUONGSU> DUONGSUs { get; set; }
+        public virtual ICollection<CHITIET_DS> CHITIET_DS { get; set; }
     }
 }

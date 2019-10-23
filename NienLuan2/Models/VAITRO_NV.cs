@@ -17,16 +17,16 @@ namespace NienLuan2.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VAITRO_NV()
         {
-            this.HOSO_VUAN = new HashSet<HOSO_VUAN>();
             this.CHITIET_XX = new HashSet<CHITIET_XX>();
+            this.HOSO_VUAN = new HashSet<HOSO_VUAN>();
         }
     
         public string MA_VaiTro { get; set; }
         public string Ten_VT { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HOSO_VUAN> HOSO_VUAN { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIET_XX> CHITIET_XX { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HOSO_VUAN> HOSO_VUAN { get; set; }
     }
 }

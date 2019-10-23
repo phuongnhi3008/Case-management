@@ -96,6 +96,26 @@ namespace NienLuan2.Controllers
             }
             return RedirectToAction("ListHT");
         }
+
+        [HttpGet]
+        public ActionResult EditTTHT(string id)
+        {
+            try
+            {
+                int idInt = Convert.ToInt32(id);
+                HOTRO hotro = db.HOTROes.SingleOrDefault(ht => ht.MA_HT == idInt);
+                if (hotro.MA_TT_HT == "01")
+                    hotro.MA_TT_HT = "02";
+                else
+                    hotro.MA_TT_HT = "01";
+                db.SaveChanges();
+                return Json(true, JsonRequestBehavior.AllowGet);  
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
 

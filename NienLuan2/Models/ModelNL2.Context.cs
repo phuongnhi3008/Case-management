@@ -27,8 +27,12 @@ namespace NienLuan2.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ACTION> ACTIONs { get; set; }
         public virtual DbSet<CAPXETXU> CAPXETXUs { get; set; }
+        public virtual DbSet<CHITIET_DS> CHITIET_DS { get; set; }
+        public virtual DbSet<CHITIET_XX> CHITIET_XX { get; set; }
         public virtual DbSet<CHUCVU> CHUCVUs { get; set; }
+        public virtual DbSet<CONTROLLER> CONTROLLERs { get; set; }
         public virtual DbSet<DIADIEM_XX> DIADIEM_XX { get; set; }
         public virtual DbSet<DUONGSU> DUONGSUs { get; set; }
         public virtual DbSet<HOSO_VUAN> HOSO_VUAN { get; set; }
@@ -41,12 +45,10 @@ namespace NienLuan2.Models
         public virtual DbSet<PHONGBAN> PHONGBANs { get; set; }
         public virtual DbSet<QUYEN_NSD> QUYEN_NSD { get; set; }
         public virtual DbSet<SUB_MENU> SUB_MENU { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TRANGTHAI_HOTRO> TRANGTHAI_HOTRO { get; set; }
         public virtual DbSet<TRANGTHAI_HS> TRANGTHAI_HS { get; set; }
         public virtual DbSet<VAITRO_NV> VAITRO_NV { get; set; }
         public virtual DbSet<XETXU> XETXUs { get; set; }
-        public virtual DbSet<CHITIET_XX> CHITIET_XX { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

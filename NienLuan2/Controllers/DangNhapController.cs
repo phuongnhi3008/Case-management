@@ -22,45 +22,44 @@ namespace NienLuan2.Controllers
         {
             var nhanvien = db.NHANVIENs.SingleOrDefault(s => s.MA_NhanVien == maNhanVien && s.MatKhau == matKhau);
             using (NL2_QLVAEntities1 db = new NL2_QLVAEntities1())
-            if (nhanvien != null)
-            {
-                Session["MaNV"] = nhanvien.MA_NhanVien;
-                Session["TenNV"] = nhanvien.HoTen_NV;
-                Session["MatKhau"] = nhanvien.MatKhau;
-                Session["QuyenSD"] = nhanvien.MA_QNSD;
+                if (nhanvien != null)
+                {
+                    Session["MaNV"] = nhanvien.MA_NhanVien;
+                    Session["TenNV"] = nhanvien.HoTen_NV;
+                    Session["MatKhau"] = nhanvien.MatKhau;
+                    Session["QuyenSD"] = nhanvien.MA_QNSD;
 
-                //gán session Tài khoản
-                //Session["online"] = nhanvien;
-                Session["TaiKhoan"] = nhanvien as NHANVIEN;
-                List<MenuModel> _menus = db.SUB_MENU.Where(x => x.MA_QNSD == nhanvien.MA_QNSD).Select(x => new MenuModel
-                {
-                    ID_Main = x.MAIN_MENU.ID_Main,
-                    Ten_Main = x.MAIN_MENU.Ten_Main,
-                    ID_SUB = x.ID_SUB,
-                    Ten_SUB = x.Ten_SUB,
-                    Controller_SUB = x.Controller_SUB,
-                    Action_SUB = x.Action_SUB,
-                    MA_QNSD = x.MA_QNSD,
-                    Ten_QNSD = x.QUYEN_NSD.Ten_QNSD
-                }).ToList(); //Get the Menu details from entity and bind it in MenuModels list.  
-                FormsAuthentication.SetAuthCookie(nhanvien.HoTen_NV, false); // set the formauthentication cookie  
-                Session["LoginCredentials"] = nhanvien; // Bind the _logincredentials details to "LoginCredentials" session  
-                Session["MenuMaster"] = _menus; //Bind the _menus list to MenuMaster session  
-                Session["UserName"] = nhanvien.MA_NhanVien;
-                if (nhanvien.MA_QNSD == "01")
-                {
-                    return RedirectToAction("ListNV", "NhanVien");
+                    //gán session Tài khoản
+                    Session["online"] = nhanvien;
+                    Session["TaiKhoan"] = nhanvien as NHANVIEN;
+                    List<MenuModel> _menus = db.SUB_MENU.Where(x => x.MA_QNSD == nhanvien.MA_QNSD).Select(x => new MenuModel
+                    {
+                        ID_Main = x.MAIN_MENU.ID_Main,
+                        Ten_Main = x.MAIN_MENU.Ten_Main,
+                        ID_SUB = x.ID_SUB,
+                        Ten_SUB = x.ACTION.Ten_Action_Viet,
+                        Controller_SUB = x.ACTION.CONTROLLER.Ten_Controller_code,
+                        Action_SUB = x.ACTION.Ten_Action_code,
+                        MA_QNSD = x.MA_QNSD,
+                        Ten_QNSD = x.QUYEN_NSD.Ten_QNSD
+                    }).ToList(); //Get the Menu details from entity and bind it in MenuModels list.  
+                    FormsAuthentication.SetAuthCookie(nhanvien.HoTen_NV, false); // set the formauthentication cookie  
+                    Session["LoginCredentials"] = nhanvien; // Bind the _logincredentials details to "LoginCredentials" session  
+                    Session["MenuMaster"] = _menus; //Bind the _menus list to MenuMaster session  
+                    Session["UserName"] = nhanvien.MA_NhanVien;
+                    if (nhanvien.MA_QNSD == "Q01")
+                    {
+                        return RedirectToAction("ListNV", "NhanVien");
+                    }
+                    return RedirectToAction("ListHS", "HoSoVuAn");
                 }
-                
-                return RedirectToAction("ListHS", "HoSoVuAn");
-            }
             ViewBag.message = "Sai tài khoản hoặc mật khẩu";
 
 
             return View();
 
         }
-       
+
         public ActionResult DangXuat()
         {
             Session["MaNV"] = null;

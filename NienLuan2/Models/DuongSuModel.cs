@@ -5,12 +5,11 @@ using System.Web;
 
 namespace NienLuan2.Models
 {
-    public class LichXetXuModel
+    public class DuongSuModel
     {
-        public IEnumerable<XETXU> listXetXu { get; set; }
-
-        public List<CHITIET_XX> listChiTietXetXu { get; set; }
         public List<CHITIET_DS> listChiTietDuongSu { get; set; }
 
+        public IEnumerable<HOSO_VUAN> listHoSoVuAn{ get; set; }
+        public IEnumerable<XETXU> listXetXu { get; set; }
     }
 }

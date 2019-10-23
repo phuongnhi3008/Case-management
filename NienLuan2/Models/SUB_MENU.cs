@@ -15,12 +15,11 @@ namespace NienLuan2.Models
     public partial class SUB_MENU
     {
         public int ID_SUB { get; set; }
-        public string Ten_SUB { get; set; }
-        public string Controller_SUB { get; set; }
-        public string Action_SUB { get; set; }
         public string MA_QNSD { get; set; }
         public Nullable<int> ID_Main { get; set; }
+        public string MA_Action { get; set; }
     
+        public virtual ACTION ACTION { get; set; }
         public virtual MAIN_MENU MAIN_MENU { get; set; }
         public virtual QUYEN_NSD QUYEN_NSD { get; set; }
     }

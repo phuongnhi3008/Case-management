@@ -1,5 +1,6 @@
 ﻿@using NienLuan2.Models
 @model NHANVIEN
+
 <style>
     img {
         border-radius: 50%;
@@ -104,8 +105,8 @@
                         <div class="modal-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="txtId" name="MA_NhanVien" style="background-color:lightgrey" placeholder="Tài khoản nhân viên">
-                                    <input type="text" class="form-control" id="txtmatkhaucu" name="MatKhau" placeholder="Mật khẩu cũ" disabled hidden>
+                                    <input type="text" class="form-control" id="txtId" name="MA_NhanVien" style="background-color:lightgrey" placeholder="Tài khoản nhân viên" hidden>
+                                    <input type="text" class="form-control" id="txtmatkhaucu" name="MA_NhanVien" style="background-color:lightgrey" placeholder="Tài khoản nhân viên" hidden>
                                     <label for="exampleInputEmail1">Mật khẩu cũ:</label>
                                     <input type="password" class="form-control" id="txtmatkhau2" name="MatKhau2" placeholder="Mật khẩu cũ" required>
                                     <label for="exampleInputEmail1">Mật khẩu mới:</label>
@@ -159,13 +160,13 @@
                                 } if (document.getElementById('txtmatkhau2').value != document.getElementById('txtmatkhaucu').value) {
                                     alert('Mật khẩu cũ không đúng');
                                     return false;
-                                }if (document.getElementById('txtmatkhau').value == document.getElementById('txtmatkhaucu').value) {
+                                } if (document.getElementById('txtmatkhau').value == document.getElementById('txtmatkhau2').value) {
                                         alert('Mật khẩu mới trùng với mật khẩu cũ');
                                         return false;
                                 }else {
                                         return true
                                     }
-                                }
+                                } 
                             }
 
     </script>

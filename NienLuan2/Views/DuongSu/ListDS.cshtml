@@ -1,8 +1,6 @@
 ﻿@model PagedList.IPagedList<NienLuan2.Models.DUONGSU>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
-
-
 @{
     ViewBag.Title = "ListDS";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -90,7 +88,7 @@
                                 @Html.DisplayFor(modelItem => item.HoTen_DS)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.LOAI_DS.Ten_LoaiDS)
+                                @Html.DisplayFor(modelItem => item.MA_LoaiDS)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.NamSinh_DS)
@@ -110,8 +108,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.SoDienThoai_DS)
                             </td>
-                            <td>
-                                
+                            <td>                                
                                 <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_DuongSu')">
 
                                     <i class="fas fa-edit"></i>
@@ -301,11 +298,8 @@
     //bat loi khoa ngoai khi xoa
     var loi = $(".LoiKhoaNgoai").val();
     if (loi === '1')
-        alert("Vui lòng xóa nhân viên thuộc phòng ban trước !!");
-
-
+        alert("Vui lòng xóa nhân viên thuộc phòng ban trước !!")
     //bat loi khi them
-
     $(".btn_them").on('click', function () {
         var maDuongSu = $('#MA_DuongSu').val();
         var namsinh = $('#NamSinh_DS').val();
