@@ -19,6 +19,18 @@ namespace NienLuan2.Controllers
             return View(model.OrderByDescending(x => x.TenMauDon).ToPagedList(page, pageSize));
         }
 
+        public ActionResult LichXetXu(string searchString, int? error, int page = 1, int pageSize = 10)
+        {
+            IEnumerable<XETXU> model = db.XETXUs;
+            return View(model.OrderByDescending(x => x.Ngay_XetXu).ToPagedList(page, pageSize));
+        }
+
+        public ActionResult KetQua(string searchString, int? error, int page = 1, int pageSize = 10)
+        {
+            IEnumerable<KETQUA_XX> model = db.KETQUA_XX;
+            return View(model.OrderByDescending(x => x.XETXU.Ngay_XetXu).ToPagedList(page, pageSize));
+        }
+
         [HttpGet]
         public FileResult DowloadDon(int id)
         {

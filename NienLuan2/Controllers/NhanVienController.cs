@@ -20,6 +20,9 @@ namespace NienLuan2.Controllers
             ViewBag.cv = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
             ViewBag.qsd = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
             ViewBag.pb = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
+            ViewBag.cv1 = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
+            ViewBag.qsd1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
+            ViewBag.pb1 = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
 
             if (error == 1)
                 ViewBag.Loi = 1;
@@ -39,12 +42,12 @@ namespace NienLuan2.Controllers
         [HttpGet]
         public ActionResult chitiet_NV(string id)
         {
-            if (id == null)
-                return HttpNotFound();
+            //if (id == null)
+            //    return HttpNotFound();
 
-            var chitietNV = db.NHANVIENs.Find(id);
-
-            return View(chitietNV);
+            //var chitietNV = db.NHANVIENs.SingleOrDefault(x => x.MA_NhanVien == id);
+            var chitiet = db.NHANVIENs.Find(id);
+            return View(chitiet);
         }
 
         public ActionResult them_NV()
@@ -92,9 +95,9 @@ namespace NienLuan2.Controllers
         }
         public ActionResult sua_NV(string id)
         {
-            ViewBag.cv = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
-            ViewBag.qsd = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
-            ViewBag.pb = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
+            ViewBag.cv1 = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
+            ViewBag.qsd1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
+            ViewBag.pb1 = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -103,18 +106,18 @@ namespace NienLuan2.Controllers
             return View(nhanvien);
         }
 
-        [HttpPost, ActionName("sua_NV")]
+        [HttpPost, ActionName("Sua_NV1")]
         //[ValidateInput(false)]
         ///[ValidateAntiForgeryToken]
-        public ActionResult sua_NV1(NHANVIEN nv, FormCollection form, string id)
+        public ActionResult Sua_NV1(NHANVIEN nv, FormCollection form, string id)
         {
-            ViewBag.cv = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
-            ViewBag.qsd = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
-            ViewBag.pb = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
+            ViewBag.cv1 = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
+            ViewBag.qsd1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
+            ViewBag.pb1 = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
 
-            nv.MA_ChucVu = form["cv"].ToString(); ;
-            nv.MA_QNSD = form["qsd"].ToString();
-            nv.MA_PhongBan = form["pb"].ToString();
+            nv.MA_ChucVu = form["cv1"].ToString(); ;
+            nv.MA_QNSD = form["qsd1"].ToString();
+            nv.MA_PhongBan = form["pb1"].ToString();
 
             //hs.MA_HoSo = id;
 

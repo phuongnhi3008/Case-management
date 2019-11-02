@@ -100,6 +100,14 @@
           <Property Name="Email_HT" Type="varchar" MaxLength="256" Nullable="false" />
           <Property Name="MA_TT_HT" Type="nvarchar" MaxLength="5" />
         </EntityType>
+        <EntityType Name="KETQUA_XX">
+          <Key>
+            <PropertyRef Name="MA_KetQuaXX" />
+          </Key>
+          <Property Name="MA_KetQuaXX" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_XetXu" Type="int" />
+          <Property Name="KetQua_XX" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="LOAI_DS">
           <Key>
             <PropertyRef Name="MA_LoaiDS" />
@@ -169,6 +177,16 @@
           <Property Name="ID_Main" Type="int" />
           <Property Name="MA_Action" Type="nvarchar" MaxLength="5" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TRANGTHAI_HOTRO">
           <Key>
             <PropertyRef Name="MA_TT_HT" />
@@ -192,14 +210,13 @@
         </EntityType>
         <EntityType Name="XETXU">
           <Key>
-            <PropertyRef Name="STT_XX" />
+            <PropertyRef Name="MA_XetXu" />
           </Key>
-          <Property Name="STT_XX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MA_XetXu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ngay_XetXu" Type="nvarchar" MaxLength="50" />
           <Property Name="Lan_XetXu" Type="int" Nullable="false" />
           <Property Name="MA_DiaDiem" Type="nvarchar" MaxLength="5" />
           <Property Name="MA_HoSo" Type="nvarchar" MaxLength="5" />
-          <Property Name="KetQua_XX" Type="nvarchar" MaxLength="150" />
           <Property Name="MA_CapXetXu" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <Association Name="chitietDS_HSVA2">
@@ -382,6 +399,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ketqua_xetxu">
+          <End Role="XETXU" Type="Self.XETXU" Multiplicity="0..1" />
+          <End Role="KETQUA_XX" Type="Self.KETQUA_XX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="XETXU">
+              <PropertyRef Name="MA_XetXu" />
+            </Principal>
+            <Dependent Role="KETQUA_XX">
+              <PropertyRef Name="MA_XetXu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="MA_DuongSu">
           <End Role="DUONGSU" Type="Self.DUONGSU" Multiplicity="0..1" />
           <End Role="CHITIET_DS" Type="Self.CHITIET_DS" Multiplicity="*" />
@@ -488,6 +517,7 @@
           <EntitySet Name="DUONGSU" EntityType="Self.DUONGSU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HOSO_VUAN" EntityType="Self.HOSO_VUAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HOTRO" EntityType="Self.HOTRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KETQUA_XX" EntityType="Self.KETQUA_XX" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAI_DS" EntityType="Self.LOAI_DS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAI_VUAN" EntityType="Self.LOAI_VUAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MAIN_MENU" EntityType="Self.MAIN_MENU" Schema="dbo" store:Type="Tables" />
@@ -496,6 +526,7 @@
           <EntitySet Name="PHONGBAN" EntityType="Self.PHONGBAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QUYEN_NSD" EntityType="Self.QUYEN_NSD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SUB_MENU" EntityType="Self.SUB_MENU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRANGTHAI_HOTRO" EntityType="Self.TRANGTHAI_HOTRO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TRANGTHAI_HS" EntityType="Self.TRANGTHAI_HS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VAITRO_NV" EntityType="Self.VAITRO_NV" Schema="dbo" store:Type="Tables" />
@@ -559,6 +590,10 @@
           <AssociationSet Name="FK_XETXU_HOSO" Association="Self.FK_XETXU_HOSO">
             <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
             <End Role="XETXU" EntitySet="XETXU" />
+          </AssociationSet>
+          <AssociationSet Name="ketqua_xetxu" Association="Self.ketqua_xetxu">
+            <End Role="XETXU" EntitySet="XETXU" />
+            <End Role="KETQUA_XX" EntitySet="KETQUA_XX" />
           </AssociationSet>
           <AssociationSet Name="MA_DuongSu" Association="Self.MA_DuongSu">
             <End Role="DUONGSU" EntitySet="DUONGSU" />
@@ -626,6 +661,7 @@
           <EntitySet Name="DUONGSUs" EntityType="ModelNL2.DUONGSU" />
           <EntitySet Name="HOSO_VUAN" EntityType="ModelNL2.HOSO_VUAN" />
           <EntitySet Name="HOTROes" EntityType="ModelNL2.HOTRO" />
+          <EntitySet Name="KETQUA_XX" EntityType="ModelNL2.KETQUA_XX" />
           <EntitySet Name="LOAI_DS" EntityType="ModelNL2.LOAI_DS" />
           <EntitySet Name="LOAI_VUAN" EntityType="ModelNL2.LOAI_VUAN" />
           <EntitySet Name="MAIN_MENU" EntityType="ModelNL2.MAIN_MENU" />
@@ -634,6 +670,7 @@
           <EntitySet Name="PHONGBANs" EntityType="ModelNL2.PHONGBAN" />
           <EntitySet Name="QUYEN_NSD" EntityType="ModelNL2.QUYEN_NSD" />
           <EntitySet Name="SUB_MENU" EntityType="ModelNL2.SUB_MENU" />
+          <EntitySet Name="sysdiagrams" EntityType="ModelNL2.sysdiagram" />
           <EntitySet Name="TRANGTHAI_HOTRO" EntityType="ModelNL2.TRANGTHAI_HOTRO" />
           <EntitySet Name="TRANGTHAI_HS" EntityType="ModelNL2.TRANGTHAI_HS" />
           <EntitySet Name="VAITRO_NV" EntityType="ModelNL2.VAITRO_NV" />
@@ -702,6 +739,10 @@
             <End Role="TRANGTHAI_HOTRO" EntitySet="TRANGTHAI_HOTRO" />
             <End Role="HOTRO" EntitySet="HOTROes" />
           </AssociationSet>
+          <AssociationSet Name="ketqua_xetxu" Association="ModelNL2.ketqua_xetxu">
+            <End Role="XETXU" EntitySet="XETXUs" />
+            <End Role="KETQUA_XX" EntitySet="KETQUA_XX" />
+          </AssociationSet>
           <AssociationSet Name="fk_htk_id_main" Association="ModelNL2.fk_htk_id_main">
             <End Role="MAIN_MENU" EntitySet="MAIN_MENU" />
             <End Role="SUB_MENU" EntitySet="SUB_MENU" />
@@ -766,7 +807,7 @@
             <PropertyRef Name="MA_ChiTietXX" />
           </Key>
           <Property Name="MA_ChiTietXX" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="STT_XX" Type="Int32" />
+          <Property Name="MA_XetXu" Type="Int32" />
           <Property Name="MA_NhanVien" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="MA_VaiTro" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="NHANVIEN" Relationship="ModelNL2.MA_NhanVien" FromRole="CHITIET_XX" ToRole="NHANVIEN" />
@@ -843,6 +884,15 @@
           <Property Name="Email_HT" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="MA_TT_HT" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRANGTHAI_HOTRO" Relationship="ModelNL2.FK_HT_TrangThaiHT" FromRole="HOTRO" ToRole="TRANGTHAI_HOTRO" />
+        </EntityType>
+        <EntityType Name="KETQUA_XX">
+          <Key>
+            <PropertyRef Name="MA_KetQuaXX" />
+          </Key>
+          <Property Name="MA_KetQuaXX" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_XetXu" Type="Int32" />
+          <Property Name="KetQua_XX" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="XETXU" Relationship="ModelNL2.ketqua_xetxu" FromRole="KETQUA_XX" ToRole="XETXU" />
         </EntityType>
         <EntityType Name="LOAI_DS">
           <Key>
@@ -927,6 +977,16 @@
           <NavigationProperty Name="MAIN_MENU" Relationship="ModelNL2.fk_htk_id_main" FromRole="SUB_MENU" ToRole="MAIN_MENU" />
           <NavigationProperty Name="QUYEN_NSD" Relationship="ModelNL2.fk_htk_ma_qnsd" FromRole="SUB_MENU" ToRole="QUYEN_NSD" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TRANGTHAI_HOTRO">
           <Key>
             <PropertyRef Name="MA_TT_HT" />
@@ -954,18 +1014,18 @@
         </EntityType>
         <EntityType Name="XETXU">
           <Key>
-            <PropertyRef Name="STT_XX" />
+            <PropertyRef Name="MA_XetXu" />
           </Key>
-          <Property Name="STT_XX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MA_XetXu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ngay_XetXu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Lan_XetXu" Type="Int32" Nullable="false" />
           <Property Name="MA_DiaDiem" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="MA_HoSo" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="KetQua_XX" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="MA_CapXetXu" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CAPXETXU" Relationship="ModelNL2.XETXU_CAPXETXU" FromRole="XETXU" ToRole="CAPXETXU" />
           <NavigationProperty Name="DIADIEM_XX" Relationship="ModelNL2.FK_XetXu_DiaDiem" FromRole="XETXU" ToRole="DIADIEM_XX" />
           <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_XETXU_HOSO" FromRole="XETXU" ToRole="HOSO_VUAN" />
+          <NavigationProperty Name="KETQUA_XX" Relationship="ModelNL2.ketqua_xetxu" FromRole="XETXU" ToRole="KETQUA_XX" />
         </EntityType>
         <Association Name="fk_htk_ma_action">
           <End Type="ModelNL2.ACTION" Role="ACTION" Multiplicity="0..1" />
@@ -1159,6 +1219,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ketqua_xetxu">
+          <End Type="ModelNL2.XETXU" Role="XETXU" Multiplicity="0..1" />
+          <End Type="ModelNL2.KETQUA_XX" Role="KETQUA_XX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="XETXU">
+              <PropertyRef Name="MA_XetXu" />
+            </Principal>
+            <Dependent Role="KETQUA_XX">
+              <PropertyRef Name="MA_XetXu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_htk_id_main">
           <End Type="ModelNL2.MAIN_MENU" Role="MAIN_MENU" Multiplicity="0..1" />
           <End Type="ModelNL2.SUB_MENU" Role="SUB_MENU" Multiplicity="*" />
@@ -1270,7 +1342,7 @@
               <MappingFragment StoreEntitySet="CHITIET_XX">
                 <ScalarProperty Name="MA_VaiTro" ColumnName="MA_VaiTro" />
                 <ScalarProperty Name="MA_NhanVien" ColumnName="MA_NhanVien" />
-                <ScalarProperty Name="STT_XX" ColumnName="STT_XX" />
+                <ScalarProperty Name="MA_XetXu" ColumnName="STT_XX" />
                 <ScalarProperty Name="MA_ChiTietXX" ColumnName="MA_ChiTietXX" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1339,6 +1411,15 @@
                 <ScalarProperty Name="Cau_Hoi" ColumnName="Cau_Hoi" />
                 <ScalarProperty Name="HoTen_HT" ColumnName="HoTen_HT" />
                 <ScalarProperty Name="MA_HT" ColumnName="MA_HT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KETQUA_XX">
+            <EntityTypeMapping TypeName="ModelNL2.KETQUA_XX">
+              <MappingFragment StoreEntitySet="KETQUA_XX">
+                <ScalarProperty Name="KetQua_XX" ColumnName="KetQua_XX" />
+                <ScalarProperty Name="MA_XetXu" ColumnName="MA_XetXu" />
+                <ScalarProperty Name="MA_KetQuaXX" ColumnName="MA_KetQuaXX" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1419,6 +1500,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ModelNL2.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TRANGTHAI_HOTRO">
             <EntityTypeMapping TypeName="ModelNL2.TRANGTHAI_HOTRO">
               <MappingFragment StoreEntitySet="TRANGTHAI_HOTRO">
@@ -1447,12 +1539,11 @@
             <EntityTypeMapping TypeName="ModelNL2.XETXU">
               <MappingFragment StoreEntitySet="XETXU">
                 <ScalarProperty Name="MA_CapXetXu" ColumnName="MA_CapXetXu" />
-                <ScalarProperty Name="KetQua_XX" ColumnName="KetQua_XX" />
                 <ScalarProperty Name="MA_HoSo" ColumnName="MA_HoSo" />
                 <ScalarProperty Name="MA_DiaDiem" ColumnName="MA_DiaDiem" />
                 <ScalarProperty Name="Lan_XetXu" ColumnName="Lan_XetXu" />
                 <ScalarProperty Name="Ngay_XetXu" ColumnName="Ngay_XetXu" />
-                <ScalarProperty Name="STT_XX" ColumnName="STT_XX" />
+                <ScalarProperty Name="MA_XetXu" ColumnName="MA_XetXu" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

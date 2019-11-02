@@ -58,11 +58,11 @@ namespace NienLuan2.Controllers
         [HttpPost, ActionName("them_HS")]
         public ActionResult them_HS(HOSO_VUAN hs, FormCollection form)
         {
-            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
-            ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-            ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
-            ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
-            ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            //ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
+            //ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
+            //ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
+            //ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
+            //ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
 
             if (db.HOSO_VUAN.Any(x => x.MA_HoSo == hs.MA_HoSo))
@@ -77,7 +77,10 @@ namespace NienLuan2.Controllers
 
             if (!ModelState.IsValid)
                 return View(hs);
+
+            //Tao ma tu dong
             hs.MA_HoSo = UUID.GetUUID(5);
+
             db.HOSO_VUAN.Add(hs);
             db.SaveChanges();
             List<string> selectedNguyenDonList = form["nd"].Split(',').ToList();
@@ -234,7 +237,6 @@ namespace NienLuan2.Controllers
                              Ngay_XetXu = xx.Ngay_XetXu,
                              Lan_XetXu = xx.Lan_XetXu,
                              MA_DiaDiem = xx.MA_DiaDiem,
-                             KetQua_XX = xx.KetQua_XX,
                          }).SingleOrDefault(m => m.MA_HoSo == id);
             return View(model);
         }

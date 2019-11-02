@@ -1,0 +1,63 @@
+﻿@model IEnumerable<NienLuan2.Models.XETXU>
+
+@{
+    ViewBag.Title = "LichXetXu";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+}
+
+<h2>Lịch xét xử</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            STT
+        </th>
+        <th>
+            Ngày xét xử
+        </th>
+        <th>
+          Lần xét xử
+        </th>
+        <th>
+           Địa điểm
+        </th>
+        <th>
+           Tên vụ án
+        </th>
+        <th>
+            Cấp xét xử
+        </th>
+        <th></th>
+    </tr>
+    @{
+        int count = 1;
+    }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @count
+            @{
+                count++;
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ngay_XetXu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lan_XetXu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
+        </td>
+
+    </tr>
+}
+
+</table>

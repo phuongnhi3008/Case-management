@@ -17,7 +17,7 @@
             @using (Html.BeginForm("ListDS", "DuongSu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
             {
                 <div class="input-group">
-                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã nhân viên cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập tên đương sự cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search"></i>
@@ -41,9 +41,6 @@
                         </th>
                         <th>
                             Họ tên
-                        </th>
-                        <th>
-                            Loại đương sự
                         </th>
                         <th>
                             Năm sinh
@@ -82,13 +79,11 @@
                                 }
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.MA_DuongSu)
+                                @Html.ActionLink(@item.MA_DuongSu, "ChiTiet_DS", "DuongSu", new { @id = item.MA_DuongSu }, new { })
+                                @*@Html.DisplayFor(modelItem => item.MA_DuongSu)*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.HoTen_DS)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MA_LoaiDS)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.NamSinh_DS)
@@ -164,7 +159,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="date" class="form-control" id="NamSinh_NV" name="NamSinh_NV">
+                                    <input type="date" class="form-control" id="NamSinh_DS" name="NamSinh_DS">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -237,12 +232,14 @@
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                     <label class="form-check-label" id="GioiTinh_DS" name="GioiTinh_DS" for="exampleCheck1">Nữ</label>
                                     <br />
+
                                     <label for="exampleInputEmail1">Loại đương sự :</label>
-                                    @Html.DropDownList("lds", null, new { @class = "form-control" })
+                                    @Html.DropDownList("lds", null, new { @class = "form-control", @id = "idListDuongSu" })
+
                                     <label for="exampleInputEmail1">Năm sinh :</label>
                                     <input type="date" class="form-control" id="txtNamSinh" name="NamSinh_DS">
                                     <label for="exampleInputEmail1">Địa chỉ :</label>
-                                    <input type="text" class="form-control" id="txtDiaChi" name="txtDiaChi" placeholder="Địa chỉ">
+                                    <input type="text" class="form-control" id="txtDiaChi" name="DiaChi_DS" placeholder="Địa chỉ">
                                     <label for="exampleInputEmail1">Quê quán :</label>
                                     <input type="text" class="form-control" id="txtQueQuan" name="QueQuan_DS" placeholder="Quê quán">
                                     <label for="exampleInputEmail1">Số điện thoại :</label>
@@ -276,11 +273,23 @@
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (response) {
+            var date = new Date(parseInt((response.NamSinh_DS).match(/\d+/)[0]));
             $('#txtId').val(response.MA_DuongSu);
             $('#txtTenDS').val(response.HoTen_DS);
-            $('#txtLoaiDS').val(response.MA_LoaiDS);
+
+           // $('#idListDuongSu').val(response.MA_DuongSu);
+            // document.getElementById('idListDuongSu').value = response.MA_DuongSu;
+
+            var dd = document.getElementById('idListDuongSu');
+            for (var i = 0; i < dd.options.length; i++) {
+                if (dd.options[i].value === response.MA_DuongSu) {
+                    dd.selectedIndex = i;
+                    break;
+                }
+            }
+
             $('#txtQueQuan').val(response.QueQuan_DS);
-            $('#txtNamSinh').val(response.NamSinh_DS);
+            $('#txtNamSinh').val(DateConverter(date));
             $('#txtDiaChi').val(response.DiaChi_DS);
             $('#txtSDT').val(response.SoDienThoai_DS);
             $('#txtCMND').val(response.CMND);
@@ -294,6 +303,17 @@
     });
     return false;
     }
+    function DateConverter(date) {
+        //var displayDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
+
+    }
+    function dateFormat(d) {
+        return ((d.getMonth() + 1) + "").padStart(2, "0")
+           + "/" + (d.getDate() + "").padStart(2, "0")
+           + "/" + d.getFullYear();
+    }
+
 
     //bat loi khoa ngoai khi xoa
     var loi = $(".LoiKhoaNgoai").val();

@@ -37,6 +37,7 @@ namespace NienLuan2.Models
         public virtual DbSet<DUONGSU> DUONGSUs { get; set; }
         public virtual DbSet<HOSO_VUAN> HOSO_VUAN { get; set; }
         public virtual DbSet<HOTRO> HOTROes { get; set; }
+        public virtual DbSet<KETQUA_XX> KETQUA_XX { get; set; }
         public virtual DbSet<LOAI_DS> LOAI_DS { get; set; }
         public virtual DbSet<LOAI_VUAN> LOAI_VUAN { get; set; }
         public virtual DbSet<MAIN_MENU> MAIN_MENU { get; set; }
@@ -45,6 +46,7 @@ namespace NienLuan2.Models
         public virtual DbSet<PHONGBAN> PHONGBANs { get; set; }
         public virtual DbSet<QUYEN_NSD> QUYEN_NSD { get; set; }
         public virtual DbSet<SUB_MENU> SUB_MENU { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TRANGTHAI_HOTRO> TRANGTHAI_HOTRO { get; set; }
         public virtual DbSet<TRANGTHAI_HS> TRANGTHAI_HS { get; set; }
         public virtual DbSet<VAITRO_NV> VAITRO_NV { get; set; }

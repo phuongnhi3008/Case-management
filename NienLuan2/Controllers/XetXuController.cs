@@ -42,13 +42,13 @@ namespace NienLuan2.Controllers
             ViewBag.Searcxxtring = searcxxtring;
 
             LichXetXuModel lichXetXuModel = new LichXetXuModel();
-            lichXetXuModel.listXetXu = model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize);
+            lichXetXuModel.listXetXu = model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
             lichXetXuModel.listChiTietXetXu = db.CHITIET_XX.ToList();
-            //duongsuModel.listXetXu = model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize);
+            //duongsuModel.listXetXu = model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
             lichXetXuModel.listXetXu = model.OrderBy(x => x.MA_HoSo).ToPagedList(page, pageSize);
             lichXetXuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
             return View(lichXetXuModel);
-            //return View(model.OrderByDescending(x => x.STT_XX).ToPagedList(page, pageSize));   
+            //return View(model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize));   
         }
         public ActionResult them_xx()
         {
@@ -65,7 +65,7 @@ namespace NienLuan2.Controllers
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
-            if (db.XETXUs.Any(x => x.STT_XX == xx.STT_XX))
+            if (db.XETXUs.Any(x => x.MA_XetXu == xx.MA_XetXu))
             {
 
                 return RedirectToAction("ListXX", new { error = 1 });
@@ -89,7 +89,7 @@ namespace NienLuan2.Controllers
 
                     MA_NhanVien = selectedHoiDongList[i],
                     MA_VaiTro = "C4",
-                    STT_XX = xx.STT_XX,
+                    MA_XetXu = xx.MA_XetXu,
                     MA_ChiTietXX = UUID.GetUUID(5)
                 };
                 themChiTietXetXu(hoidong);
@@ -99,7 +99,7 @@ namespace NienLuan2.Controllers
 
                 MA_NhanVien = form["ks"].ToString(),
                 MA_VaiTro = "C3",
-                STT_XX = xx.STT_XX,
+                MA_XetXu = xx.MA_XetXu,
                 MA_ChiTietXX = UUID.GetUUID(5)
             };
             themChiTietXetXu(kiemSat);
@@ -108,7 +108,7 @@ namespace NienLuan2.Controllers
 
                 MA_NhanVien = form["tk"].ToString(),
                 MA_VaiTro = "C1",
-                STT_XX = xx.STT_XX,
+                MA_XetXu = xx.MA_XetXu,
                 MA_ChiTietXX = UUID.GetUUID(5)
             };
             themChiTietXetXu(thuky);
@@ -117,7 +117,7 @@ namespace NienLuan2.Controllers
 
         public ActionResult xoaLXX(int? id)
         {
-            XETXU xetxu = db.XETXUs.SingleOrDefault(s => s.STT_XX == id);
+            XETXU xetxu = db.XETXUs.SingleOrDefault(s => s.MA_XetXu == id);
                 if(xetxu == null)
             {
                 Response.StatusCode = 404;
@@ -129,11 +129,11 @@ namespace NienLuan2.Controllers
         //[HttpPost, ActionName("xoaLXX")]
         public ActionResult xoaLXX1(XETXU xx,int? id)
         {
-            XETXU xetxu = db.XETXUs.SingleOrDefault(x => x.STT_XX == id);
+            XETXU xetxu = db.XETXUs.SingleOrDefault(x => x.MA_XetXu == id);
             db.XETXUs.Remove(xetxu);
             db.SaveChanges();     
             // xóa mấy thằng nhân viên trong bảng chi tiết xét xử trước (xóa data trong bang ChiTietXetXu)
-            // select list bảng ChiTietXetXu, check STT_XX (thằng nào bằng xx.STT_XX thì xóa hết)
+            // select list bảng ChiTietXetXu, check MA_XetXu (thằng nào bằng xx.MA_XetXu thì xóa hết)
             // sau đó mới xóa xetxu
             return RedirectToAction("ListXX");
         }

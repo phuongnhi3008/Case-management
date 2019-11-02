@@ -14,16 +14,23 @@ namespace NienLuan2.Models
     
     public partial class XETXU
     {
-        public int STT_XX { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public XETXU()
+        {
+            this.KETQUA_XX = new HashSet<KETQUA_XX>();
+        }
+    
+        public int MA_XetXu { get; set; }
         public string Ngay_XetXu { get; set; }
         public int Lan_XetXu { get; set; }
         public string MA_DiaDiem { get; set; }
         public string MA_HoSo { get; set; }
-        public string KetQua_XX { get; set; }
         public string MA_CapXetXu { get; set; }
     
         public virtual CAPXETXU CAPXETXU { get; set; }
         public virtual DIADIEM_XX DIADIEM_XX { get; set; }
         public virtual HOSO_VUAN HOSO_VUAN { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KETQUA_XX> KETQUA_XX { get; set; }
     }
 }

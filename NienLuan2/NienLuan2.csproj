@@ -212,6 +212,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HoSoVuAnController.cs" />
     <Compile Include="Controllers\HoTroController.cs" />
+    <Compile Include="Controllers\KetQuaXetXuController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
@@ -256,6 +257,9 @@
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\KETQUA_XX.cs">
+      <DependentUpon>ModelNL2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LichXetXuModel.cs" />
     <Compile Include="Models\LOAI_DS.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
@@ -303,6 +307,9 @@
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SUB_MENU.cs">
+      <DependentUpon>ModelNL2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TRANGTHAI_HOTRO.cs">
@@ -2033,7 +2040,6 @@
     <Content Include="Views\PhongBan\ListPB.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutTrangChu.cshtml" />
-    <Content Include="Views\NhanVien\chitiet_NV.cshtml" />
     <Content Include="Views\HoSoVuAn\ListHS.cshtml" />
     <Content Include="Views\DuongSu\ListDS.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
@@ -2043,9 +2049,12 @@
     <Content Include="Views\TrangCaNhan\Index1.cshtml" />
     <Content Include="Views\XetXu\ListXX.cshtml" />
     <Content Include="Views\HoTro\ListHT.cshtml" />
-    <Content Include="Views\HoSoVuAn\ChiTiet_HS.cshtml" />
     <Content Include="Views\NguoiDung\MauDon.cshtml" />
     <Content Include="Views\HoSoVuAn\ThongKe_HS.cshtml" />
+    <Content Include="Views\NhanVien\chitiet_NV.cshtml" />
+    <Content Include="Views\KetQuaXetXu\ListKQ.cshtml" />
+    <Content Include="Views\NguoiDung\LichXetXu.cshtml" />
+    <Content Include="Views\NguoiDung\KetQua.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

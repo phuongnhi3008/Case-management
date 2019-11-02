@@ -1,7 +1,6 @@
 ﻿@model PagedList.IPagedList<NienLuan2.Models.NHANVIEN>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
-
 @{
     ViewBag.Title = "ListNV";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -74,7 +73,8 @@
                                 }
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.MA_NhanVien)
+                                @Html.ActionLink(@item.MA_NhanVien, "chitiet_NV", "NhanVien", new { @id = item.MA_NhanVien },new { })
+                                @*@Html.DisplayFor(modelItem => item.MA_NhanVien)*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.HoTen_NV)
@@ -92,11 +92,6 @@
                                 @Html.DisplayFor(modelItem => item.SoDienThoai_NV)
                             </td>
                             <td>
-                                <button class="item btn_ChiTiet btn btn-success btn-sm" onclick="GetDetails1('@item.MA_NhanVien')">
-
-                                    <i class="fas fa-info"></i>
-                                </button>
-                                |
                                 <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_NhanVien')">
 
                                     <i class="fas fa-edit"></i>
@@ -227,7 +222,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="height:750px">
+            <div class="modal-body" style="height:auto">
                 <div class="box box-primary">
                     @using (Html.BeginForm("Sua_NV1", "NhanVien", FormMethod.Post))
                     {
@@ -243,11 +238,11 @@
                                     <label class="form-check-label" id="GioiTinh_NV" name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
                                     <br />
                                     <label for="exampleInputEmail1">Chức vụ :</label>
-                                    @Html.DropDownList("cv", null, new { @class = "form-control" })
+                                    @Html.DropDownList("cv1", null, new { @class = "form-control" })
                                     <label for="exampleInputEmail1">Quyền sử dụng :</label>
-                                    @Html.DropDownList("qsd", null, new { @class = "form-control" })
+                                    @Html.DropDownList("qsd1", null, new { @class = "form-control" })
                                     <label for="exampleInputEmail1">Phòng ban :</label>
-                                    @Html.DropDownList("pb", null, new { @class = "form-control" })
+                                    @Html.DropDownList("pb1", null, new { @class = "form-control" })
                                     <label for="exampleInputEmail1">Năm sinh :</label>
                                     <input type="date" class="form-control" id="NamSinh_NV_Sua" name="NamSinh_NV">
                                     <label for="exampleInputEmail1">Quê quán :</label>
@@ -258,7 +253,6 @@
                                     <input type="text" class="form-control" id="txtcmnd" name="CMND_NV" placeholder="Số CMND">
                                     <label for="exampleInputEmail1">Mật khẩu :</label>
                                     <input type="text" class="form-control" id="txtmatkhau" name="MatKhau" placeholder="Mật khẩu">
-                                    <input type="text" class="form-control" id="txtavatar" name="Avatar" placeholder="Avatar">
                                    
                                 </div>
                             </div>
@@ -266,60 +260,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Lưu</button>
-                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-detail">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Chi tiết nhân viên</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="height:750px">
-                <div class="box box-primary">
-                    @using (Html.BeginForm())
-                    {
-                        <div class="modal-body">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã số nhân viên :</label>
-                                    <input type="text" class="form-control" id="txtId1" disabled name="MA_NhanVien" placeholder="Mã nhân viên">
-                                    <label for="exampleInputEmail1">Họ tên nhân viên :</label>
-                                    <input type="text" class="form-control" id="txtTenNV1" disabled name="HoTen_NV" placeholder="Họ tên nhân viên">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">                                  
-                                    <label class="form-check-label" id="GioiTinh_NV" disabled name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
-                                    <br />
-                                    <label for="exampleInputEmail1">Chức vụ :</label>
-                                    <input type="text" class="form-control" id="txtChucVu1" disabled name="MA_ChucVu" placeholder="Chức vụ">
-                                    <label for="exampleInputEmail1">Quyền sử dụng :</label>
-                                    <input type="text" class="form-control" id="txtQSD1" disabled name="MA_QNSD" placeholder="Quyền sử dụng">
-                                    <label for="exampleInputEmail1">Phòng ban :</label>
-                                    <input type="text" class="form-control" id="txtPB1" disabled name="MA_PhongBan" placeholder="Phòng ban" >
-                                    <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="text" class="form-control" id="txtnamsinh1" disabled name="NamSinh_NV">
-                                    <label for="exampleInputEmail1">Quê quán :</label>
-                                    <input type="text" class="form-control" id="txtquequan1" disabled name="QueQuan_NV" placeholder="Quê quán">
-                                    <label for="exampleInputEmail1">Số điện thoại :</label>
-                                    <input type="text" class="form-control" id="txtsdt1" disabled name="SoDienThoai_NV" placeholder="Số điện thoại">
-                                    <label for="exampleInputEmail1">Số CMND :</label>
-                                    <input type="text" class="form-control" id="txtcmnd1" disabled name="CMND_NV" placeholder="Số CMND">
-                                    <label for="exampleInputEmail1">Mật khẩu :</label>
-                                    <input type="text" class="form-control" id="txtmatkhau1" disabled name="MatKhau" placeholder="Mật khẩu">
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
                         </div>
                     }
@@ -344,21 +284,21 @@
         dataType: "json",
         success: function (response) {
             var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
+   
             $('#txtId').val(response.MA_NhanVien);
             $('#txtTenNV').val(response.HoTen_NV);
-            $('#txtQSD').val(response.MA_QNSD);
-            $('#txtPB').val(response.MA_PhongBan);
-            $('#txtChucVu').val(response.MA_ChucVu);
+            $('#qsd1').val(response.MA_QNSD);
+            $('#pb1').val(response.MA_PhongBan);
+            $('#cv1').val(response.MA_ChucVu);
             $('#txtGioiTinh').val(response.GioiTinh_NV);
-            $('#NamSinh_NV_Sua').val(response.NamSinh_NV);
+            document.getElementById("NamSinh_NV_Sua").value = DateConverter(date);
             $('#txtquequan').val(response.QueQuan_NV);
             $('#txtcmnd').val(response.CMND_NV);
             $('#txtsdt').val(response.SoDienThoai_NV);
             $('#txtmatkhau').val(response.MatKhau);
             $('#txtavatar').val(response.Avatar);
-
-
             $('#modal-Update').modal('show');
+          
         },
         error: function (response) {
 
@@ -367,37 +307,10 @@
     });
     return false;
     }
-        //chitiet
-    function GetDetails1(id) {
-        $.ajax({
-
-            url: "/NhanVien/detail_NV/" + id,
-            typr: "GET",
-            contentType: "application/json;charset=UTF-8",
-            dataType: "json",
-            success: function (response) {
-                var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
-                //var ns = Date.parse(response.NamSinh_NV);
-                $('#txtId1').val(response.MA_NhanVien);
-                $('#txtTenNV1').val(response.HoTen_NV);
-                $('#txtQSD1').val(response.MA_QNSD);
-                $('#txtPB1').val(response.MA_PhongBan);
-                $('#txtChucVu1').val(response.MA_ChucVu);
-                $('#txtGioiTinh1').val(response.GioiTinh_NV);
-                $('#txtnamsinh1').val(date.toDateString("{0:yyyy/MM/dd}"));
-                $('#txtquequan1').val(response.QueQuan_NV);
-                $('#txtcmnd1').val(response.CMND_NV);
-                $('#txtsdt1').val(response.SoDienThoai_NV);
-                $('#txtmatkhau1').val(response.MatKhau);
-
-                $('#modal-detail').modal('show');
-            },
-            error: function (response) {
-
-                alert(response.responseText);
-            }
-        });
-        return false;
+    function DateConverter(date) {
+        //var displayDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
+       
     }
     function dateFormat(d) {
         return ((d.getMonth() + 1) + "").padStart(2, "0")

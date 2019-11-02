@@ -62,6 +62,9 @@
                             Bị đơn
                         </th>
                         <th>
+                            Loại vụ án
+                        </th>
+                        <th>
                             Trạng thái HS
                         </th>
                         <th>
@@ -78,6 +81,7 @@
                         <tr >                          
                             <td>
                                 @Html.DisplayFor(modelItem => item.MA_HoSo)
+                                @*@Html.ActionLink(@item.MA_HoSo, "ChiTiet_HS", "HoSoVuAn", null)*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Ten_VuAn)
@@ -128,7 +132,9 @@
                                     {
                                     }
                                 }
-                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.TRANGTHAI_HS.Ten_TT)
                             </td>
@@ -136,11 +142,6 @@
                                 @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
                             </td>
                             <td>
-                                <button class="item btn_ChiTiet btn btn-success btn-sm" href=@Url.Action("ChiTiet_HS", new { @id = item.MA_HoSo })>
-
-                                    <i class="fas fa-info"></i>
-                                </button>
-                                |
                                 <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
 
                                     <i class="fas fa-edit"></i>

@@ -40,8 +40,8 @@ namespace NienLuan2.Controllers
 
         public ActionResult them_Menu()
         {
-            //ViewBag.vt = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
-            //ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
+            ViewBag.vt = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
+            ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
             return View();
         }
 
@@ -52,6 +52,8 @@ namespace NienLuan2.Controllers
             //{
             //    return View(sub);
             //}
+            ViewBag.vt = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
+            ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
             sub.MA_QNSD = form["vt"].ToString();
             sub.ID_Main = int.Parse(form["main"].ToString());
             sub.MA_Action = form["action"].ToString();

@@ -113,6 +113,7 @@ namespace NienLuan2.Controllers
             {
                 try
                 {
+
                     db.Entry(ds).State = EntityState.Modified;
                     db.SaveChanges();
 

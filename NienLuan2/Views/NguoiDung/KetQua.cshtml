@@ -1,0 +1,39 @@
+﻿@model IEnumerable<NienLuan2.Models.KETQUA_XX>
+
+@{
+    ViewBag.Title = "KetQua";
+    Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
+}
+
+<h2>Kết quả</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MA_KetQuaXX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MA_XetXu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.KetQua_XX)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MA_KetQuaXX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MA_XetXu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.KetQua_XX)
+        </td>
+
+    </tr>
+}
+
+</table>
