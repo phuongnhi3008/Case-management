@@ -4,36 +4,66 @@
     ViewBag.Title = "KetQua";
     Layout = "~/Views/Shared/_LayoutTrangChu.cshtml";
 }
+<div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            Kết quả xét xử
 
-<h2>Kết quả</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.MA_KetQuaXX)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MA_XetXu)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.KetQua_XX)
-        </th>
-        <th></th>
-    </tr>
+        </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.MA_KetQuaXX)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MA_XetXu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KetQua_XX)
-        </td>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Tên vụ án
+                        </th>
+                        <th>
+                            Lần xét xử
+                        </th>
+                        <th>
+                            Ngày xét xử
+                        </th>
+                        <th>
+                            Kết quả
+                        </th>
+                    </tr>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
 
-    </tr>
-}
+                                @count
+                                @{
+                                    count++;
+                                }
 
-</table>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.XETXU.HOSO_VUAN.Ten_VuAn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.XETXU.Lan_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.XETXU.Ngay_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KetQua_XX)
+                            </td>
+
+                        </tr>
+                                    }
+
+                </table>
+            </div>
+            </div></div>
+    </div>

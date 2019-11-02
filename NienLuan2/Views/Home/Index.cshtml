@@ -5,150 +5,22 @@
 }
 
 
-<div class="wrap-slide clearfix">
-    <div class="top">
-        <div class="content-header">
-            <div class="one-half">
-                <ul class="contact-info inline pull-left">
-                    <li class="phone"><a href="#">012345678</a></li>
-                    <li class="email"><a href="#">nhiB1507284@student.ctu.edu.vn</a></li>
-                </ul>
-            </div><!-- /.one-half -->
-            <div class="one-half">
-                <ul class="contact-info inline pull-right clearfix">
-                    @* <li class="terms"><a href="#">Terms of Use</a></li>*@
-                    <li class="contact"><a href="#">Liên hệ</a></li>
-                    <li class="singin">@Html.ActionLink("Đăng nhập", "DangNhap", "DangNhap")</li>
-                    <li class="search"><a href="#"><span class="icon-zoom-outline"></span></a></li>
 
-                </ul>
-            </div><!-- /.one-half -->
-        </div><!-- /.content-header -->
-    </div><!-- /.top -->
-    <!-- Header -->
-    <header id="header" class="header">
-        <div class="header-wrap">
-            <div class="content-header">
-                <div class="wrap-nav">
-                    <div class="btn-menu"></div><!-- //mobile menu button -->
-                    <nav id="mainnav" class="mainnav">
-                        <ul class="menu">
-                            <li class="active">
-                                <a href="@Url.Action("Index","Home")">Trang chủ</a>
 
-                            </li>
-                            <li>
-                                <a href="blog_post_sidebar.html">Giới thiệu</a>
-                                <ul class="submenu">
-                                    <li><a href="blog_left_sidebar.html">Lịch sử hình thành</a></li>
-                                    <li><a href="blog_full_width.html">Cơ cấu tổ chức</a></li>
-                                </ul><!-- /.submenu -->
-                            </li>
-                            <li>
-                                <a href="event.html">Tin tức - Sự kiện</a>
-                                <ul class="submenu">
-                                    <li><a href="event1.html">Tin hoạt động TAND tỉnh</a></li>
-                                    <li><a href="event2.html">Tin hoạt động TAND cấp huyện</a></li>
-                                    <li><a href="event3.html">Tin trong nước</a></li>
-                                    <li><a href="event4.html">Tin quốc tế</a></li>
-                                </ul><!-- /.submenu -->
-                            </li>
-                            <li>
-                                <a href="gallery_regular.html">Xét xử</a>
-                                <ul class="submenu">
-                                    <li><a href=@Url.Action("LichXetXu", "NguoiDung")>Lịch xét xử</a></li>
-                                    <li><a href=@Url.Action("KetQua", "NguoiDung")>Kết quả</a></li>
-                 
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("MauDon","NguoiDung")">Mẫu đơn</a>
-                                <ul class="submenu">
-                                    <li><a href="event2.html">Hướng dẫn khởi kiện</a></li>
-                                    <li><a href="event2.html">Hướng dẫn kháng cáo</a></li>
-                                    <li><a href="event3.html">Hướng dẫn xóa án tích và hoãn chấp hành hình phạt tù</a></li>
-                                    <li><a href="event4.html">Hướng dẫn sao lục</a></li>
-                                    <li><a href="event4.html">Thời hạn tố tụng</a></li>
-                                </ul><!-- /.submenu -->
-                            </li>
-                            <li>
-                                <a href="contact.html">Liên hệ</a>
-                            </li>
-                        </ul><!-- /.menu -->
-                    </nav><!-- /.mainnav -->
-                </div><!-- /.wrap-nav -->
-                <div class="wrap-social clearfix">
-                    <ul class="besmart-socials">
-                        <li><a href="https://www.facebook.com/"><span class="icon-social facebook">F</span></a></li>
-                        <li><a href="#"><span class="icon-social">G</span></a></li>
-                        <li><a href="#"><span class="icon-social linkedin">I</span></a></li>
-                        <li><a href="#"><span class="icon-social pinterest">:</span></a></li>
-                    </ul>
-                </div><!-- /.social-wrap -->
-            </div><!-- /.content-header -->
-        </div><!-- /.header-wrap -->
-    </header><!-- /.header -->
-
-    <div class="top-search">
-        <div class="content-header">
-            <input type="text" class="ts-search" placeholder="Type Keywords Here...">
-            <a href="#"><span class="icon-zoom-outline"></span></a>
-        </div><!-- /.content-header -->
-    </div><!-- /.top-search -->
 
     <div class="roll-slider" data-auto="true" data-effect="slide" data-direction="horizotal">
         <div class="flexslider">
             <ul class="slides">
                 <li>
-                    <img src="~/Content/images/image2.jpeg" alt="image" class="roll-zoBackground" style="padding-top: 90px;">
-                   
-                </li>
-               
+                    <img src="~/Content/images/image2.jpeg" alt="image" class="roll-zoBackground" style="padding-top: 90px;">                 
+                </li>              
             </ul>
         </div>
     </div><!-- /.roll-slider -->
 
-</div><!-- /.wrap-slider -->
-@*chat popup*@
-<div class="chatbox-holder">
-    <div class="chatbox chatbox-min">
-        <div class="chatbox-top">
-            <div class="chatbox-avatar">
-                <img src="~/Content/images/admin.jpg" />
-            </div>
-            <div class="chat-partner-name">
-                <p>Bạn cần hỗ trợ?</p>
-            </div>
-        </div>
-        <div class="chat-messages">
-            <div class="chat_container">
-                <p class="no_provider">
-                    Đặt câu hỏi để được hỗ trợ.
-                </p>
-                <div class="chat_entry">
-                    @using (Html.BeginForm("them_HT", "Home", FormMethod.Post, new { enctype = "multipart/form-data" })) {
-                    <form name="chat_form" class="chat_form has-validation-callback" id="chat_form" onsubmit="return false;">
-                        <p>
-                            <input type="text" data-validation="required" name="HoTen_HT" id="HoTen_HT" class="user_chat" placeholder="Họ & tên">
-                        </p>
-                        <p>
-                            <input type="text" data-validation="email" name="Email_HT" id="Email_HT" class="email_chat" placeholder="Email của bạn">
-                        </p>
-                        <p>
-                            <input type="text" data-validation="number" name="SDT_HT" id="SDT_HT" class="number_chat" placeholder="Số điện thoại">
-                        </p>
-                        <p>
-                            <input type="text" data-validation="number" name="Cau_Hoi" id="Cau_Hoi" class="number_chat" placeholder="Câu hỏi">
-                            <input type="text" data-validation="number" name="MA_TT_HT" id="MA_TT_HT" class="number_chat" value="02" hidden>
-                        </p>
-                        <p style="text-align:left;">
-                            <input type="submit" class="chat_submit" id="Submit" value="Gửi câu hỏi">
-                        </p>
-                    </form>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+
+
 @*chat popup    END*@

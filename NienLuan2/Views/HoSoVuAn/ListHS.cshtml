@@ -52,7 +52,7 @@
                         <th>
                             Tên vụ án
                         </th>
-                        <th>
+                        <th width="100">
                             Ngày nhận
                         </th>
                         <th>
@@ -86,7 +86,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Ten_VuAn)
                             </td>
-                            <td>
+                            <td width="100">
                                 @Html.DisplayFor(modelItem => item.NgayNhan_HS)
                             </td>
                             
@@ -248,10 +248,8 @@
     </div>
 </div>
 
-
-
 <div class="modal fade" id="modal-Update">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Sửa hồ sơ</h5>
@@ -263,27 +261,67 @@
                 <div class="box box-primary">
                     @using (Html.BeginForm("sua_HS1", "HoSoVuAn", FormMethod.Post))
                     {
-                        <div class="modal-body">
+                        <div class="modal-body" style="height:730px">
+
+                            <input type="text" class="form-control" id="MA_HoSo_Sua" name="MA_HoSo" placeholder="Tên vụ án">
+
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã hồ sơ :</label>
-                                    <input type="text" class="form-control" id="txtId" name="MA_HoSo" placeholder="Mã phòng ban">
-                                    <label for="exampleInputEmail1">Tên vụ án :</label>
-                                    <input type="text" class="form-control" id="txtTenVA" name="Ten_VuAn" placeholder="Tên vụ án">
-                                    <label for="exampleInputEmail1">Nhân viên :</label>
-                                    @Html.DropDownList("mnv", null, new { @class = "form-control" })
-                                    <label for="exampleInputEmail1">Loại vụ án :</label>
-                                    @Html.DropDownList("lva", null, new { @class = "form-control" })
-                                    <label for="exampleInputEmail1">Trạng thái :</label>
-                                    @Html.DropDownList("tths", null, new { @class = "form-control" })
-                                    <label for="exampleInputEmail1">Nội dung :</label>
-                                    <input type="text" class="form-control" id="txtNoiDung" name="NoiDung_VA" placeholder="Nội dung">
-                                    <label for="exampleInputEmail1">Loại hồ sơ :</label>
-                                    <input type="text" class="form-control" id="txtLoaiHS" name="Loai_HS" placeholder="Loại hồ sơ">
-                                    <label for="exampleInputEmail1">Vai trò nhân viên :</label>
-                                    @Html.DropDownList("vtnv", null, new { @class = "form-control" })
+                                    <label for="exampleInputEmail1">Ngày nhận :</label>
+                                    <input type="text" class="form-control" id="NgayNhan_HS_Sua" name="NgayNhan_HS" value="@DateTime.Today.ToString("yyyy-MM-dd")" readonly>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tên vụ án :</label>
+                                    <input type="text" class="form-control" id="Ten_VuAn_Sua" name="Ten_VuAn" placeholder="Tên vụ án">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Thẩm phán :</label>
+                                    @Html.DropDownList("mnv", null, new { @class = "form-control", @id = "listNhanVien_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Nguyên đơn: </label>
+                                    @Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control", @multiple = "multiple", @id = "listNguyenDon_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Bị đơn: </label>
+                                    @Html.DropDownList("bd", (List<SelectListItem>)ViewBag.selectsBiDon, new { @class = "form-control", @multiple = "multiple", @id = "listBiDon_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Loại vụ án :</label>
+                                    @Html.DropDownList("lva", null, new { @class = "form-control", @id = "listLoaiVuAn_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Nội dung :</label>
+                                    <input type="text" class="form-control" id="NoiDung_VA_Sua" name="NoiDung_VA" placeholder="Nội dung">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Loại hồ sơ :</label>
+                                    <input type="text" class="form-control" id="Loai_HS_Sua" name="Loai_HS" placeholder="Loại hồ sơ">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Trang thai ho so :</label>
+                                    @Html.DropDownList("tths", null, new { @class = "form-control", @id = "listTrangThaiHoSo_Sua" })
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
 
                         </div>
                         <div class="modal-footer">
@@ -307,15 +345,41 @@
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (response) {
-            $('#txtId').val(response.MA_HoSo);
-            $('#txtTenVA').val(response.Ten_VuAn);
-            $('#txtNhanVien').val(response.MA_NhanVien);
-            $('#txtTrangThai').val(response.MA_TrangThai);
-            $('#txtLoaiVA').val(response.MA_LoaiVA);
-            $('#txtNoiDung').val(response.NoiDung_VA);
-            $('#txtLoaiHS').val(response.Loai_HS);
-            $('#txtVaiTroNV').val(response.MA_VaiTro);
+            $('#MA_HoSo_Sua').val(response.MA_HoSo);
+            $('#NgayNhan_HS_Sua').val(response.NgayNhan_HS);
+            $('#Ten_VuAn_Sua').val(response.Ten_VuAn);
+            $('#listNhanVien_Sua').val(response.MA_NhanVien);
+
+            var listSelectedNguyenDon = new Array();  
+            $.getJSON('@Url.Action("GetListNguyenDon")', { maHoSo: id }, function (actions) {
+                if (actions != null && !jQuery.isEmptyObject(actions)) {
+                    $.each(actions, function (index, action) {
+                        listSelectedNguyenDon[index] = action.Value;
+                        $("#listNguyenDon_Sua option[value='" + listSelectedNguyenDon[index] + "']").prop("selected", true);
+                    });
+                };
+            });
+     
+
+
+            var listSelectedBiDon = new Array();
+            $.getJSON('@Url.Action("GetListBiDon")', { maHoSo: id }, function (actions) {
+                if (actions != null && !jQuery.isEmptyObject(actions)) {
+                    $.each(actions, function (index, action) {
+                        listSelectedBiDon[index] = action.Value;
+                        $("#listBiDon_Sua option[value='" + listSelectedBiDon[index] + "']").prop("selected", true);
+                    });
+                };
+            });
+
+            $('#listLoaiVuAn_Sua').val(response.MA_LoaiVA);
+            $('#NoiDung_VA_Sua').val(response.NoiDung_VA);
+            $('#Loai_HS_Sua').val(response.Loai_HS);
+
             $('#modal-Update').modal('show');
+
+
+
         },
         error: function (response) {
 

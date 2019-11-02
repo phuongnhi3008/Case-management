@@ -58,13 +58,6 @@ namespace NienLuan2.Controllers
         [HttpPost, ActionName("them_HS")]
         public ActionResult them_HS(HOSO_VUAN hs, FormCollection form)
         {
-            //ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
-            //ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-            //ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
-            //ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
-            //ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-
-
             if (db.HOSO_VUAN.Any(x => x.MA_HoSo == hs.MA_HoSo))
             {
                 //ViewBag.error = "Mã hồ sơ này đã tồn tại!!!";
@@ -89,7 +82,6 @@ namespace NienLuan2.Controllers
             {
                 CHITIET_DS nguyendon = new CHITIET_DS
                 {
-
                     MA_DuongSu = selectedNguyenDonList[i],
                     MA_LoaiDS = "ND",
                     MA_HoSo = hs.MA_HoSo,
@@ -103,7 +95,6 @@ namespace NienLuan2.Controllers
             {
                 CHITIET_DS bidon = new CHITIET_DS
                 {
-
                     MA_DuongSu = selectedBiDonList[i],
                     MA_LoaiDS = "BD",
                     MA_HoSo = hs.MA_HoSo,
@@ -111,22 +102,7 @@ namespace NienLuan2.Controllers
                 };
                 themChiTietDuongSu(bidon);
             }
-            //CHITIET_DS bidon = new CHITIET_DS
-            //{
 
-            //    MA_DuongSu = form["bd"].ToString(),
-            //    MA_LoaiDS = "BD",
-            //    MA_ChiTietDS = UUID.GetUUID(5)
-            //};
-            //themChiTietDuongSu(bidon);
-            //CHITIET_DS nguyendon = new CHITIET_DS
-            //{
-
-            //    MA_DuongSu = form["nd"].ToString(),
-            //    MA_LoaiDS = "ND",
-            //    MA_ChiTietDS = UUID.GetUUID(5)
-            //};
-            //themChiTietDuongSu(nguyendon);
             var list_HS = from s in db.HOSO_VUAN select s;
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
@@ -145,19 +121,32 @@ namespace NienLuan2.Controllers
         }
 
 
-        public ActionResult sua_HS(string id)
+        public JsonResult GetListNguyenDon(string maHoSo)
         {
-            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
-            ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-
-            ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HOSO_VUAN hoso = db.HOSO_VUAN.Find(id);
-            return View(hoso);
+            IEnumerable<SelectListItem> listNguyenDon = db.CHITIET_DS.AsNoTracking()
+                                    .OrderBy(n => n.DUONGSU.HoTen_DS)
+                                    .Where(n => n.MA_HoSo == maHoSo && n.MA_LoaiDS == "nd")
+                                    .Select(n =>
+                                       new SelectListItem
+                                       {
+                                           Value = n.MA_DuongSu,
+                                           Text = n.DUONGSU.HoTen_DS
+                                       }).ToList();
+            return Json(new SelectList(listNguyenDon, "Value", "Text"), JsonRequestBehavior.AllowGet);
+        }
+            
+        public JsonResult GetListBiDon(string maHoSo)
+        {
+            IEnumerable<SelectListItem> listBiDon = db.CHITIET_DS.AsNoTracking()
+                                    .OrderBy(n => n.DUONGSU.HoTen_DS)
+                                    .Where(n => n.MA_HoSo == maHoSo && n.MA_LoaiDS == "bd")
+                                    .Select(n =>
+                                       new SelectListItem
+                                       {
+                                           Value = n.MA_DuongSu,
+                                           Text = n.DUONGSU.HoTen_DS
+                                       }).ToList();
+            return Json(new SelectList(listBiDon, "Value", "Text"), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost, ActionName("sua_HS1")]
@@ -165,6 +154,8 @@ namespace NienLuan2.Controllers
         ///[ValidateAntiForgeryToken]
         public ActionResult sua_HS1(HOSO_VUAN hs, FormCollection form, string id)
         {
+
+
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
 
@@ -179,7 +170,7 @@ namespace NienLuan2.Controllers
             if (!ModelState.IsValid)
                 return View(hs);
 
-            if (TryUpdateModel(hs, "", new string[] { "MA_HoSo", "Ten_VuAn" }))
+            if (TryUpdateModel(hs, "", new string[] { "MA_HoSo", "NgayNhan_HS", "Ten_VuAn", "MA_NhanVien", "MA_LoaiVuAn", "NoiDung_VA", "Loai_HS", "MA_TrangThai" }))
             {
                 try
                 {
@@ -191,10 +182,56 @@ namespace NienLuan2.Controllers
                 {
                     ModelState.AddModelError("", "Lỗi");
                 }
-
             }
+            ClearNguyenDonBiDon(hs.MA_HoSo);
+
+            List<string> selectedNguyenDonList = form["nd"].Split(',').ToList();
+
+            for (int i = 0; i < selectedNguyenDonList.Count; i++)
+            {
+                CHITIET_DS nguyendon = new CHITIET_DS
+                {
+                    MA_DuongSu = selectedNguyenDonList[i],
+                    MA_LoaiDS = "ND",
+                    MA_HoSo = hs.MA_HoSo,
+                    MA_ChiTietDS = UUID.GetUUID(5)
+                };
+                themChiTietDuongSu(nguyendon);
+            }
+            List<string> selectedBiDonList = form["bd"].Split(',').ToList();
+
+            for (int i = 0; i < selectedBiDonList.Count; i++)
+            {
+                CHITIET_DS bidon = new CHITIET_DS
+                {
+                    MA_DuongSu = selectedBiDonList[i],
+                    MA_LoaiDS = "BD",
+                    MA_HoSo = hs.MA_HoSo,
+                    MA_ChiTietDS = UUID.GetUUID(5)
+                };
+                themChiTietDuongSu(bidon);
+            }
+
+
+
+
+
+
             return RedirectToAction("ListHS");
         }
+
+        public void ClearNguyenDonBiDon(string maHoSo)
+        {
+            foreach(var item in db.CHITIET_DS.ToList())
+            {
+                if (item.MA_HoSo == maHoSo)
+                {
+                    db.CHITIET_DS.Remove(item);
+                    db.SaveChanges();
+                }
+            }
+        }
+
         public ActionResult xoa_HS(string id)
         {
             HOSO_VUAN hoso = db.HOSO_VUAN.SingleOrDefault(s => s.MA_HoSo == id);
