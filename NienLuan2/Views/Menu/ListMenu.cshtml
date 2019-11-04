@@ -100,12 +100,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Tên menu phụ :</label>
-                                    <input type="text" class="form-control" id="Ten_SUB" name="Ten_SUB" placeholder="Tên menu phụ">
-                                </div>
-                            </div>
+
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Chức năng :</label>      
@@ -138,20 +133,17 @@
 @section scripts {
     <script type="text/javascript">
         //sua
-
         $(function () {
             $('.group-header').click(function () {
                 $(this).nextUntil('.group-header').toggle();
             });
         });
-
         function addPaging() {
             $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
             $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
                 $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
             });
         }
-
         $('#idController').change(function () {
             var selectedController = $("#idController").val();
             var selectedAction = $('#idAction');

@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewBag.Title = "ChiTiet_XX";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model NienLuan2.Models.XETXU
+@using NienLuan2.Models;
+<div class="card-header">
+    <i class="fa fa-vcard"></i>
+    THÔNG TIN CHI TIẾT XÉT XỬ
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="tab-content">
+                <!-- /.tab-pane -->
+                <table id="example2" class="table table-border table-hover" border="0">
+                    <tr>
+                        <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Tên vụ án:</strong></td>
+                        <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.HOSO_VUAN.Ten_VuAn)</label></td>
+                    </tr>
+
+                    @{
+                        NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
+                        XETXU xetXu = Model;
+                        try
+                        {
+                            List<CHITIET_DS> listNguyenDon = db.CHITIET_DS.Where(x => (x.MA_HoSo == xetXu.HOSO_VUAN.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
+                            var showlistNguyenDon = "";
+                            for (int i = 0; i < listNguyenDon.Count; i++)
+                            {
+                                showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
+                                if (i != listNguyenDon.Count - 1)
+                                {
+                                    showlistNguyenDon += ", ";
+                                }
+                            }
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Nguyên đơn:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(modelItem => showlistNguyenDon)</label></td>
+                            </tr>
+
+
+                        }
+                        catch (Exception)
+                        {
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Nguyên đơn:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;">Bug</label></td>
+                            </tr>
+                        }
+
+                    }
+
+                    @{
+                        try
+                        {
+                            List<CHITIET_DS> listBiDon = db.CHITIET_DS.Where(x => (x.MA_HoSo == xetXu.HOSO_VUAN.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
+                            var showlistBiDon = "";
+                            for (int i = 0; i < listBiDon.Count; i++)
+                            {
+                                showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
+                                if (i != listBiDon.Count - 1)
+                                {
+                                    showlistBiDon += ", ";
+                                }
+                            }
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Bị đơn:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(modelItem => showlistBiDon)</label></td>
+                            </tr>
+
+                        }
+                        catch (Exception)
+                        {
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Bị đơn:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;"></label>Bug</td>
+                            </tr>
+                        }
+
+                    }
+
+                    @{
+                        try
+                        {
+                            List<CHITIET_XX> listHoiDong = db.CHITIET_XX.Where(x => (x.MA_XetXu == xetXu.MA_XetXu) && (x.MA_VaiTro == "C4")).ToList();
+                            var showlistHoiDong = "";
+                            for (int i = 0; i < listHoiDong.Count; i++)
+                            {
+                                showlistHoiDong += listHoiDong[i].NHANVIEN.HoTen_NV;
+                                if (i != listHoiDong.Count - 1)
+                                {
+                                    showlistHoiDong += ", ";
+                                }
+                            }
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Hội đồng:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(modelItem => showlistHoiDong)</label></td>
+                            </tr>
+
+                        }
+                        catch (Exception)
+                        {
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Hội đồng:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;"></label></td>
+                            </tr>
+                        }
+
+                    }
+
+                    @{
+                        try
+                        {
+
+                            CHITIET_XX kiemSat = db.CHITIET_XX.Where(x => (x.MA_XetXu == xetXu.MA_XetXu) && (x.MA_VaiTro == "C3")).First();
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Kiểm sát:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(modelItem => kiemSat.NHANVIEN.HoTen_NV)</label></td>
+                            </tr>
+
+                        }
+                        catch (Exception)
+                        {
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Kiểm sát:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;"></label></td>
+                            </tr>
+                        }
+
+                    }
+
+                    @{
+                        try
+                        {
+
+                            CHITIET_XX thuKy = db.CHITIET_XX.Where(x => (x.MA_XetXu == xetXu.MA_XetXu) && (x.MA_VaiTro == "C1")).First();
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Thư ký:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(modelItem => thuKy.NHANVIEN.HoTen_NV)</label></td>
+                            </tr>
+
+                        }
+                        catch (Exception)
+                        {
+                            <tr>
+                                <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Thư ký:</strong></td>
+                                <td><label for="inputName" class="form-control" style="border: 0px;"></label></td>
+                            </tr>
+                        }
+
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="tab-content">
+                <table id="example2" class="table table-border table-hover" border="0">
+                    <tr>
+                        <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Thẩm phán:</strong></td>
+                        <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.HOSO_VUAN.NHANVIEN.HoTen_NV)</label></td>
+                    </tr>
+
+                    <tr>
+                        <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Cấp xét xử:</strong></td>
+                        <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.CAPXETXU.TenCapXetXu)</label></td>
+                    </tr>
+                    <tr>
+                        <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Lần xét xử:</strong></td>
+                        <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.Lan_XetXu)</label></td>
+                    </tr>
+                    <tr>
+                        <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Địa điểm:</strong></td>
+                        <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.DIADIEM_XX.Ten_DiaDiem)</label></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Trở về", "ListXX")
+</p>
+
+

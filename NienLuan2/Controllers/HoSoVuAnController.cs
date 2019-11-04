@@ -154,12 +154,10 @@ namespace NienLuan2.Controllers
         ///[ValidateAntiForgeryToken]
         public ActionResult sua_HS1(HOSO_VUAN hs, FormCollection form, string id)
         {
+            //ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
+            //ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
 
-
-            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
-            ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
-
-            ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            //ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
             hs.MA_LoaiVA = form["lva"].ToString(); ;
             hs.MA_TrangThai = form["tths"].ToString();
@@ -211,12 +209,6 @@ namespace NienLuan2.Controllers
                 };
                 themChiTietDuongSu(bidon);
             }
-
-
-
-
-
-
             return RedirectToAction("ListHS");
         }
 
@@ -242,14 +234,39 @@ namespace NienLuan2.Controllers
             }
             return View(hoso);
         }
+        public JsonResult CheckXoa(string id)
+        {
+            try {
+                XETXU hoso = db.XETXUs.SingleOrDefault(s => s.MA_HoSo == id);
+                if (hoso == null)
+                    return Json("true", JsonRequestBehavior.AllowGet);
+                else
+                    return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+           
+        }
         //[HttpPost, ActionName("xoa_HS")]
         public ActionResult xoa_HS1(string id)
         {
-            HOSO_VUAN hoso = db.HOSO_VUAN.SingleOrDefault(s => s.MA_HoSo == id);
-            db.HOSO_VUAN.Remove(hoso);
-            db.SaveChanges();
-            return RedirectToAction("ListHS");
-        }
+            try
+            {
+                HOSO_VUAN hoso = db.HOSO_VUAN.SingleOrDefault(s => s.MA_HoSo == id);
+                ClearNguyenDonBiDon(hoso.MA_HoSo);
+                db.HOSO_VUAN.Remove(hoso);
+                db.SaveChanges();
+                return RedirectToAction("ListHS");
+            }
+            catch
+            {
+                return RedirectToAction("ListHS");
+            }
+
+            
+    }
 
 
 
@@ -269,9 +286,9 @@ namespace NienLuan2.Controllers
                              NoiDung_VA = hsva.NoiDung_VA,
                              Ten_TT = tt.Ten_TT,
                              Loai_HS = hsva.Loai_HS,
-                             NgayNhan_HS = hsva.NgayNhan_HS,
+                             NgayNhan_HS = hsva.NgayNhan_HS.Value.ToString("dd/MM/yyyy"),
                              HoTen_NV = nv.HoTen_NV,
-                             Ngay_XetXu = xx.Ngay_XetXu,
+                             Ngay_XetXu = xx.Ngay_XetXu.Value.ToString("dd/MM/yyyy"),
                              Lan_XetXu = xx.Lan_XetXu,
                              MA_DiaDiem = xx.MA_DiaDiem,
                          }).SingleOrDefault(m => m.MA_HoSo == id);
@@ -291,7 +308,7 @@ namespace NienLuan2.Controllers
                              MA_HoSo = hs.MA_HoSo,
                              Ten_VuAn = hs.Ten_VuAn,
                              Loai_HS = hs.Loai_HS,
-                             NgayNhan_HS = hs.NgayNhan_HS,
+                             NgayNhan_HS = hs.NgayNhan_HS.Value.ToString("dd/MM/yyyy"),
                              MA_TrangThai = hs.MA_TrangThai,
                              MA_NhanVien = hs.MA_NhanVien,
                              Ten_TT = tt.Ten_TT,

@@ -1,4 +1,5 @@
-﻿using NienLuan2.Models;
+﻿using NienLuan2.Helper;
+using NienLuan2.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -67,14 +68,18 @@ namespace NienLuan2.Controllers
                 ViewBag.error = "Mã nhân viên này đã tồn tại!!!";
                 return View(Nv);
             }
-
+            Nv.MA_NhanVien = UUID.GetUUID(5);
             Nv.MA_ChucVu = form["cv"].ToString(); ;
             Nv.MA_PhongBan = form["pb"].ToString();
             Nv.MA_QNSD = form["qsd"].ToString();
-
-            if (!ModelState.IsValid)
-                return View(Nv);
-
+            if (form["GioiTinh_NV"] != null)
+            {
+                if ((form["GioiTinh_NV"].ToString() == "on"))
+                    Nv.GioiTinh_NV = true;
+                else
+                    Nv.GioiTinh_NV = false;
+            }
+            else Nv.GioiTinh_NV = false;
             db.NHANVIENs.Add(Nv);
             db.SaveChanges();
 
@@ -119,29 +124,47 @@ namespace NienLuan2.Controllers
             nv.MA_QNSD = form["qsd1"].ToString();
             nv.MA_PhongBan = form["pb1"].ToString();
 
-            //hs.MA_HoSo = id;
-
-            if (!ModelState.IsValid)
-                return View(nv);
-
-
-            if (TryUpdateModel(nv, "", new string[] { "MA_NhanVien", "HoTen_NV" }))
+            if (form["GioiTinh_NV"] != null)
             {
-                try
-                {
-                    db.Entry(nv).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                }
-                catch (RetryLimitExceededException)
-                {
-                    ModelState.AddModelError("", "Lỗi");
-                }
-
+                if ((form["GioiTinh_NV"].ToString() == "on"))
+                    nv.GioiTinh_NV = true;
+                else
+                    nv.GioiTinh_NV = false;
             }
+            else nv.GioiTinh_NV = false;
+
+            NHANVIEN newNhanVien = db.NHANVIENs.FirstOrDefault(nnv => nnv.MA_NhanVien == nv.MA_NhanVien);
+            newNhanVien.MA_ChucVu = nv.MA_ChucVu;
+            newNhanVien.MA_QNSD = nv.MA_QNSD;
+            newNhanVien.MA_PhongBan = nv.MA_PhongBan;
+            newNhanVien.HoTen_NV = nv.HoTen_NV;
+            newNhanVien.NamSinh_NV = nv.NamSinh_NV;
+            newNhanVien.GioiTinh_NV = nv.GioiTinh_NV;
+            newNhanVien.QueQuan_NV = nv.QueQuan_NV;
+            newNhanVien.CMND_NV = nv.CMND_NV;
+            newNhanVien.SoDienThoai_NV = nv.SoDienThoai_NV;
+            newNhanVien.MatKhau = nv.MatKhau;
+            newNhanVien.Avatar = nv.Avatar;
+            db.SaveChanges();
             return RedirectToAction("ListNV");
         }
-        
+        public JsonResult CheckXoa(string id)
+        {
+            try
+            {
+                CHITIET_XX chiTietXetXu = db.CHITIET_XX.SingleOrDefault(s => s.MA_NhanVien == id);
+                HOSO_VUAN hoSo = db.HOSO_VUAN.SingleOrDefault(s => s.MA_NhanVien == id);
+                if (chiTietXetXu == null && hoSo == null)
+                    return Json("true", JsonRequestBehavior.AllowGet);
+                else
+                    return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+
+        }
         public ActionResult xoa_NV(string id)
         {
             NHANVIEN nhanvien = db.NHANVIENs.SingleOrDefault(s => s.MA_NhanVien == id);

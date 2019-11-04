@@ -115,40 +115,156 @@ namespace NienLuan2.Controllers
             return RedirectToAction("ListXX");
         }
 
-        public ActionResult xoaLXX(int? id)
+        public JsonResult GetNgayNhanHoSo(string maHoSo)
         {
-            XETXU xetxu = db.XETXUs.SingleOrDefault(s => s.MA_XetXu == id);
-                if(xetxu == null)
-            {
-                Response.StatusCode = 404;
-                return null;
-            }
-            return View();
+            HOSO_VUAN hoSo = db.HOSO_VUAN.FirstOrDefault(ks => ks.MA_HoSo == maHoSo);
+            return Json(hoSo.NgayNhan_HS, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult CheckXoa(string id)
+        {
+            try
+            {
+                int IntId = Convert.ToInt32(id);
+                KETQUA_XX ketQua = db.KETQUA_XX.SingleOrDefault(s => s.MA_XetXu == IntId);
+                if (ketQua == null)
+                    return Json("true", JsonRequestBehavior.AllowGet);
+                else
+                    return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+
+        }
         //[HttpPost, ActionName("xoaLXX")]
         public ActionResult xoaLXX1(XETXU xx,int? id)
         {
-            XETXU xetxu = db.XETXUs.SingleOrDefault(x => x.MA_XetXu == id);
-            db.XETXUs.Remove(xetxu);
-            db.SaveChanges();     
-            // xóa mấy thằng nhân viên trong bảng chi tiết xét xử trước (xóa data trong bang ChiTietXetXu)
-            // select list bảng ChiTietXetXu, check MA_XetXu (thằng nào bằng xx.MA_XetXu thì xóa hết)
-            // sau đó mới xóa xetxu
-            return RedirectToAction("ListXX");
+            try
+            {
+                XETXU xetxu = db.XETXUs.SingleOrDefault(x => x.MA_XetXu == id);
+                db.XETXUs.Remove(xetxu);
+                db.SaveChanges();
+                // xóa mấy thằng nhân viên trong bảng chi tiết xét xử trước (xóa data trong bang ChiTietXetXu)
+                // select list bảng ChiTietXetXu, check MA_XetXu (thằng nào bằng xx.MA_XetXu thì xóa hết)
+                // sau đó mới xóa xetxu
+                return RedirectToAction("ListXX");
+            }
+            catch
+            {
+                return RedirectToAction("ListXX");
+            }
+           
         }
 
-        [HttpPost, ActionName("capNhatLXX")]
-        public ActionResult capNhatLXX(XETXU xx, FormCollection form)
+        public JsonResult CheckChinhSua(string id)
         {
+            try
+            {
+                int IntId = Convert.ToInt32(id);
+                KETQUA_XX ketQua = db.KETQUA_XX.SingleOrDefault(s => s.MA_XetXu == IntId);
+                if (ketQua == null)
+                    return Json("true", JsonRequestBehavior.AllowGet);
+                else
+                    return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
+        public JsonResult Edit_XX(string id)
+        {
+            int intMaXetXu = Convert.ToInt32(id);
+            db.Configuration.ProxyCreationEnabled = false;
+            var xetxu = db.XETXUs.Find(intMaXetXu);
+            return Json(xetxu, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetListHoiDong(string maXetXu)
+        {
+            int intMaXetXu = Convert.ToInt32(maXetXu);
+            IEnumerable<SelectListItem> listHoiDong = db.CHITIET_XX.AsNoTracking()
+                                    .OrderBy(n => n.MA_XetXu)
+                                    .Where(n => n.MA_XetXu == intMaXetXu && n.MA_VaiTro == "C4")
+                                    .Select(n =>
+                                       new SelectListItem
+                                       {
+                                           Value = n.MA_NhanVien,
+                                           Text = n.NHANVIEN.HoTen_NV
+                                       }).ToList();
+            return Json(new SelectList(listHoiDong, "Value", "Text"), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetThuKy(string maXetXu)
+        {
+            int intMaXetXu = Convert.ToInt32(maXetXu);
+            CHITIET_XX thuKy = db.CHITIET_XX.FirstOrDefault(ks => ks.MA_XetXu == intMaXetXu && ks.MA_VaiTro == "C1");
+            return Json(thuKy.MA_NhanVien, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetKiemSat(string maXetXu)
+        {
+            int intMaXetXu = Convert.ToInt32(maXetXu);
+            CHITIET_XX kiemSat = db.CHITIET_XX.FirstOrDefault(ks => ks.MA_XetXu == intMaXetXu && ks.MA_VaiTro == "C3");
+            return Json(kiemSat.MA_NhanVien, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost, ActionName("Edit_XX1")]
+        public ActionResult Edit_XX1(XETXU xx, FormCollection form)
+        {
+
             //Tương tự xóa
             //Nếu có cập nhật nhân viên thì chỉ cập nhật trong bảng ChiTietXetXu
             //Còn ko thì cập nhật trong XETXU
+            XETXU newXetXu = db.XETXUs.FirstOrDefault(nxx => nxx.MA_XetXu == xx.MA_XetXu);
+            newXetXu.Ngay_XetXu = xx.Ngay_XetXu;
+            newXetXu.MA_DiaDiem = form["dd"].ToString();
+ 
 
-           
 
+            CHITIET_XX newThuKy = db.CHITIET_XX.FirstOrDefault(ntk => ntk.MA_XetXu == xx.MA_XetXu && ntk.MA_VaiTro == "C1");
+            newThuKy.MA_NhanVien = form["tk"].ToString();
+
+            CHITIET_XX newKiemSat = db.CHITIET_XX.FirstOrDefault(nks => nks.MA_XetXu == xx.MA_XetXu && nks.MA_VaiTro == "C3");
+            newKiemSat.MA_NhanVien = form["ks"].ToString();
+
+            ClearHoiDong(xx.MA_XetXu);
+            List<string> selectedHoiDongList = form["hd"].Split(',').ToList();
+
+            for (int i = 0; i < selectedHoiDongList.Count; i++)
+            {
+                CHITIET_XX hoidong = new CHITIET_XX
+                {
+
+                    MA_NhanVien = selectedHoiDongList[i],
+                    MA_VaiTro = "C4",
+                    MA_XetXu = xx.MA_XetXu,
+                    MA_ChiTietXX = UUID.GetUUID(5)
+                };
+                themChiTietXetXu(hoidong);
+            }
+            db.SaveChanges();
             return RedirectToAction("ListXX");
+
         }
+        public void ClearHoiDong(int maXetXu)
+        {
+            foreach (var item in db.CHITIET_XX.ToList())
+            {
+                if (item.MA_XetXu == maXetXu && item.MA_VaiTro == "C4")
+                {
+                    db.CHITIET_XX.Remove(item);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+
 
         public List<DUONGSU> Get_DS(string ds_ma)
         {
@@ -161,6 +277,13 @@ namespace NienLuan2.Controllers
         {
             db.CHITIET_XX.Add(ctxx);
             db.SaveChanges();
+        }
+        [HttpGet]
+        public ActionResult ChiTiet_XX(string id)
+        {
+            int intId = Convert.ToInt32(id);
+            var chitiet = db.XETXUs.Find(intId);
+            return View(chitiet);
         }
     }
 }

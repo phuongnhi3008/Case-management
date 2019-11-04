@@ -147,8 +147,8 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 |
-                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_HS1", new { id = item.MA_HoSo })">
-
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
+                     
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
@@ -199,13 +199,14 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Nguyên đơn: </label>
-                                    @Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control", @multiple = "multiple" })
+                                    @Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control listNguyenDon1", @multiple = "multiple", @id = "listNguyenDon" })
+                                    @*@Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control chosen-select", @multiple = "multiple" })*@
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Bị đơn: </label>
-                                    @Html.DropDownList("bd", (List<SelectListItem>)ViewBag.selectsBiDon, new { @class = "form-control", @multiple = "multiple" })
+                                    @Html.DropDownList("bd", (List<SelectListItem>)ViewBag.selectsBiDon, new { @class = "form-control", @multiple = "multiple", @id = "listBiDon" })
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -263,7 +264,7 @@
                     {
                         <div class="modal-body" style="height:730px">
 
-                            <input type="text" class="form-control" id="MA_HoSo_Sua" name="MA_HoSo" placeholder="Tên vụ án">
+                            <input type="text" class="form-control" id="MA_HoSo_Sua" name="MA_HoSo" placeholder="Tên vụ án" hidden>
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -335,59 +336,131 @@
     </div>
 </div>
 @section scripts {
-
+<script src="~/Content/Chosen/chosen.jquery.min.js"></script>
+<link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
     <script type="text/javascript">
-    function GetDetails(id) {
-    $.ajax({
+        function GetDetails(id) {
+            $.ajax({
 
-        url: "/HoSoVuAn/Edit_HS/" + id,
-        typr: "GET",
-        contentType: "application/json;charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            $('#MA_HoSo_Sua').val(response.MA_HoSo);
-            $('#NgayNhan_HS_Sua').val(response.NgayNhan_HS);
-            $('#Ten_VuAn_Sua').val(response.Ten_VuAn);
-            $('#listNhanVien_Sua').val(response.MA_NhanVien);
+                url: "/HoSoVuAn/Edit_HS/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#MA_HoSo_Sua').val(response.MA_HoSo);
+                    var date = new Date(parseInt((response.NgayNhan_HS).match(/\d+/)[0]));
+                    $('#NgayNhan_HS_Sua').val(DateConverter(date));
+                    $('#Ten_VuAn_Sua').val(response.Ten_VuAn);
+                    $('#listNhanVien_Sua').val(response.MA_NhanVien);
 
-            var listSelectedNguyenDon = new Array();  
-            $.getJSON('@Url.Action("GetListNguyenDon")', { maHoSo: id }, function (actions) {
-                if (actions != null && !jQuery.isEmptyObject(actions)) {
-                    $.each(actions, function (index, action) {
-                        listSelectedNguyenDon[index] = action.Value;
-                        $("#listNguyenDon_Sua option[value='" + listSelectedNguyenDon[index] + "']").prop("selected", true);
+                    var listSelectedNguyenDon = new Array();
+                    $("#listNguyenDon_Sua option:selected").prop("selected", false);
+                    $.getJSON('@Url.Action("GetListNguyenDon")', { maHoSo: id }, function (actions) {
+                        if (actions != null && !jQuery.isEmptyObject(actions)) {
+                            $.each(actions, function (index, action) {
+                                listSelectedNguyenDon[index] = action.Value;
+                                $("#listNguyenDon_Sua option[value='" + listSelectedNguyenDon[index] + "']").prop("selected", true);
+                                $('#listNguyenDon_Sua').trigger('chosen:updated');
+                            });
+                        };
                     });
-                };
-            });
-     
 
-
-            var listSelectedBiDon = new Array();
-            $.getJSON('@Url.Action("GetListBiDon")', { maHoSo: id }, function (actions) {
-                if (actions != null && !jQuery.isEmptyObject(actions)) {
-                    $.each(actions, function (index, action) {
-                        listSelectedBiDon[index] = action.Value;
-                        $("#listBiDon_Sua option[value='" + listSelectedBiDon[index] + "']").prop("selected", true);
+                    var listSelectedBiDon = new Array();
+                    $("#listBiDon_Sua option:selected").prop("selected", false);
+                    $.getJSON('@Url.Action("GetListBiDon")', { maHoSo: id }, function (actions) {
+                        if (actions != null && !jQuery.isEmptyObject(actions)) {
+                            $.each(actions, function (index, action) {
+                                listSelectedBiDon[index] = action.Value;
+                                $("#listBiDon_Sua option[value='" + listSelectedBiDon[index] + "']").prop("selected", true);
+                                $('#listBiDon_Sua').trigger('chosen:updated');
+                            });
+                        };
                     });
-                };
+
+                    $('#listLoaiVuAn_Sua').val(response.MA_LoaiVA);
+                    $('#NoiDung_VA_Sua').val(response.NoiDung_VA);
+                    $('#Loai_HS_Sua').val(response.Loai_HS);
+                    $('#modal-Update').modal('show');
+
+
+
+                },
+                error: function (response) {
+
+                    alert(response.responseText);
+                }
             });
-
-            $('#listLoaiVuAn_Sua').val(response.MA_LoaiVA);
-            $('#NoiDung_VA_Sua').val(response.NoiDung_VA);
-            $('#Loai_HS_Sua').val(response.Loai_HS);
-
-            $('#modal-Update').modal('show');
-
-
-
-        },
-        error: function (response) {
-
-            alert(response.responseText);
+            return false;
+        };
+        function DateConverter(date) {
+            return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
         }
+
+        function CheckXoa(id) {
+            $.ajax({
+                url: "/HoSoVuAn/CheckXoa/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response == "true"){
+                        var result = confirm("Bạn chắc chắn muốn xóa?");
+                        if (result) {
+                            Xoa(id);
+                            location.reload();
+                        }
+                    }
+                    else
+                        return alert('Vụ án đã được xếp lịch, không thể xóa!')
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        };
+
+        function Xoa(id) {
+            $.ajax({
+                url: "/HoSoVuAn/xoa_HS1/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+             
+                },
+                error: function (response) {
+ 
+                }
+            });
+        };
+
+    $(function () {
+        $("#listNguyenDon").chosen({
+            placeholder_text: "Chọn nguyên đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+
+        $("#listBiDon").chosen({
+            placeholder_text: "Chọn bị đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+        $("#listNguyenDon_Sua").chosen({
+            placeholder_text: "Chọn nguyên đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+
+        $("#listBiDon_Sua").chosen({
+            placeholder_text: "Chọn bị đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+
     });
-    return false;
-    }
+
+
 
     //bat loi khoa ngoai khi xoa
     var loi = $(".TonTaiMa").val();
@@ -458,6 +531,8 @@
             $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
         });
     }
+
+
     </script>
 }
 

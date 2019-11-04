@@ -11,7 +11,8 @@ namespace NienLuan2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class NHANVIEN
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,6 +27,7 @@ namespace NienLuan2.Models
         public string MA_QNSD { get; set; }
         public string MA_PhongBan { get; set; }
         public string HoTen_NV { get; set; }
+        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
         public System.DateTime NamSinh_NV { get; set; }
         public bool GioiTinh_NV { get; set; }
         public string QueQuan_NV { get; set; }

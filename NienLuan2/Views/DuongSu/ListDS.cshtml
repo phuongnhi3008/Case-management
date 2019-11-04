@@ -79,14 +79,14 @@
                                 }
                             </td>
                             <td>
-                                @Html.ActionLink(@item.MA_DuongSu, "ChiTiet_DS", "DuongSu", new { @id = item.MA_DuongSu }, new { })
-                                @*@Html.DisplayFor(modelItem => item.MA_DuongSu)*@
+                                @*@Html.ActionLink(@item.MA_DuongSu, "ChiTiet_DS", "DuongSu", new { @id = item.MA_DuongSu }, new { })*@
+                                @Html.DisplayFor(modelItem => item.MA_DuongSu)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.HoTen_DS)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.NamSinh_DS)
+                                @Html.DisplayFor(modelItem => item.NamSinh_DS, "{dd/MM/yyyy}")
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.QueQuan_DS)
@@ -109,7 +109,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 |
-                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_DS1", new { id = item.MA_DuongSu })">
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_DuongSu');" href="">
 
                                     <i class="fas fa-trash"></i>
                                 </a>
@@ -137,29 +137,18 @@
                 <div class="box box-primary">
                     @using (Html.BeginForm("them_DS", "DuongSu", FormMethod.Post))
                     {
-                        <div class="modal-body" style="height:700px">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã đương sự :</label>
-                                    <input type="text" class="form-control" id="MA_DuongSu" name="MA_DuongSu" placeholder="Mã đương sự">
-                                </div>
-                            </div>
+                        <div class="modal-body" style="height:auto">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Họ tên :</label>
                                     <input type="text" class="form-control" id="HoTen_DS" name="HoTen_DS" placeholder="Họ tên">
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Loại đương sự :</label>
-                                    @Html.DropDownList("lds", null, new { @class = "form-control" })
-                                </div>
-                            </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="date" class="form-control" id="NamSinh_DS" name="NamSinh_DS">
+                                    <input type="date" class="form-control" id="NamSinh_DS" name="NamSinh_DS" value="@DateTime.Today.ToString("dd/MM/yyyy")">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -168,13 +157,17 @@
                                     <input type="text" class="form-control" id="DiaChi_DS" name="DiaChi_DS">
                                 </div>
                             </div>
+          
                             <div class="col-md-12">
-                           
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" id="GioiTinh_DS" name="GioiTinh_DS" for="exampleCheck1">Nữ</label>
+                                <div class="form-group form-check">
+                                    <span>
+                                        <label class="form-check-label" for="exampleCheck1">Nữ: </label>
+
+                                        <input type="checkbox" class="form-control form-check-input" id="GioiTinh_DS" name="GioiTinh_DS" style="width: 20px; height: 20px; display:inherit; margin: 0 0 0 12px">
+                                    </span>
                                 </div>
                             </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">CMND :</label>
@@ -218,26 +211,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="height:750px">
+            <div class="modal-body" style="height:auto">
                 <div class="box box-primary">
                     @using (Html.BeginForm("sua_DS1", "DuongSu", FormMethod.Post))
                     {
                         <div class="modal-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã số đương sự :</label>
-                                    <input type="text" class="form-control" id="txtId" name="MA_DuongSu" placeholder="Mã số đương sự">
+                                    <input type="text" class="form-control" id="txtId" name="MA_DuongSu" placeholder="Mã số đương sự" hidden>
                                     <label for="exampleInputEmail1">Họ tên đương sự :</label>
                                     <input type="text" class="form-control" id="txtTenDS" name="HoTen_DS" placeholder="Họ tên đương sự">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" id="GioiTinh_DS" name="GioiTinh_DS" for="exampleCheck1">Nữ</label>
+                                    <span>
+                                        <label class="form-check-label" for="exampleCheck1">Nữ: </label>
+
+                                        <input type="checkbox" class="form-control form-check-input" id="GioiTinh_DS_Sua" name="GioiTinh_DS" style="width: 20px; height: 20px; display:inherit; margin: 0 0 0 12px">
+                                    </span>
                                     <br />
-
-                                    <label for="exampleInputEmail1">Loại đương sự :</label>
-                                    @Html.DropDownList("lds", null, new { @class = "form-control", @id = "idListDuongSu" })
-
+                                 
                                     <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="date" class="form-control" id="txtNamSinh" name="NamSinh_DS">
+                                    <input type="date" class="form-control" id="txtNamSinh" name="NamSinh_DS" value="@DateTime.Today.ToString("dd/MM/yyyy")">
                                     <label for="exampleInputEmail1">Địa chỉ :</label>
                                     <input type="text" class="form-control" id="txtDiaChi" name="DiaChi_DS" placeholder="Địa chỉ">
                                     <label for="exampleInputEmail1">Quê quán :</label>
@@ -277,17 +269,8 @@
             $('#txtId').val(response.MA_DuongSu);
             $('#txtTenDS').val(response.HoTen_DS);
 
-           // $('#idListDuongSu').val(response.MA_DuongSu);
-            // document.getElementById('idListDuongSu').value = response.MA_DuongSu;
-
-            var dd = document.getElementById('idListDuongSu');
-            for (var i = 0; i < dd.options.length; i++) {
-                if (dd.options[i].value === response.MA_DuongSu) {
-                    dd.selectedIndex = i;
-                    break;
-                }
-            }
-
+            document.getElementById("GioiTinh_DS_Sua").checked = response.GioiTinh_DS;
+           
             $('#txtQueQuan').val(response.QueQuan_DS);
             $('#txtNamSinh').val(DateConverter(date));
             $('#txtDiaChi').val(response.DiaChi_DS);
@@ -314,6 +297,44 @@
            + "/" + d.getFullYear();
     }
 
+    function CheckXoa(id) {
+        $.ajax({
+            url: "/DuongSu/CheckXoa/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                if (response == "true") {
+                    var result = confirm("Bạn chắc chắn muốn xóa?");
+                    if (result) {
+                        Xoa(id);
+                        location.reload();
+                    }
+                }
+                else
+                    return alert('Đương sự đang thuộc hồ sơ, không thể xóa!')
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        return false;
+    };
+
+    function Xoa(id) {
+        $.ajax({
+            url: "/DuongSu/xoa_DS1/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+    };
 
     //bat loi khoa ngoai khi xoa
     var loi = $(".LoiKhoaNgoai").val();

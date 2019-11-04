@@ -11,7 +11,8 @@ namespace NienLuan2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class XETXU
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +22,8 @@ namespace NienLuan2.Models
         }
     
         public int MA_XetXu { get; set; }
-        public string Ngay_XetXu { get; set; }
+        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
+        public Nullable<System.DateTime> Ngay_XetXu { get; set; }
         public int Lan_XetXu { get; set; }
         public string MA_DiaDiem { get; set; }
         public string MA_HoSo { get; set; }

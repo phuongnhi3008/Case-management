@@ -35,7 +35,7 @@
             <PropertyRef Name="MA_ChiTietXX" />
           </Key>
           <Property Name="MA_ChiTietXX" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="STT_XX" Type="int" />
+          <Property Name="MA_XetXu" Type="int" />
           <Property Name="MA_NhanVien" Type="nvarchar" MaxLength="8" />
           <Property Name="MA_VaiTro" Type="nvarchar" MaxLength="5" />
         </EntityType>
@@ -66,7 +66,7 @@
             <PropertyRef Name="MA_DuongSu" />
           </Key>
           <Property Name="MA_DuongSu" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="MA_LoaiDS" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_LoaiDS" Type="nvarchar" MaxLength="5" />
           <Property Name="CMND" Type="nvarchar" MaxLength="12" Nullable="false" />
           <Property Name="HoTen_DS" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="NamSinh_DS" Type="date" Nullable="false" />
@@ -87,7 +87,7 @@
           <Property Name="NoiDung_VA" Type="nvarchar" MaxLength="350" />
           <Property Name="Loai_HS" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MA_VaiTro" Type="nvarchar" MaxLength="5" />
-          <Property Name="NgayNhan_HS" Type="nvarchar" MaxLength="50" />
+          <Property Name="NgayNhan_HS" Type="date" />
         </EntityType>
         <EntityType Name="HOTRO">
           <Key>
@@ -213,7 +213,7 @@
             <PropertyRef Name="MA_XetXu" />
           </Key>
           <Property Name="MA_XetXu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Ngay_XetXu" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ngay_XetXu" Type="date" />
           <Property Name="Lan_XetXu" Type="int" Nullable="false" />
           <Property Name="MA_DiaDiem" Type="nvarchar" MaxLength="5" />
           <Property Name="MA_HoSo" Type="nvarchar" MaxLength="5" />
@@ -843,7 +843,7 @@
             <PropertyRef Name="MA_DuongSu" />
           </Key>
           <Property Name="MA_DuongSu" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="MA_LoaiDS" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_LoaiDS" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="CMND" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="HoTen_DS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NamSinh_DS" Type="DateTime" Nullable="false" Precision="0" />
@@ -865,7 +865,7 @@
           <Property Name="NoiDung_VA" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Loai_HS" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MA_VaiTro" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="NgayNhan_HS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NgayNhan_HS" Type="DateTime" Precision="0" />
           <NavigationProperty Name="CHITIET_DS" Relationship="ModelNL2.chitietDS_HSVA2" FromRole="HOSO_VUAN" ToRole="CHITIET_DS" />
           <NavigationProperty Name="LOAI_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_LOAI_VUAN" FromRole="HOSO_VUAN" ToRole="LOAI_VUAN" />
           <NavigationProperty Name="NHANVIEN" Relationship="ModelNL2.FK_HOSO_VUAN_NHANVIEN" FromRole="HOSO_VUAN" ToRole="NHANVIEN" />
@@ -1017,7 +1017,7 @@
             <PropertyRef Name="MA_XetXu" />
           </Key>
           <Property Name="MA_XetXu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ngay_XetXu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ngay_XetXu" Type="DateTime" Precision="0" />
           <Property Name="Lan_XetXu" Type="Int32" Nullable="false" />
           <Property Name="MA_DiaDiem" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="MA_HoSo" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
@@ -1342,7 +1342,7 @@
               <MappingFragment StoreEntitySet="CHITIET_XX">
                 <ScalarProperty Name="MA_VaiTro" ColumnName="MA_VaiTro" />
                 <ScalarProperty Name="MA_NhanVien" ColumnName="MA_NhanVien" />
-                <ScalarProperty Name="MA_XetXu" ColumnName="STT_XX" />
+                <ScalarProperty Name="MA_XetXu" ColumnName="MA_XetXu" />
                 <ScalarProperty Name="MA_ChiTietXX" ColumnName="MA_ChiTietXX" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -1,4 +1,5 @@
-﻿using NienLuan2.Models;
+﻿using NienLuan2.Helper;
+using NienLuan2.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,8 @@ namespace NienLuan2.Controllers
         //}
         public ActionResult ListDS(string searchString, int? error, int page = 1, int pageSize = 5)
         {
-            ViewBag.lds = new SelectList(db.LOAI_DS.OrderBy(x => x.Ten_LoaiDS), "MA_LoaiDS", "Ten_LoaiDS");
             
-
-            if (error == 1)
+           if (error == 1)
                 ViewBag.Loi = 1;
 
             IEnumerable<DUONGSU> model = db.DUONGSUs;
@@ -39,36 +38,24 @@ namespace NienLuan2.Controllers
             return View(model.OrderByDescending(x => x.HoTen_DS).ToPagedList(page, pageSize));
         }
         public ActionResult them_DS()
-        {
-            ViewBag.lds = new SelectList(db.LOAI_DS.OrderBy(x => x.Ten_LoaiDS), "MA_LoaiDS", "Ten_LoaiDS");
-            
+        {          
             return View();
         }
 
         [HttpPost, ActionName("them_DS")]
         public ActionResult them_DS(DUONGSU ds, FormCollection form)
-        {
-            ViewBag.lds = new SelectList(db.LOAI_DS.OrderBy(x => x.Ten_LoaiDS), "MA_LoaiDS", "Ten_LoaiDS");
-            
-
-
-            if (db.DUONGSUs.Any(x => x.MA_DuongSu == ds.MA_DuongSu))
+        {               
+            ds.MA_DuongSu = UUID.GetUUID(5);
+            ds.MA_LoaiDS = "ND";
+            if (form["GioiTinh_DS"] != null)
             {
-                //ViewBag.error = "Mã hồ sơ này đã tồn tại!!!";
-                return RedirectToAction("ListDS", new { error = 1 });
+                if ((form["GioiTinh_DS"].ToString() == "on"))
+                    ds.GioiTinh_DS = true;
+                else
+                    ds.GioiTinh_DS = false;
             }
-
-            ds.MA_LoaiDS = form["lds"].ToString(); ;
-          
-
-            if (!ModelState.IsValid)
-                return View(ds);
-
             db.DUONGSUs.Add(ds);
-            db.SaveChanges();
-            var list_DS = from s in db.DUONGSUs select s;
-            ViewBag.lds = new SelectList(db.LOAI_DS.OrderBy(x => x.Ten_LoaiDS), "MA_LoaiDS", "Ten_LoaiDS");
-            
+            db.SaveChanges();    
             return RedirectToAction("ListDS");
         }
 
@@ -99,44 +86,47 @@ namespace NienLuan2.Controllers
         ///[ValidateAntiForgeryToken]
         public ActionResult sua_DS1(DUONGSU ds, FormCollection form, string id)
         {
-            ViewBag.lds = new SelectList(db.LOAI_DS.OrderBy(x => x.Ten_LoaiDS), "MA_LoaiDS", "Ten_LoaiDS");
-            
-
-            ds.MA_LoaiDS = form["lds"].ToString(); ;
-            
-            //hs.MA_HoSo = id;
-
-            if (!ModelState.IsValid)
-                return View(ds);
-
-            if (TryUpdateModel(ds, "", new string[] { "MA_DuongSu", "HoTen_DS" }))
+            if (form["GioiTinh_DS"] != null)
             {
-                try
-                {
-
-                    db.Entry(ds).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                }
-                catch (RetryLimitExceededException)
-                {
-                    ModelState.AddModelError("", "Lỗi");
-                }
-
+                if ((form["GioiTinh_DS"].ToString() == "on"))
+                    ds.GioiTinh_DS = true;
+                else
+                    ds.GioiTinh_DS = false;
             }
+            else ds.GioiTinh_DS = false;
+
+            DUONGSU newDuongSu = db.DUONGSUs.FirstOrDefault(nnv => nnv.MA_DuongSu == ds.MA_DuongSu);
+     
+            newDuongSu.CMND = ds.CMND;
+            newDuongSu.HoTen_DS = ds.HoTen_DS;
+            newDuongSu.NamSinh_DS = ds.NamSinh_DS;
+            newDuongSu.QueQuan_DS = ds.QueQuan_DS;
+            newDuongSu.DiaChi_DS = ds.DiaChi_DS;
+            newDuongSu.SoDienThoai_DS = ds.SoDienThoai_DS;
+            newDuongSu.GioiTinh_DS = ds.GioiTinh_DS;
+
+            db.SaveChanges();
+
+
+
             return RedirectToAction("ListDS");
         }
-        public ActionResult xoa_DS(string id)
+        public JsonResult CheckXoa(string id)
         {
-            DUONGSU duongsu = db.DUONGSUs.SingleOrDefault(s => s.MA_DuongSu == id);
-            if (duongsu == null)
+            try
             {
-                Response.StatusCode = 404;
-                return null;
+                CHITIET_DS chiTietDuongSu = db.CHITIET_DS.SingleOrDefault(s => s.MA_DuongSu == id);
+                if (chiTietDuongSu == null)
+                    return Json("true", JsonRequestBehavior.AllowGet);
+                else
+                    return Json("false", JsonRequestBehavior.AllowGet);
             }
-            return View(duongsu);
-        }
+            catch
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
 
+        }
         public ActionResult xoa_DS1(string id)
         {
             DUONGSU duongsu = db.DUONGSUs.SingleOrDefault(s => s.MA_DuongSu == id);

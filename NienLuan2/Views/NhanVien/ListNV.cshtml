@@ -73,7 +73,7 @@
                                 }
                             </td>
                             <td>
-                                @Html.ActionLink(@item.MA_NhanVien, "chitiet_NV", "NhanVien", new { @id = item.MA_NhanVien },new { })
+                                @Html.ActionLink(@item.MA_NhanVien, "chitiet_NV", "NhanVien", new { @id = item.MA_NhanVien }, new { })
                                 @*@Html.DisplayFor(modelItem => item.MA_NhanVien)*@
                             </td>
                             <td>
@@ -97,7 +97,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 |
-                                <a class="item btn_Xoa btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_NV1", new { id = item.MA_NhanVien })">
+                                <a class="item btn_Xoa btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_NhanVien')" href="">
 
                                     <i class="fas fa-trash"></i>
                                 </a>
@@ -125,13 +125,7 @@
                 <div class="box box-primary">
                     @using (Html.BeginForm("them_NV", "NhanVien", FormMethod.Post))
                     {
-                        <div class="modal-body" style="height:940px">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã nhân viên :</label>
-                                    <input type="text" class="form-control" id="MA_NhanVien" name="MA_NhanVien" placeholder="Mã nhân viên">
-                                </div>
-                            </div>
+                        <div class="modal-body" style="height:auto">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Họ tên :</label>
@@ -159,19 +153,17 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="date" class="form-control" id="NamSinh_NV_Them" name="NamSinh_NV" >
+                                    <input type="date" class="form-control" id="NamSinh_NV_Them" name="NamSinh_NV">
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                @*<div class="form-group">
-                                    <label for="exampleInputEmail1">Nữ :</label>
-                                    <input type="radio" class="form-check-input" id="GioiTinh_NV" name="GioiTinh_NV" >
-                                </div>*@
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" id="GioiTinh_NV" name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
+                                <div class="form-group form-check">
+                                    <span>
+                                        <label class="form-check-label" for="exampleCheck1">Nữ: </label>
+
+                                        <input type="checkbox" class="form-control form-check-input" id="GioiTinh_NV" name="GioiTinh_NV" style="width: 20px; height: 20px; display:inherit; margin: 0 0 0 12px">
+                                    </span>
                                 </div>
-                                <br />
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -229,13 +221,14 @@
                         <div class="modal-body">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Mã số nhân viên :</label>
-                                    <input type="text" class="form-control" id="txtId" name="MA_NhanVien" placeholder="Mã nhân viên">
+    
+                                    <input type="text" class="form-control" id="txtId" name="MA_NhanVien" placeholder="Mã nhân viên" hidden>
                                     <label for="exampleInputEmail1">Họ tên nhân viên :</label>
                                     <input type="text" class="form-control" id="txtTenNV" name="HoTen_NV" placeholder="Họ tên nhân viên">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-
-                                    <label class="form-check-label" id="GioiTinh_NV" name="GioiTinh_NV" for="exampleCheck1">Nữ</label>
+                                    <span>
+                                        <label class="form-check-label" for="exampleCheck1">Nữ: </label>
+                                        <input type="checkbox" class="form-control form-check-input" id="GioiTinh_NV_Sua" name="GioiTinh_NV" style="width: 20px; height: 20px; display:inherit; margin: 0 0 0 12px">
+                                    </span>
                                     <br />
                                     <label for="exampleInputEmail1">Chức vụ :</label>
                                     @Html.DropDownList("cv1", null, new { @class = "form-control" })
@@ -253,7 +246,7 @@
                                     <input type="text" class="form-control" id="txtcmnd" name="CMND_NV" placeholder="Số CMND">
                                     <label for="exampleInputEmail1">Mật khẩu :</label>
                                     <input type="text" class="form-control" id="txtmatkhau" name="MatKhau" placeholder="Mật khẩu">
-                                   
+
                                 </div>
                             </div>
 
@@ -275,130 +268,178 @@
 
     <script type="text/javascript">
         //sua
-    function GetDetails(id) {
-    $.ajax({
+        function GetDetails(id) {
+            $.ajax({
 
-        url: "/NhanVien/Edit_NV/" + id,
-        typr: "GET",
-        contentType: "application/json;charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
-   
-            $('#txtId').val(response.MA_NhanVien);
-            $('#txtTenNV').val(response.HoTen_NV);
-            $('#qsd1').val(response.MA_QNSD);
-            $('#pb1').val(response.MA_PhongBan);
-            $('#cv1').val(response.MA_ChucVu);
-            $('#txtGioiTinh').val(response.GioiTinh_NV);
-            document.getElementById("NamSinh_NV_Sua").value = DateConverter(date);
-            $('#txtquequan').val(response.QueQuan_NV);
-            $('#txtcmnd').val(response.CMND_NV);
-            $('#txtsdt').val(response.SoDienThoai_NV);
-            $('#txtmatkhau').val(response.MatKhau);
-            $('#txtavatar').val(response.Avatar);
-            $('#modal-Update').modal('show');
-          
-        },
-        error: function (response) {
+                url: "/NhanVien/Edit_NV/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    var date = new Date(parseInt((response.NamSinh_NV).match(/\d+/)[0]));
 
-            alert(response.responseText);
-        }
-    });
-    return false;
-    }
-    function DateConverter(date) {
-        //var displayDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
-       
-    }
-    function dateFormat(d) {
-        return ((d.getMonth() + 1) + "").padStart(2, "0")
-           + "/" + (d.getDate() + "").padStart(2, "0")
-           + "/" + d.getFullYear();
-    }
-    //bat loi khoa ngoai khi xoa
-    var loi = $(".TonTaiMa").val();
-    if (loi === '1')
-        alert("Mã nhân viên này đã tồn tại!!!");
+                    $('#txtId').val(response.MA_NhanVien);
+                    $('#txtTenNV').val(response.HoTen_NV);
+                    $('#qsd1').val(response.MA_QNSD);
+                    $('#pb1').val(response.MA_PhongBan);
+                    $('#cv1').val(response.MA_ChucVu);
 
 
-    //bat loi khi them
+                    document.getElementById("GioiTinh_NV_Sua").checked = response.GioiTinh_NV;
 
-    $(".btn_them").on('click', function () {
-        var maNV = $('#MA_NhanVien').val();
-        var TenNV = $('#HoTen_NV').val();
-        var NamSinh = $('#NamSinh_NV').val();
-        var QueQuan = $('#QueQuan_NV').val();
-        var cmnd = $('#CMND_NV').val();
-        var Sdt = $('#SoDienThoai_NV').val();
-        var MatKhau = $('#MatKhau').val();
+                    document.getElementById("NamSinh_NV_Sua").value = DateConverter(date);
+                    $('#txtquequan').val(response.QueQuan_NV);
+                    $('#txtcmnd').val(response.CMND_NV);
+                    $('#txtsdt').val(response.SoDienThoai_NV);
+                    $('#txtmatkhau').val(response.MatKhau);
+                    $('#txtavatar').val(response.Avatar);
+                    $('#modal-Update').modal('show');
 
-        if (maNV === '')
-        {
-            alert("Mã nhân viên không được rỗng!!");
+                },
+                error: function (response) {
+
+                    alert(response.responseText);
+                }
+            });
             return false;
         }
+        function DateConverter(date) {
+            //var displayDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+            return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
 
-        if (maNV.length > 8)
-        {
-            alert("Mã nhân viên không được lớn hơn 8 ký tự!!");
-            return false;
         }
-
-        if (TenNV === '') {
-            alert("Tên nhân viên không được rỗng!!");
-            return false;
-        }
-
-        if (TenNV.length > 50) {
-            alert("Tên nhân viên không được lớn hơn 50 ký tự!!");
-            return false;
+        function dateFormat(d) {
+            return ((d.getMonth() + 1) + "").padStart(2, "0")
+               + "/" + (d.getDate() + "").padStart(2, "0")
+               + "/" + d.getFullYear();
         }
 
-        if (NamSinh === '') {
-            alert("Năm sinh không được rỗng!!");
+        function CheckXoa(id) {
+            $.ajax({
+                url: "/NhanVien/CheckXoa/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response == "true") {
+                        var result = confirm("Bạn chắc chắn muốn xóa?");
+                        if (result) {
+                            Xoa(id);
+                            location.reload();
+                        }
+                    }
+                    else
+                        return alert('Nhân viên đang thuộc hồ sơ, không thể xóa!')
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
             return false;
-        }
+        };
 
-        if (QueQuan === '') {
-            alert("Quê quán không được rỗng!!");
-            return false;
-        }
+        function Xoa(id) {
+            $.ajax({
+                url: "/NhanVien/xoa_NV1/" + id,
+                typr: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
 
-        if (QueQuan.length > 250) {
-            alert("Quê quán không được lớn hơn 250 ký tự!!");
-            return false;
-        }
-        if (cmnd === '') {
-            alert("Số CMND không được rỗng!!");
-            return false;
-        }
+                },
+                error: function (response) {
 
-        if (cmnd.length > 12) {
-            alert("Số CMND không được lớn hơn 12 ký tự!!");
-            return false;
-        }
-        if (Sdt === '') {
-            alert("Số điện thoại không được rỗng!!");
-            return false;
-        }
+                }
+            });
+        };
 
-        if (Sdt.length > 11) {
-            alert("Số điện thoại không được lớn hơn 11 ký tự!!");
-            return false;
-        }
-        if (MatKhau === '') {
-            alert("Mật khẩu không được rỗng!!");
-            return false;
-        }
 
-        if (MatKhau.length > 50) {
-            alert("Mật khẩu không được lớn hơn 50 ký tự!!");
-            return false;
-        }
-    });
-</script>
+
+
+
+
+
+
+        //bat loi khoa ngoai khi xoa
+        var loi = $(".TonTaiMa").val();
+        if (loi === '1')
+            alert("Mã nhân viên này đã tồn tại!!!");
+
+
+        //bat loi khi them
+
+        $(".btn_them").on('click', function () {
+            var maNV = $('#MA_NhanVien').val();
+            var TenNV = $('#HoTen_NV').val();
+            var NamSinh = $('#NamSinh_NV').val();
+            var QueQuan = $('#QueQuan_NV').val();
+            var cmnd = $('#CMND_NV').val();
+            var Sdt = $('#SoDienThoai_NV').val();
+            var MatKhau = $('#MatKhau').val();
+
+            if (maNV === '') {
+                alert("Mã nhân viên không được rỗng!!");
+                return false;
+            }
+
+            if (maNV.length > 8) {
+                alert("Mã nhân viên không được lớn hơn 8 ký tự!!");
+                return false;
+            }
+
+            if (TenNV === '') {
+                alert("Tên nhân viên không được rỗng!!");
+                return false;
+            }
+
+            if (TenNV.length > 50) {
+                alert("Tên nhân viên không được lớn hơn 50 ký tự!!");
+                return false;
+            }
+
+            if (NamSinh === '') {
+                alert("Năm sinh không được rỗng!!");
+                return false;
+            }
+
+            if (QueQuan === '') {
+                alert("Quê quán không được rỗng!!");
+                return false;
+            }
+
+            if (QueQuan.length > 250) {
+                alert("Quê quán không được lớn hơn 250 ký tự!!");
+                return false;
+            }
+            if (cmnd === '') {
+                alert("Số CMND không được rỗng!!");
+                return false;
+            }
+
+            if (cmnd.length > 12) {
+                alert("Số CMND không được lớn hơn 12 ký tự!!");
+                return false;
+            }
+            if (Sdt === '') {
+                alert("Số điện thoại không được rỗng!!");
+                return false;
+            }
+
+            if (Sdt.length > 11) {
+                alert("Số điện thoại không được lớn hơn 11 ký tự!!");
+                return false;
+            }
+            if (MatKhau === '') {
+                alert("Mật khẩu không được rỗng!!");
+                return false;
+            }
+
+            if (MatKhau.length > 50) {
+                alert("Mật khẩu không được lớn hơn 50 ký tự!!");
+                return false;
+            }
+        });
+    </script>
 }
 
 

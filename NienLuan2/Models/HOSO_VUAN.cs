@@ -11,7 +11,8 @@ namespace NienLuan2.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class HOSO_VUAN
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -29,7 +30,8 @@ namespace NienLuan2.Models
         public string NoiDung_VA { get; set; }
         public string Loai_HS { get; set; }
         public string MA_VaiTro { get; set; }
-        public string NgayNhan_HS { get; set; }
+        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
+        public Nullable<System.DateTime> NgayNhan_HS { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIET_DS> CHITIET_DS { get; set; }

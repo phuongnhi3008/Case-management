@@ -43,20 +43,9 @@
                             Tên vụ án
                         </th>
                         <th>
-                            Tên đương sự
-                        </th>
-                        <th>
                             Thẩm phán chủ tọa
                         </th>
-                        <th>
-                            Hội đồng
-                        </th>
-                        <th>
-                            Kiểm sát
-                        </th>
-                        <th>
-                            Thư ký
-                        </th>
+
                         <th>
                             Cấp xét xử
                         </th>
@@ -71,89 +60,29 @@
                             Thao tác
                         </th>
                     </tr>
+                    @{
+                        int count = 1;
+                    }
                     @foreach (var item in Model.listXetXu)
                     {
+
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.MA_XetXu)
+                                @count
+                                @{
+                                    count++;
+                                }
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Ngay_XetXu)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
-                            </td>
-                       @{
-                           try
-                           {
-                               List<CHITIET_DS> listDuongSu = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo)).ToList();
-                               var showListDuongSu = "";
-                               for (int i = 0; i < listDuongSu.Count; i++)
-                               {
-                                   showListDuongSu += listDuongSu[i].DUONGSU.HoTen_DS;
-                                   if (i != listDuongSu.Count - 1)
-                                   {
-                                       showListDuongSu += ", ";
-                                   }
-                               }
-                                    <td>
-                                        @Html.DisplayFor(modelItem => showListDuongSu)
-                                    </td>
-                                }
-                                catch (Exception)
-                                {
-                                    <td></td>
-                                }
-                            }
+                                @Html.ActionLink(@item.HOSO_VUAN.Ten_VuAn.ToString(), "ChiTiet_XX", "XetXu", new { @id = item.MA_XetXu }, new { })
+            
+                            </td>                      
                             <td>
                                 @Html.DisplayFor(modelItem => item.HOSO_VUAN.NHANVIEN.HoTen_NV)
-                            </td>
-                            @{
-                                try
-                                {
-                                    List<CHITIET_XX> listHoiDong = Model.listChiTietXetXu.Where(x => (x.MA_XetXu == item.MA_XetXu) && (x.MA_VaiTro == "C4")).ToList();
-                                    var showListHoiDong = "";
-                                    for (int i = 0; i < listHoiDong.Count; i++)
-                                    {
-                                        showListHoiDong += listHoiDong[i].NHANVIEN.HoTen_NV;
-                                        if (i != listHoiDong.Count - 1)
-                                        {
-                                            showListHoiDong += ", ";
-                                        }
-                                    }
-                                    <td>
-                                        @Html.DisplayFor(modelItem => showListHoiDong)
-                                    </td>
-                                }
-                                catch (Exception)
-                                {
-                                    <td></td>
-                                }
-                            }
-                            @{
-                                try
-                                {
-                                    var kiemsat = Model.listChiTietXetXu.Where(x => (x.MA_XetXu == item.MA_XetXu) && (x.MA_VaiTro == "C3")).FirstOrDefault();
-                                    <td>
-                                        @Html.DisplayFor(modelItem => kiemsat.NHANVIEN.HoTen_NV)
-                                    </td>
-                                }
-                                catch (Exception)
-                                {
-                                    <td></td>
-                                }
-                                try
-                                {
-                                    var thuky = Model.listChiTietXetXu.Where(x => (x.MA_XetXu == item.MA_XetXu) && (x.MA_VaiTro == "C1")).FirstOrDefault();
-                                    <td>
-                                        @Html.DisplayFor(modelItem => thuky.NHANVIEN.HoTen_NV)
-                                    </td>
-                                }
-                                catch (Exception)
-                                {
-                                    <td></td>
-                                }
-                            }
+                            </td>                     
                             <td>
                                 @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
                             </td>
@@ -162,16 +91,13 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
-                            </td>
-          
+                            </td>         
                             <td>
-                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_XetXu')">
-
+                                <button class="item btn_Sua btn btn-success btn-sm" onclick="CheckChinhSua('@item.MA_XetXu')">
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 |
-                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoaLXX1", new { id = item.MA_XetXu })">
-
+                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_XetXu');" href="">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
@@ -213,13 +139,13 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Tên vụ án: </label>
-                                    @Html.DropDownList("hs", null, new { @class = "form-control", @required= "required" })
+                                    @Html.DropDownList("hs", null, new { @class = "form-control", @required= "required", @id = "listHoSo" })
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Hội đồng: </label>
-                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @required = "required" })
+                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @required = "required", @id = "listHoiDong" })
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -259,4 +185,264 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade"  id="modal-Update" tabindex="-1" role="dialog" aria-labelledby="examplemodallabel" aria-hidden="true" style="height: 100%;overflow-y: auto;">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh sửa lịch xét xử</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary">
+                    @using (Html.BeginForm("Edit_XX1", "XetXu", FormMethod.Post))
+                    {
+                        <div class="modal-body" style="height:auto">
+                            <input type="text" class="form-control" id="MA_XetXu_Sua" name="MA_XetXu" hidden>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Ngày xét xử: </label>
+                                    <input type="date" class="form-control" id="Ngay_XetXu_Sua" name="Ngay_XetXu" value="@DateTime.Today.ToString("dd/MM/yyyy")" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Tên vụ án: </label>
+                                    @Html.DropDownList("hs", null, new { @class = "form-control", @disable = "disabled", @id = "listHoSoVuAn_Sua", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Lần xét xử: </label>
+                                    <input type="text" class="form-control" id="Lan_XetXu_Sua" name="Lan_XetXu" placeholder="Lần xét xử" disabled="disabled">
+                                </div>
+                            </div>
+                       
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Hội đồng: </label>
+                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @required = "required", @id = "listHoiDong_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Kiểm sát: </label>
+                                    @Html.DropDownList("ks", null, new { @class = "form-control", @required = "required", @id = "listKiemSat_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Thư ký: </label>
+                                    @Html.DropDownList("tk", null, new { @class = "form-control", @required = "required", @id = "listThuKy_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Cấp xét xử: </label>
+                                    @Html.DropDownList("cxx", null, new { @class = "form-control", @required = "required", @disable = "disabled", @id = "listCapXetXu_Sua" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleinputemail1">Địa điểm :</label>
+                                    @Html.DropDownList("dd", null, new { @class = "form-control", @required = "required", @id = "listDiaDiem_Sua" })
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+<script src="~/Content/Chosen/chosen.jquery.min.js"></script>
+<link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    function CheckChinhSua(id) {
+        $.ajax({
+            url: "/XetXu/CheckChinhSua/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                if (response == "true") {
+                    GetDetails(id);
+                }
+                else
+                    return alert('Vụ án đã được xét xử, không thể chỉnh sửa!')
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        return false;
+    };
+
+
+
+
+
+     function GetDetails(id) {
+        $.ajax({
+            url: "/XetXu/Edit_XX/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                $('#MA_XetXu_Sua').val(response.MA_XetXu);
+                $('#listHoSoVuAn_Sua').val(response.MA_HoSo);
+                $('#Lan_XetXu_Sua').val(response.Lan_XetXu);
+ 
+                var listSelectedHoiDong = new Array();
+                $("#listHoiDong_Sua option:selected").prop("selected", false);
+                $.getJSON('@Url.Action("GetListHoiDong")', { maXetXu: id }, function (actions) {
+                    if (actions != null && !jQuery.isEmptyObject(actions)) {
+                        $.each(actions, function (index, action) {
+                            listSelectedHoiDong[index] = action.Value;
+                            $("#listHoiDong_Sua option[value='" + listSelectedHoiDong[index] + "']").prop("selected", true);
+                            $('#listHoiDong_Sua').trigger('chosen:updated');
+                        });
+                    };
+                });
+
+                $("#listDiaDiem_Sua option[value='" + response.MA_DiaDiem + "']").prop("selected", true);
+                $("#listCapXetXu_Sua option[value='" + response.MA_CapXetXu + "']").prop("selected", true);
+                $.getJSON('@Url.Action("GetKiemSat")', { maXetXu: id }, function (actions) {
+                    if (actions != null && !jQuery.isEmptyObject(actions)) {
+                        $("#listKiemSat_Sua option[value='" + actions + "']").prop("selected", true);
+
+ 
+                    };
+                });
+
+                $.getJSON('@Url.Action("GetThuKy")', { maXetXu: id }, function (actions) {
+                    if (actions != null && !jQuery.isEmptyObject(actions)) {
+                        $("#listThuKy_Sua option[value='" + actions + "']").prop("selected", true);
+
+                    };
+                });
+                   
+                $.getJSON('@Url.Action("GetNgayNhanHoSo")', { maHoSo: response.MA_HoSo }, function (actions) {
+                    if (actions != null && !jQuery.isEmptyObject(actions)) {
+                        var dateMin = new Date(parseInt((actions).match(/\d+/)[0]));
+                        document.getElementById("Ngay_XetXu_Sua").min = DateConverterCongMot(dateMin);
+                    };
+                });
+
+                var dateValue = new Date(parseInt((response.Ngay_XetXu).match(/\d+/)[0]));
+                $("#Ngay_XetXu_Sua").val(DateConverter(dateValue));
+                $('#modal-Update').modal('show');
+
+
+
+            },
+            error: function (response) {
+
+                alert(response.responseText);
+            }
+        });
+        return false;
+    };
+
+    function CheckXoa(id) {
+        $.ajax({
+            url: "/XetXu/CheckXoa/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                if (response == "true") {
+                    var result = confirm("Bạn chắc chắn muốn xóa?");
+                    if (result) {
+                        Xoa(id);
+                        location.reload();
+                    }
+                }
+                else
+                    return alert('Vụ án đã có kết quả xét xử, không thể xóa!')
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        return false;
+    };
+
+    function Xoa(id) {
+        $.ajax({
+            url: "/XetXu/xoaLXX1/" + id,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+    };
+
+    $(function () {
+        $("#listHoiDong").chosen({
+            placeholder_text: "Chọn hội đồng ...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+        $("#listHoiDong_Sua").chosen({
+            placeholder_text: "Chọn hội đồng ...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+    });
+
+    $('#listHoSo').change(function () {
+        var selectedHoSo = $("#listHoSo").val();
+        if (selectedHoSo != null && selectedHoSo != '') {
+            $.getJSON('@Url.Action("GetNgayNhanHoSo")', { maHoSo: selectedHoSo }, function (actions) {
+                if (actions != null && !jQuery.isEmptyObject(actions)) {             
+                    var date = new Date(parseInt((actions).match(/\d+/)[0]));
+                    //$("#Ngay_XetXu").min = DateConverter(date);
+                    document.getElementById("Ngay_XetXu").min = DateConverterCongMot(date)
+                    $("#Ngay_XetXu").val(DateConverterCongMot(date));
+                };
+            });
+        }
+    });
+ 
+    function DateConverter(date) {
+        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
+    }
+
+    function DateConverterCongMot(date) {
+        //var displayDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        var soNgay = date.getDate() + 1;
+        return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + soNgay).substr(-2, 2);
+    }
+
+    $.getJSON('@Url.Action("GetNgayNhanHoSo")', { maHoSo: $("#listHoSo").val() }, function (actions) {
+        if (actions != null && !jQuery.isEmptyObject(actions)) {
+            var date = new Date(parseInt((actions).match(/\d+/)[0]));
+            //$("#Ngay_XetXu").min = DateConverter(date);
+            document.getElementById("Ngay_XetXu").min = DateConverterCongMot(date)
+            $("#Ngay_XetXu").val(DateConverterCongMot(date));
+        };
+    });
+
+
+    </script>
+}
 
