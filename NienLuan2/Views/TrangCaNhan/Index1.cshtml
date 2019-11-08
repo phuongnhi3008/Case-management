@@ -20,7 +20,7 @@
                 <div class="card-body">
                     @using (Html.BeginForm("ChangeAvatar", "TrangCaNhan", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-                        <label class="img-responsive"><img class="card-img" src="@Url.Content("~/Content/images" + Model.Avatar) " alt="Avatar" id="file" height="117" width="100" /><input type="file" style="display: none;" id="File" name="File"></label>
+                        <label class="img-responsive"><img class="card-img" src="@Url.Content("~/Content/images" + Model.Avatar) " alt="Avatar" id="fileImg" height="117" width="100"  /> <input type="file" style="display: none;" id="fileInput" name="File"></label>
                         <h3 class="TrangCaNhan-username text-center">@Model.HoTen_NV</h3>
                         <p class="text-muted text-center">@Model.CHUCVU.TEN_ChucVu</p>
                         <button class="btn btn-primary btn-block" type="submit" name="submit" value="upload">Lưu</button>
@@ -167,7 +167,16 @@
                                         return true
                                     }
                                 } 
-                            }
+                        }
+
+                        $('#fileInput').change(function () {
+
+                            var fileInput = document.getElementById('fileInput').files[0].name;                     
+                            var fileImg = document.getElementById('fileImg');
+                            const baseUrl = "http://localhost:59885/";
+                            fileImg.src = baseUrl + "Content\\" + fileInput;
+                        });
+                   
 
     </script>
 }

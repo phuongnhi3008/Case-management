@@ -23,8 +23,7 @@ namespace NienLuan2.Controllers
         //}
         public ActionResult ListHS(string searchString, int? error, int page = 1, int pageSize = 10)
         {
-            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
-            ViewBag.tths = new SelectList(db.TRANGTHAI_HS.OrderBy(x => x.Ten_TT), "MA_TrangThai", "Ten_TT");
+            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");        
             ViewBag.vtnv = new SelectList(db.VAITRO_NV.OrderBy(x => x.Ten_VT), "MA_VaiTro", "Ten_VT");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
@@ -65,7 +64,7 @@ namespace NienLuan2.Controllers
             }
 
             hs.MA_LoaiVA = form["lva"].ToString();
-            hs.MA_TrangThai = form["tths"].ToString();
+            hs.MA_TrangThai = "01";
             hs.MA_NhanVien = form["mnv"].ToString();
 
             if (!ModelState.IsValid)

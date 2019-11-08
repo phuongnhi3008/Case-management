@@ -12,21 +12,19 @@ namespace NienLuan2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ACTION
+    public partial class DANHMUC_CHUCNANG
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ACTION()
+        public DANHMUC_CHUCNANG()
         {
-            this.SUB_MENU = new HashSet<SUB_MENU>();
+            this.CHUCNANGs = new HashSet<CHUCNANG>();
         }
     
-        public string MA_Action { get; set; }
-        public string Ten_Action_code { get; set; }
-        public string Ten_Action_Viet { get; set; }
         public string MA_Controller { get; set; }
+        public string Ten_Controller_code { get; set; }
+        public string Ten_Controller_VietSub { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SUB_MENU> SUB_MENU { get; set; }
-        public virtual CONTROLLER CONTROLLER { get; set; }
+        public virtual ICollection<CHUCNANG> CHUCNANGs { get; set; }
     }
 }

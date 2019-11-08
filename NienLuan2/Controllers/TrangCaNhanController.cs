@@ -1,4 +1,5 @@
-﻿using NienLuan2.Models;
+﻿using NienLuan2.Helper;
+using NienLuan2.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.UI.WebControls;
 
 namespace NienLuan2.Controllers
@@ -28,20 +30,22 @@ namespace NienLuan2.Controllers
             else
                 return View(nv);
         }
-
+       
         [HttpPost]
         public ActionResult ChangeAvatar(HttpPostedFileBase file)
         {
             NHANVIEN nv = (NHANVIEN)Session["TaiKhoan"];
             //string[] filename = file.FileName.Split('.');
-            string newPath = Path.Combine(Server.MapPath("~/Content/images" + nv.MA_NhanVien + ".png"));
+            string newPath = Path.Combine(Server.MapPath("~/Content/images" + file.FileName + ".png"));
             file.SaveAs(newPath);
             NHANVIEN nv1 = db.NHANVIENs.FirstOrDefault(avt => avt.MA_NhanVien == nv.MA_NhanVien);
-            nv1.Avatar = nv.MA_NhanVien + ".png";
+            nv1.Avatar = file.FileName + ".png";
             db.SaveChanges();
-            return RedirectToAction("Index1", "TrangCaNhan");
+            Session["TaiKhoan"] = nv1;
+            return RedirectToAction("Index1",  "TrangCaNhan" );
         }
 
+       
         public JsonResult ChangePassword(string id)
         {
             db.Configuration.ProxyCreationEnabled = false;

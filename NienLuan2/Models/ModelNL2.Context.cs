@@ -27,12 +27,12 @@ namespace NienLuan2.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ACTION> ACTIONs { get; set; }
         public virtual DbSet<CAPXETXU> CAPXETXUs { get; set; }
         public virtual DbSet<CHITIET_DS> CHITIET_DS { get; set; }
         public virtual DbSet<CHITIET_XX> CHITIET_XX { get; set; }
+        public virtual DbSet<CHUCNANG> CHUCNANGs { get; set; }
         public virtual DbSet<CHUCVU> CHUCVUs { get; set; }
-        public virtual DbSet<CONTROLLER> CONTROLLERs { get; set; }
+        public virtual DbSet<DANHMUC_CHUCNANG> DANHMUC_CHUCNANG { get; set; }
         public virtual DbSet<DIADIEM_XX> DIADIEM_XX { get; set; }
         public virtual DbSet<DUONGSU> DUONGSUs { get; set; }
         public virtual DbSet<HOSO_VUAN> HOSO_VUAN { get; set; }

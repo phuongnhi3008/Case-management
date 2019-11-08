@@ -29,7 +29,7 @@
                     </div>
                 </div>
             }
-          
+
         </div>
 
         <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
@@ -37,59 +37,62 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" cellspacing="0">
-                        @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.Ten_TT))
-                        {
-                            <tr class="group-header" data-toggle="collapse">
-                                <td colspan="6">
-                                    <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;@group.Key</span></i>
-                                </td>
-                            </tr>                    
-                    <tr>
-                       
-                        <th>
-                            Mã số hồ sơ
-                        </th>
-                        <th>
-                            Tên vụ án
-                        </th>
-                        <th width="100">
-                            Ngày nhận
-                        </th>
-                        <th>
-                            Nguyên đơn
-                        </th>
-                        <th>
-                            Bị đơn
-                        </th>
-                        <th>
-                            Loại vụ án
-                        </th>
-                        <th>
-                            Trạng thái HS
-                        </th>
-                        <th>
-                            Thẩm phán
-                        </th>
-                        <th>
-                            Thao tác
-                        </th>
-                        <th></th>
-                    </tr>
-
-                    foreach (var item in group)
+                    @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.Ten_TT ).OrderBy(item => item.Key))
                     {
-                        <tr >                          
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MA_HoSo)
-                                @*@Html.ActionLink(@item.MA_HoSo, "ChiTiet_HS", "HoSoVuAn", null)*@
+                        <tr class="group-header" data-toggle="collapse">
+                            <td colspan="6">
+                                <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;@group.Key</span></i>
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Ten_VuAn)
-                            </td>
-                            <td width="100">
-                                @Html.DisplayFor(modelItem => item.NgayNhan_HS)
-                            </td>
-                            
+                        </tr>
+                            <tr>
+
+                                <th>
+                                    Mã số hồ sơ
+                                </th>
+                                <th>
+                                    Tên vụ án
+                                </th>
+                                <th width="100">
+                                    Ngày nhận
+                                </th>
+                                <th>
+                                    Nguyên đơn
+                                </th>
+                                <th>
+                                    Bị đơn
+                                </th>
+                                <th>
+                                    Loại vụ án
+                                </th>
+                                <th>
+                                    Trạng thái HS
+                                </th>
+                                <th>
+                                    Thẩm phán
+                                </th>
+                                <th>
+                                    Ghi chú
+                                </th>
+                                <th>
+                                    Thao tác
+                                </th>
+                                <th></th>
+                            </tr>
+
+                        foreach (var item in group)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MA_HoSo)
+                                    @*@Html.ActionLink(@item.MA_HoSo, "ChiTiet_HS", "HoSoVuAn", null)*@
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ten_VuAn)
+                                </td>
+                                <td width="100">
+                                    @Html.DisplayFor(modelItem => item.NgayNhan_HS)
+                                </td>
+
                                 @{
                                     try
                                     {
@@ -132,32 +135,34 @@
                                     {
                                     }
                                 }
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TRANGTHAI_HS.Ten_TT)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
-                            </td>
-                            <td>
-                                <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TRANGTHAI_HS.Ten_TT)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoiDung_VA)
+                                </td>
+                                <td>
+                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
 
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                |
-                                <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
-                     
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                                    }
-                                }
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    |
+                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
+
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                                        }                                   }
 
                 </table>
-                @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action( "ListHS", new { page, @searchString = @ViewBag.SearchString }))
+                @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))
             </div>
         </div>
     </div>
@@ -174,7 +179,7 @@
             </div>
             <div class="modal-body">
                 <div class="box box-primary">
-                    @using (Html.BeginForm("them_HS", "HoSoVuAn", FormMethod.Post))
+                    @using (Html.BeginForm("them_HS", "HoSoVuAn", FormMethod.Post, new { id = "themForm" }))
                     {
                         <div class="modal-body" style="height:730px">
 
@@ -183,11 +188,11 @@
                                     <label for="exampleInputEmail1">Ngày nhận :</label>
                                     <input type="text" class="form-control" id="NgayNhan_HS" name="NgayNhan_HS" value="@DateTime.Today.ToString("dd/MM/yyyy")" readonly>
                                 </div>
-                            </div>                      
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên vụ án :</label>
-                                    <input type="text" class="form-control" id="Ten_VuAn" name="Ten_VuAn" placeholder="Tên vụ án">
+                                    <input type="text" class="form-control" id="Ten_VuAn" name="Ten_VuAn" placeholder="Tên vụ án" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -200,13 +205,14 @@
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Nguyên đơn: </label>
                                     @Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control listNguyenDon1", @multiple = "multiple", @id = "listNguyenDon" })
-                                    @*@Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control chosen-select", @multiple = "multiple" })*@
+                                    <div id="nguyenDonError" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Bị đơn: </label>
                                     @Html.DropDownList("bd", (List<SelectListItem>)ViewBag.selectsBiDon, new { @class = "form-control", @multiple = "multiple", @id = "listBiDon" })
+                                    <div id="biDonError" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -214,7 +220,7 @@
                                     <label for="exampleInputEmail1">Loại vụ án :</label>
                                     @Html.DropDownList("lva", null, new { @class = "form-control" })
                                 </div>
-                            </div>      
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Nội dung :</label>
@@ -224,17 +230,10 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Loại hồ sơ :</label>
-                                    <input type="text" class="form-control" id="Loai_HS" name="Loai_HS" placeholder="Loại hồ sơ">
+                                    <input type="text" class="form-control" id="Loai_HS" name="Loai_HS" placeholder="Loại hồ sơ" required>
                                 </div>
                             </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Trang thai ho so :</label>
-                                    @Html.DropDownList("tths", null, new { @class = "form-control" })
-                                </div>
-                            </div>
-                            
+       
                             <div class="clearfix"></div>
 
                         </div>
@@ -244,7 +243,7 @@
                         </div>
                     }
                 </div>
-            </div>      
+            </div>
         </div>
     </div>
 </div>
@@ -275,7 +274,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên vụ án :</label>
-                                    <input type="text" class="form-control" id="Ten_VuAn_Sua" name="Ten_VuAn" placeholder="Tên vụ án">
+                                    <input type="text" class="form-control" id="Ten_VuAn_Sua" name="Ten_VuAn" placeholder="Tên vụ án" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -288,12 +287,14 @@
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Nguyên đơn: </label>
                                     @Html.DropDownList("nd", (List<SelectListItem>)ViewBag.selectsNguyenDon, new { @class = "form-control", @multiple = "multiple", @id = "listNguyenDon_Sua" })
+                                    <div id="nguyenDonError_Sua" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Bị đơn: </label>
                                     @Html.DropDownList("bd", (List<SelectListItem>)ViewBag.selectsBiDon, new { @class = "form-control", @multiple = "multiple", @id = "listBiDon_Sua" })
+                                    <div id="biDonError_Sua" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -311,14 +312,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Loại hồ sơ :</label>
-                                    <input type="text" class="form-control" id="Loai_HS_Sua" name="Loai_HS" placeholder="Loại hồ sơ">
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Trang thai ho so :</label>
-                                    @Html.DropDownList("tths", null, new { @class = "form-control", @id = "listTrangThaiHoSo_Sua" })
+                                    <input type="text" class="form-control" id="Loai_HS_Sua" name="Loai_HS" placeholder="Loại hồ sơ" required>
                                 </div>
                             </div>
 
@@ -326,7 +320,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="submit" class="btn btn-primary btn_Sua">Lưu</button>
                             <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
                         </div>
                     }
@@ -336,8 +330,8 @@
     </div>
 </div>
 @section scripts {
-<script src="~/Content/Chosen/chosen.jquery.min.js"></script>
-<link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+    <script src="~/Content/Chosen/chosen.jquery.min.js"></script>
+    <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
     <script type="text/javascript">
         function GetDetails(id) {
             $.ajax({
@@ -380,6 +374,10 @@
                     $('#listLoaiVuAn_Sua').val(response.MA_LoaiVA);
                     $('#NoiDung_VA_Sua').val(response.NoiDung_VA);
                     $('#Loai_HS_Sua').val(response.Loai_HS);
+
+                    document.getElementById('nguyenDonError_Sua').innerHTML = "";
+                    document.getElementById('biDonError_Sua').innerHTML = "";
+
                     $('#modal-Update').modal('show');
 
 
@@ -426,113 +424,98 @@
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (response) {
-             
+
                 },
                 error: function (response) {
- 
+
                 }
             });
         };
 
-    $(function () {
-        $("#listNguyenDon").chosen({
-            placeholder_text: "Chọn nguyên đơn...",
-            no_results_text: "Không tìm thấy",
-            width: '100%'
+        $(function () {
+            $("#listNguyenDon").chosen({
+                placeholder_text: "Chọn nguyên đơn...",
+                no_results_text: "Không tìm thấy",
+                width: '100%'
+            });
+
+            $("#listBiDon").chosen({
+                placeholder_text: "Chọn bị đơn...",
+                no_results_text: "Không tìm thấy",
+                width: '100%'
+            });
+            $("#listNguyenDon_Sua").chosen({
+                placeholder_text: "Chọn nguyên đơn...",
+                no_results_text: "Không tìm thấy",
+                width: '100%'
+            });
+
+            $("#listBiDon_Sua").chosen({
+                placeholder_text: "Chọn bị đơn...",
+                no_results_text: "Không tìm thấy",
+                width: '100%'
+            });
+
         });
 
-        $("#listBiDon").chosen({
-            placeholder_text: "Chọn bị đơn...",
-            no_results_text: "Không tìm thấy",
-            width: '100%'
-        });
-        $("#listNguyenDon_Sua").chosen({
-            placeholder_text: "Chọn nguyên đơn...",
-            no_results_text: "Không tìm thấy",
-            width: '100%'
+
+
+        //bat loi khoa ngoai khi xoa
+        var loi = $(".TonTaiMa").val();
+        if (loi === '1')
+            alert("Mã hồ sơ này đã tồn tại!!!");
+
+
+        //bat loi khi them
+
+        $(".btn_them").on('click', function () {         
+            document.getElementById('nguyenDonError').innerHTML = "";
+            document.getElementById('biDonError').innerHTML = "";
+            if ($('#listNguyenDon').val() == "" || $('#listNguyenDon').val() == null) {
+                document.getElementById('nguyenDonError').innerHTML = "Vui lòng chọn nguyên đơn";
+                return false;
+            }
+                if ($('#listBiDon').val() == "" || $('#listBiDon').val() == null) {
+                    document.getElementById('biDonError').innerHTML = "Vui lòng chọn bị đơn";
+                    return false;
+                }
+            });
+        $(".btn_Sua").on('click', function () {
+            document.getElementById('nguyenDonError_Sua').innerHTML = "";    
+            if ($('#listNguyenDon_Sua').val() == "" || $('#listNguyenDon_Sua').val() == null) {
+                document.getElementById('nguyenDonError_Sua').innerHTML = "Vui lòng chọn nguyên đơn";
+                return false;
+            }
+            document.getElementById('biDonError_Sua').innerHTML = "";
+            if ($('#listBiDon_Sua').val() == "" || $('#listBiDon_Sua').val() == null) {
+                document.getElementById('biDonError_Sua').innerHTML = "Vui lòng chọn bị đơn";
+                return false;
+            }
         });
 
-        $("#listBiDon_Sua").chosen({
-            placeholder_text: "Chọn bị đơn...",
-            no_results_text: "Không tìm thấy",
-            width: '100%'
+        $(".pull-right").on('click', function () {
+            document.getElementById('nguyenDonError').innerHTML = "";
+            document.getElementById('biDonError').innerHTML = "";
+            return true;
         });
 
+
+            $(function () {
+                $('.group-header').click(function () {
+                    $(this).nextUntil('.group-header').toggle();
+                });
+            });
+
+            function addPaging() {
+                $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
+                $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
+                    $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
+                });
+            }
+          $(".pull-right").on('click', function () {
+        document.getElementById('hoiDongError').innerHTML = "";
+        return true;
     });
-
-
-
-    //bat loi khoa ngoai khi xoa
-    var loi = $(".TonTaiMa").val();
-    if (loi === '1')
-        alert("Mã hồ sơ này đã tồn tại!!!");
-
-
-    //bat loi khi them
-
-    $(".btn_them").on('click', function () {
-        var maHS = $('#MA_HoSo').val();
-        var TenVuAn = $('#Ten_VuAn').val();
-        var ndVuAn = $('#NoiDung_VA').val();
-        var loaiHS = $('#Loai_HS').val();
-
-        if (maHS === '')
-        {
-            alert("Mã hồ sơ không được rỗng!!");
-            return false;
-        }
-
-        if (maHS.length > 5)
-        {
-            alert("Mã hồ sơ không được lớn hơn 5 ký tự!!");
-            return false;
-        }
-
-        if (TenVuAn === '') {
-            alert("Tên vụ án không được rỗng!!");
-            return false;
-        }
-
-        if (TenVuAn.length > 50) {
-            alert("Tên vụ án không được lớn hơn 50 ký tự!!");
-            return false;
-        }
-
-        if (ndVuAn === '') {
-            alert("Nội dung vụ án không được rỗng!!");
-            return false;
-        }
-
-        if (ndVuAn.length > 350) {
-            alert("Nội dung vụ án không được lớn hơn 350 ký tự!!");
-            return false;
-        }
-
-        if (loaiHS === '') {
-            alert("Loại hồ sơ không được rỗng!!");
-            return false;
-        }
-
-        if (loaiHS.length > 100) {
-            alert("Loại hồ sơ không được lớn hơn 100 ký tự!!");
-            return false;
-        }
-    });
-
-    $(function () {
-        $('.group-header').click(function () {
-            $(this).nextUntil('.group-header').toggle();
-        });
-    });
-
-    function addPaging() {
-        $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
-        $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
-            $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
-        });
-    }
-
-
     </script>
 }
 

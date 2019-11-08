@@ -37,9 +37,9 @@ namespace NienLuan2.Controllers
                         ID_Main = x.MAIN_MENU.ID_Main,
                         Ten_Main = x.MAIN_MENU.Ten_Main,
                         ID_SUB = x.ID_SUB,
-                        Ten_SUB = x.ACTION.Ten_Action_Viet,
-                        Controller_SUB = x.ACTION.CONTROLLER.Ten_Controller_code,
-                        Action_SUB = x.ACTION.Ten_Action_code,
+                        Ten_SUB = x.CHUCNANG.Ten_Action_Viet,
+                        Controller_SUB = x.CHUCNANG.DANHMUC_CHUCNANG.Ten_Controller_code,
+                        Action_SUB = x.CHUCNANG.Ten_Action_code,
                         MA_QNSD = x.MA_QNSD,
                         Ten_QNSD = x.QUYEN_NSD.Ten_QNSD
                     }).ToList(); //Get the Menu details from entity and bind it in MenuModels list.  
@@ -59,7 +59,33 @@ namespace NienLuan2.Controllers
             return View();
 
         }
+        public JsonResult CheckDangNhap(string maNhanVien, string matKhau)
+        {
+            try
+            {
+                var nhanvien = db.NHANVIENs.SingleOrDefault(s => s.MA_NhanVien == maNhanVien);
+                if (nhanvien != null)
+                {
+                    if (nhanvien.MatKhau == matKhau)
+                    {
+                        return Json("thanhcong", JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("saimatkhau", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json("saitendangnhap", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
 
+        }
         public ActionResult DangXuat()
         {
             Session["MaNV"] = null;

@@ -20,9 +20,9 @@ namespace NienLuan2.Controllers
             ViewBag.main = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
             ViewBag.vt1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.MA_QNSD), "MA_QNSD", "Ten_QNSD");
             ViewBag.main1 = new SelectList(db.MAIN_MENU.OrderBy(x => x.ID_Main), "ID_Main", "Ten_Main");
-            ViewBag.controller = new SelectList(db.CONTROLLERs.OrderBy(x => x.MA_Controller), "MA_Controller", "Ten_Controller_VietSub");
+            ViewBag.controller = new SelectList(db.DANHMUC_CHUCNANG.OrderBy(x => x.MA_Controller), "MA_Controller", "Ten_Controller_VietSub");
 
-            ViewBag.action = new SelectList(db.ACTIONs.OrderBy(x => x.MA_Action), "MA_Action", "Ten_Action_Viet");
+            ViewBag.action = new SelectList(db.CHUCNANGs.OrderBy(x => x.MA_Action), "MA_Action", "Ten_Action_Viet");
 
             if (error == 1)
                 ViewBag.Loi = 1;
@@ -31,7 +31,7 @@ namespace NienLuan2.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                model = model.Where(x => x.ACTION.CONTROLLER.Ten_Controller_code.Contains(searchString) || x.ACTION.Ten_Action_code.Contains(searchString) || x.MAIN_MENU.Ten_Main.Contains(searchString) || x.QUYEN_NSD.Ten_QNSD.Contains(searchString)).OrderBy(x => x.MA_QNSD);
+                model = model.Where(x => x.CHUCNANG.DANHMUC_CHUCNANG.Ten_Controller_code.Contains(searchString) || x.CHUCNANG.Ten_Action_code.Contains(searchString) || x.MAIN_MENU.Ten_Main.Contains(searchString) || x.QUYEN_NSD.Ten_QNSD.Contains(searchString)).OrderBy(x => x.MA_QNSD);
             }
 
             ViewBag.SearchString = searchString;
@@ -256,8 +256,8 @@ namespace NienLuan2.Controllers
         {
             try
             {
-                db.ACTIONs.Where(x => x.MA_Controller.Equals(iso3)).ToList();
-                IEnumerable<SelectListItem> actions = db.ACTIONs.AsNoTracking()
+                db.CHUCNANGs.Where(x => x.MA_Controller.Equals(iso3)).ToList();
+                IEnumerable<SelectListItem> actions = db.CHUCNANGs.AsNoTracking()
                         .OrderBy(n => n.Ten_Action_Viet)
                         .Where(n => n.MA_Controller == iso3)
                         .Select(n =>

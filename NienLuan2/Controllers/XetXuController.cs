@@ -16,7 +16,7 @@ namespace NienLuan2.Controllers
     {
         NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
         // GET: XetXu
-        public ActionResult ListXX(string searcxxtring, int? error, int page = 1, int pageSize = 10)
+        public ActionResult ListXX(string searchString, int? error, int page = 1, int pageSize = 10)
         {
             ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.Ten_VuAn), "MA_HoSo", "Ten_VuAn");
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
@@ -34,12 +34,13 @@ namespace NienLuan2.Controllers
                 ViewBag.Loi = 1;
 
             IEnumerable<XETXU> model = db.XETXUs;
-            if (!string.IsNullOrEmpty(searcxxtring))
+       
+            if (!string.IsNullOrEmpty(searchString))
             {
-                model = model.Where(x => x.HOSO_VUAN.Ten_VuAn.Contains(searcxxtring) || x.HOSO_VUAN.CHITIET_DS.Contains(db.CHITIET_DS.Where(ds => ds.DUONGSU.HoTen_DS.Equals(searcxxtring)).FirstOrDefault())).OrderByDescending(x => x.HOSO_VUAN.Ten_VuAn);
+                model = model.Where(x => x.HOSO_VUAN.Ten_VuAn.Contains(searchString) || x.HOSO_VUAN.CHITIET_DS.Contains(db.CHITIET_DS.Where(ds => ds.DUONGSU.HoTen_DS.Equals(searchString)).FirstOrDefault())).OrderBy(x => x.HOSO_VUAN.Ten_VuAn);
             }
+            ViewBag.SearchString = searchString;
 
-            ViewBag.Searcxxtring = searcxxtring;
 
             LichXetXuModel lichXetXuModel = new LichXetXuModel();
             lichXetXuModel.listXetXu = model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
@@ -80,6 +81,9 @@ namespace NienLuan2.Controllers
             db.XETXUs.Add(xx);
             db.SaveChanges();
 
+            HOSO_VUAN hoSo = db.HOSO_VUAN.Where(hs => hs.MA_HoSo == xx.MA_HoSo).FirstOrDefault();
+            hoSo.MA_TrangThai = "02";
+            db.SaveChanges();
             List<string> selectedHoiDongList = form["hd"].Split(',').ToList();
 
             for (int i = 0; i < selectedHoiDongList.Count; i++)

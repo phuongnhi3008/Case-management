@@ -17,7 +17,7 @@
             @using (Html.BeginForm("ListNV", "NhanVien", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
             {
                 <div class="input-group">
-                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã nhân viên cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập tên nhân viên cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search"></i>
@@ -129,7 +129,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Họ tên :</label>
-                                    <input type="text" class="form-control" id="HoTen_NV" name="HoTen_NV" placeholder="Họ tên">
+                                    <input type="text" class="form-control" id="HoTen_NV" name="HoTen_NV" placeholder="Họ tên" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -153,7 +153,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="date" class="form-control" id="NamSinh_NV_Them" name="NamSinh_NV">
+                                    <input type="date" class="form-control" id="NamSinh_NV_Them" name="NamSinh_NV" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -168,25 +168,25 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Quê quán :</label>
-                                    <input type="text" class="form-control" id="QueQuan_NV" name="QueQuan_NV" placeholder="Quê quán">
+                                    <input type="text" class="form-control" id="QueQuan_NV" name="QueQuan_NV" placeholder="Quê quán" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Số CMND :</label>
-                                    <input type="text" class="form-control" id="CMND_NV" name="CMND_NV" placeholder="Số chứng minh nhân dân">
+                                    <input type="text" class="form-control" id="CMND_NV" name="CMND_NV" placeholder="Số chứng minh nhân dân" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Số điện thoại :</label>
-                                    <input type="text" class="form-control" id="SoDienThoai_NV" name="SoDienThoai_NV" placeholder="Số điện thoại">
+                                    <input type="text" class="form-control" id="SoDienThoai_NV" name="SoDienThoai_NV" placeholder="Số điện thoại" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Mật khẩu :</label>
-                                    <input type="text" class="form-control" id="MatKhau" name="MatKhau" placeholder="Mật khẩu">
+                                    <input type="text" class="form-control" id="MatKhau" name="MatKhau" placeholder="Mật khẩu" required>
                                 </div>
                             </div>
                             <input type="text" class="form-control" id="avatar" name="avatar" value="noavatar.png" hidden>
@@ -224,7 +224,7 @@
     
                                     <input type="text" class="form-control" id="txtId" name="MA_NhanVien" placeholder="Mã nhân viên" hidden>
                                     <label for="exampleInputEmail1">Họ tên nhân viên :</label>
-                                    <input type="text" class="form-control" id="txtTenNV" name="HoTen_NV" placeholder="Họ tên nhân viên">
+                                    <input type="text" class="form-control" id="txtTenNV" name="HoTen_NV" placeholder="Họ tên nhân viên" required>
                                     <span>
                                         <label class="form-check-label" for="exampleCheck1">Nữ: </label>
                                         <input type="checkbox" class="form-control form-check-input" id="GioiTinh_NV_Sua" name="GioiTinh_NV" style="width: 20px; height: 20px; display:inherit; margin: 0 0 0 12px">
@@ -237,15 +237,15 @@
                                     <label for="exampleInputEmail1">Phòng ban :</label>
                                     @Html.DropDownList("pb1", null, new { @class = "form-control" })
                                     <label for="exampleInputEmail1">Năm sinh :</label>
-                                    <input type="date" class="form-control" id="NamSinh_NV_Sua" name="NamSinh_NV">
+                                    <input type="date" class="form-control" id="NamSinh_NV_Sua" name="NamSinh_NV" required>
                                     <label for="exampleInputEmail1">Quê quán :</label>
-                                    <input type="text" class="form-control" id="txtquequan" name="QueQuan_NV" placeholder="Quê quán">
+                                    <input type="text" class="form-control" id="txtquequan" name="QueQuan_NV" placeholder="Quê quán" required>
                                     <label for="exampleInputEmail1">Số điện thoại :</label>
-                                    <input type="text" class="form-control" id="txtsdt" name="SoDienThoai_NV" placeholder="Số điện thoại">
+                                    <input type="text" class="form-control" id="txtsdt" name="SoDienThoai_NV" placeholder="Số điện thoại" required>
                                     <label for="exampleInputEmail1">Số CMND :</label>
-                                    <input type="text" class="form-control" id="txtcmnd" name="CMND_NV" placeholder="Số CMND">
+                                    <input type="text" class="form-control" id="txtcmnd" name="CMND_NV" placeholder="Số CMND" required>
                                     <label for="exampleInputEmail1">Mật khẩu :</label>
-                                    <input type="text" class="form-control" id="txtmatkhau" name="MatKhau" placeholder="Mật khẩu">
+                                    <input type="text" class="form-control" id="txtmatkhau" name="MatKhau" placeholder="Mật khẩu" required>
 
                                 </div>
                             </div>

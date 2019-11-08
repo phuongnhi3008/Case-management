@@ -132,7 +132,7 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Kết quả :</label>
 
-                                <input type="text" class="form-control" id="Ketquaxetxu" name="KetQua_XX">
+                                <input type="text" class="form-control" id="Ketquaxetxu" name="KetQua_XX" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -213,10 +213,12 @@
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (response) {
+
+                    var date = new Date(parseInt((response.Ngay_XetXu).match(/\d+/)[0]));
                     $('#txtMA_KetQuaXX').val(response.MA_KetQuaXX);
                     $('#idVuAn_capnhat').val(response.Ten_VuAn);
                     $('#idSoLanXetXu_capnhat').val(response.Lan_XetXu);
-                    $('#idNgayXetXu_capnhat').val(response.Ngay_XetXu);
+                    $('#idNgayXetXu_capnhat').val(DateConverter(date));
                     $('#Ketquaxetxu_capnhat').val(response.KetQua_XX);
                     $('#modal-Update').modal('show');
                 },
@@ -237,84 +239,84 @@
                + "/" + (d.getDate() + "").padStart(2, "0")
                + "/" + d.getFullYear();
         }
-        //bat loi khoa ngoai khi xoa
-        var loi = $(".TonTaiMa").val();
-        if (loi === '1')
-            alert("Mã nhân viên này đã tồn tại!!!");
+        ////bat loi khoa ngoai khi xoa
+        //var loi = $(".TonTaiMa").val();
+        //if (loi === '1')
+        //    alert("Mã nhân viên này đã tồn tại!!!");
 
-        //bat loi khi them
+        ////bat loi khi them
 
-        $(".btn_them").on('click', function () {
-            var maNV = $('#MA_NhanVien').val();
-            var TenNV = $('#HoTen_NV').val();
-            var NamSinh = $('#NamSinh_NV').val();
-            var QueQuan = $('#QueQuan_NV').val();
-            var cmnd = $('#CMND_NV').val();
-            var Sdt = $('#SoDienThoai_NV').val();
-            var MatKhau = $('#MatKhau').val();
+        //$(".btn_them").on('click', function () {
+        //    var maNV = $('#MA_NhanVien').val();
+        //    var TenNV = $('#HoTen_NV').val();
+        //    var NamSinh = $('#NamSinh_NV').val();
+        //    var QueQuan = $('#QueQuan_NV').val();
+        //    var cmnd = $('#CMND_NV').val();
+        //    var Sdt = $('#SoDienThoai_NV').val();
+        //    var MatKhau = $('#MatKhau').val();
 
-            if (maNV === '') {
-                alert("Mã nhân viên không được rỗng!!");
-                return false;
-            }
+        //    if (maNV === '') {
+        //        alert("Mã nhân viên không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (maNV.length > 8) {
-                alert("Mã nhân viên không được lớn hơn 8 ký tự!!");
-                return false;
-            }
+        //    if (maNV.length > 8) {
+        //        alert("Mã nhân viên không được lớn hơn 8 ký tự!!");
+        //        return false;
+        //    }
 
-            if (TenNV === '') {
-                alert("Tên nhân viên không được rỗng!!");
-                return false;
-            }
+        //    if (TenNV === '') {
+        //        alert("Tên nhân viên không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (TenNV.length > 50) {
-                alert("Tên nhân viên không được lớn hơn 50 ký tự!!");
-                return false;
-            }
+        //    if (TenNV.length > 50) {
+        //        alert("Tên nhân viên không được lớn hơn 50 ký tự!!");
+        //        return false;
+        //    }
 
-            if (NamSinh === '') {
-                alert("Năm sinh không được rỗng!!");
-                return false;
-            }
+        //    if (NamSinh === '') {
+        //        alert("Năm sinh không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (QueQuan === '') {
-                alert("Quê quán không được rỗng!!");
-                return false;
-            }
+        //    if (QueQuan === '') {
+        //        alert("Quê quán không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (QueQuan.length > 250) {
-                alert("Quê quán không được lớn hơn 250 ký tự!!");
-                return false;
-            }
-            if (cmnd === '') {
-                alert("Số CMND không được rỗng!!");
-                return false;
-            }
+        //    if (QueQuan.length > 250) {
+        //        alert("Quê quán không được lớn hơn 250 ký tự!!");
+        //        return false;
+        //    }
+        //    if (cmnd === '') {
+        //        alert("Số CMND không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (cmnd.length > 12) {
-                alert("Số CMND không được lớn hơn 12 ký tự!!");
-                return false;
-            }
-            if (Sdt === '') {
-                alert("Số điện thoại không được rỗng!!");
-                return false;
-            }
+        //    if (cmnd.length > 12) {
+        //        alert("Số CMND không được lớn hơn 12 ký tự!!");
+        //        return false;
+        //    }
+        //    if (Sdt === '') {
+        //        alert("Số điện thoại không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (Sdt.length > 11) {
-                alert("Số điện thoại không được lớn hơn 11 ký tự!!");
-                return false;
-            }
-            if (MatKhau === '') {
-                alert("Mật khẩu không được rỗng!!");
-                return false;
-            }
+        //    if (Sdt.length > 11) {
+        //        alert("Số điện thoại không được lớn hơn 11 ký tự!!");
+        //        return false;
+        //    }
+        //    if (MatKhau === '') {
+        //        alert("Mật khẩu không được rỗng!!");
+        //        return false;
+        //    }
 
-            if (MatKhau.length > 50) {
-                alert("Mật khẩu không được lớn hơn 50 ký tự!!");
-                return false;
-            }
-        });
+        //    if (MatKhau.length > 50) {
+        //        alert("Mật khẩu không được lớn hơn 50 ký tự!!");
+        //        return false;
+        //    }
+        //});
 
 
 
@@ -330,7 +332,15 @@
                                 value: action.Value,
                                 text: action.Text
                             }));
+                            if (index == 0) {
+                                $('#idSoLanXetXu').val(action.Value);
+                                $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: action.Value }, function (result) {
+                                    var date = new Date(parseInt((result).match(/\d+/)[0]));
+                                    $('#idNgayXetXu').val(DateConverter(date));
+                                });
+                            }
                         });
+
                     };
                 });
             }
@@ -341,17 +351,18 @@
             var ngay = $('#idNgayXetXu');
             if (selectedLanXetXu != null && selectedLanXetXu != '') {
                 $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: selectedLanXetXu }, function (result) {
-                    $('#idNgayXetXu').val(result);
-                  
+                    var date = new Date(parseInt((result).match(/\d+/)[0]));
+                    $('#idNgayXetXu').val(DateConverter(date));
+                });
+            }
+
+        });
+        var selectedSoLanXetXu1 = $('#idSoLanXetXu').val();
+        $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: selectedSoLanXetXu1 }, function (result) {
+                    var date = new Date(parseInt((result).match(/\d+/)[0]));
+                    $('#idNgayXetXu').val(DateConverter(date));
                 });
 
-              
-
-            }
-          
-        });
-
-      
 
     </script>
 }

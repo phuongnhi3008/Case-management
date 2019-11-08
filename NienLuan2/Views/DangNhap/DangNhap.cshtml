@@ -25,16 +25,16 @@
             <div class="card card-login mx-auto mt-5">
                 <div class="card-header">Đăng nhập</div>
                 <div class="card-body">
-                    <form action="/DangNhap/DangNhap" method="post">
+                    <form action="/DangNhap/DangNhap" method="post" id="formDangNhap">
                         <div class="form-group">
                             <div class="form-label-group">
-                                <input type="text" name="maNhanVien" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
+                                <input type="text" name="maNhanVien" id="maNhanVien" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
                                 <label for="inputEmail">Mã Nhân viên</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-label-group">
-                                <input type="password" name="matKhau" id="inputPassword" class="form-control" placeholder="Password" required="required">
+                                <input type="password" name="matKhau" id="matKhau" class="form-control" placeholder="Password" required="required">
                                 <label for="inputPassword">Mật khẩu</label>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                                 </label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+                        <button type="button" class="btn btn-primary btn-block" onclick="CheckDangNhap()">Đăng nhập</button>
                     </form>
 
                 </div>
@@ -57,6 +57,24 @@
         <script src="/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- Core plugin JavaScript-->
         <script src="/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script type="text/javascript">
+            function CheckDangNhap() {
+             
+                var manhanvien = $("#maNhanVien").val();
+                var matkhau = $("#matKhau").val();
+
+                $.post('/DangNhap/CheckDangNhap/', { maNhanVien: manhanvien, matKhau: matkhau },
+                    function (response) {
+                        if (response == "thanhcong") {
+                            document.getElementById("formDangNhap").submit();
+                        }
+                        else if (response == "saitendangnhap")
+                            return alert('Sai tên đăng nhập!')
+                        else if (response == "saimatkhau")
+                            return alert('Sai mật khẩu!')
+                });
+            };
+        </script>
     </body>
 </html>
 

@@ -19,7 +19,7 @@ namespace NienLuan2.Models
         public Nullable<int> ID_Main { get; set; }
         public string MA_Action { get; set; }
     
-        public virtual ACTION ACTION { get; set; }
+        public virtual CHUCNANG CHUCNANG { get; set; }
         public virtual MAIN_MENU MAIN_MENU { get; set; }
         public virtual QUYEN_NSD QUYEN_NSD { get; set; }
     }

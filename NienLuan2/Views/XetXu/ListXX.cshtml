@@ -19,7 +19,7 @@
             @using (Html.BeginForm("ListXX", "XetXu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
             {
                 <div class="input-group">
-                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã hồ sơ cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập tên hồ sơ cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search"></i>
@@ -133,7 +133,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Lần xét xử: </label>
-                                    <input type="text" class="form-control" id="Lan_XetXu" name="Lan_XetXu" placeholder="Lần xét xử" required>
+                                    <input type="number" step="1" min="1" class="form-control" id="Lan_XetXu" name="Lan_XetXu" placeholder="Lần xét xử" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -145,7 +145,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Hội đồng: </label>
-                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @required = "required", @id = "listHoiDong" })
+                                    @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @id = "listHoiDong" })
+                                    <div id="hoiDongError" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -225,6 +226,7 @@
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Hội đồng: </label>
                                     @Html.DropDownList("hd", (List<SelectListItem>)ViewBag.selectsHoiDong, new { @class = "form-control", @multiple = "multiple", @required = "required", @id = "listHoiDong_Sua" })
+                                    <div id="hoiDongError_Sua" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -255,7 +257,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="submit" class="btn btn-primary btn_Sua">Lưu</button>
                             <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
                         </div>
                     }
@@ -290,10 +292,6 @@
         });
         return false;
     };
-
-
-
-
 
      function GetDetails(id) {
         $.ajax({
@@ -344,6 +342,7 @@
 
                 var dateValue = new Date(parseInt((response.Ngay_XetXu).match(/\d+/)[0]));
                 $("#Ngay_XetXu_Sua").val(DateConverter(dateValue));
+                document.getElementById('hoiDongError_Sua').innerHTML = "";
                 $('#modal-Update').modal('show');
 
 
@@ -442,7 +441,27 @@
         };
     });
 
+    $(".btn_them").on('click', function () {
+        document.getElementById('hoiDongError').innerHTML = "";
+        if ($('#listHoiDong').val() == "" || $('#listHoiDong').val() == null) {
+            document.getElementById('hoiDongError').innerHTML = "Vui lòng chọn hội đồng";
+            return false;
+        }
 
+    });
+    $(".btn_Sua").on('click', function () {
+        document.getElementById('hoiDongError_Sua').innerHTML = "";
+        if ($('#listHoiDong_Sua').val() == "" || $('#listHoiDong_Sua').val() == null) {
+            document.getElementById('hoiDongError_Sua').innerHTML = "Vui lòng chọn hội đồng";
+            return false;
+        }
+       
+    });
+    $(".pull-right").on('click', function () {
+        document.getElementById('hoiDongError').innerHTML = "";
+        return true;
+    });
+  
     </script>
 }
 

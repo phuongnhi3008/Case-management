@@ -225,9 +225,6 @@
     </Compile>
     <Compile Include="Helper\UUID.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ACTION.cs">
-      <DependentUpon>ModelNL2.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CAPXETXU.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
@@ -237,10 +234,13 @@
     <Compile Include="Models\CHITIET_XX.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CHUCNANG.cs">
+      <DependentUpon>ModelNL2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CHUCVU.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CONTROLLER.cs">
+    <Compile Include="Models\DANHMUC_CHUCNANG.cs">
       <DependentUpon>ModelNL2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DIADIEM_XX.cs">

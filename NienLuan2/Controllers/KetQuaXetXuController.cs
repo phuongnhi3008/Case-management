@@ -79,6 +79,13 @@ namespace NienLuan2.Controllers
             db.KETQUA_XX.Add(kqxx);
             db.SaveChanges();
 
+            KETQUA_XX newKQXX = db.KETQUA_XX.Where(newKQ => newKQ.MA_KetQuaXX == kqxx.MA_KetQuaXX).FirstOrDefault();
+            XETXU newXX = db.XETXUs.Where(xx => xx.MA_XetXu == newKQXX.MA_XetXu).FirstOrDefault();
+            string maHoSo = newXX.MA_HoSo;
+            HOSO_VUAN hoSo = db.HOSO_VUAN.Where(hs => hs.MA_HoSo == maHoSo).FirstOrDefault();
+            hoSo.MA_TrangThai = "03";
+            db.SaveChanges();
+
 
             return RedirectToAction("ListKQ");
         }
