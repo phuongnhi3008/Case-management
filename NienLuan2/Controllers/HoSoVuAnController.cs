@@ -23,7 +23,7 @@ namespace NienLuan2.Controllers
         //}
         public ActionResult ListHS(string searchString, int? error, int page = 1, int pageSize = 10)
         {
-            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");        
+            ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.vtnv = new SelectList(db.VAITRO_NV.OrderBy(x => x.Ten_VT), "MA_VaiTro", "Ten_VT");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
@@ -36,12 +36,12 @@ namespace NienLuan2.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 model = model.Where(x => x.Ten_VuAn.Contains(searchString) || x.MA_HoSo.Contains(searchString)).OrderByDescending(x => x.Ten_VuAn);
-            }        
+            }
             ViewBag.SearchString = searchString;
             DuongSuModel duongSuModel = new DuongSuModel();
             duongSuModel.listHoSoVuAn = model.OrderByDescending(x => x.MA_HoSo).ToPagedList(page, pageSize);
             duongSuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
-       
+
             return View(duongSuModel);
         }
         public void themChiTietDuongSu(CHITIET_DS ctds)
@@ -133,7 +133,7 @@ namespace NienLuan2.Controllers
                                        }).ToList();
             return Json(new SelectList(listNguyenDon, "Value", "Text"), JsonRequestBehavior.AllowGet);
         }
-            
+
         public JsonResult GetListBiDon(string maHoSo)
         {
             IEnumerable<SelectListItem> listBiDon = db.CHITIET_DS.AsNoTracking()
@@ -159,27 +159,23 @@ namespace NienLuan2.Controllers
             //ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
 
             hs.MA_LoaiVA = form["lva"].ToString(); ;
-            hs.MA_TrangThai = form["tths"].ToString();
 
             hs.MA_NhanVien = form["mnv"].ToString();
             //hs.MA_HoSo = id;
 
-            if (!ModelState.IsValid)
-                return View(hs);
+            HOSO_VUAN hoSo = db.HOSO_VUAN.Where(newHoSo => newHoSo.MA_HoSo == hs.MA_HoSo).FirstOrDefault();
+            hoSo.MA_NhanVien = hs.MA_NhanVien;
+            hoSo.MA_LoaiVA = hs.MA_LoaiVA;
+            hoSo.Ten_VuAn = hs.Ten_VuAn;
+            hoSo.NoiDung_VA = hs.NoiDung_VA;
+            hoSo.Loai_HS = hs.Loai_HS;
+            hoSo.NgayNhan_HS = hs.NgayNhan_HS;
 
-            if (TryUpdateModel(hs, "", new string[] { "MA_HoSo", "NgayNhan_HS", "Ten_VuAn", "MA_NhanVien", "MA_LoaiVuAn", "NoiDung_VA", "Loai_HS", "MA_TrangThai" }))
-            {
-                try
-                {
-                    db.Entry(hs).State = EntityState.Modified;
-                    db.SaveChanges();
+                 //   db.Entry(hs).State = EntityState.Modified;
+            db.SaveChanges();
 
-                }
-                catch (RetryLimitExceededException)
-                {
-                    ModelState.AddModelError("", "Lỗi");
-                }
-            }
+
+
             ClearNguyenDonBiDon(hs.MA_HoSo);
 
             List<string> selectedNguyenDonList = form["nd"].Split(',').ToList();
@@ -213,7 +209,7 @@ namespace NienLuan2.Controllers
 
         public void ClearNguyenDonBiDon(string maHoSo)
         {
-            foreach(var item in db.CHITIET_DS.ToList())
+            foreach (var item in db.CHITIET_DS.ToList())
             {
                 if (item.MA_HoSo == maHoSo)
                 {
@@ -235,7 +231,8 @@ namespace NienLuan2.Controllers
         }
         public JsonResult CheckXoa(string id)
         {
-            try {
+            try
+            {
                 XETXU hoso = db.XETXUs.SingleOrDefault(s => s.MA_HoSo == id);
                 if (hoso == null)
                     return Json("true", JsonRequestBehavior.AllowGet);
@@ -246,7 +243,7 @@ namespace NienLuan2.Controllers
             {
                 return Json("false", JsonRequestBehavior.AllowGet);
             }
-           
+
         }
         //[HttpPost, ActionName("xoa_HS")]
         public ActionResult xoa_HS1(string id)
@@ -264,8 +261,8 @@ namespace NienLuan2.Controllers
                 return RedirectToAction("ListHS");
             }
 
-            
-    }
+
+        }
 
 
 
@@ -298,7 +295,7 @@ namespace NienLuan2.Controllers
         {
             using (NL2_QLVAEntities1 db = new NL2_QLVAEntities1())
             {
-                var a = (from hs in db.HOSO_VUAN            
+                var a = (from hs in db.HOSO_VUAN
                          join nv in db.NHANVIENs on hs.MA_NhanVien equals nv.MA_NhanVien
                          join lva in db.LOAI_VUAN on hs.MA_LoaiVA equals lva.MA_LoaiVA
                          join tt in db.TRANGTHAI_HS on hs.MA_TrangThai equals tt.MA_TrangThai
@@ -311,8 +308,8 @@ namespace NienLuan2.Controllers
                              MA_TrangThai = hs.MA_TrangThai,
                              MA_NhanVien = hs.MA_NhanVien,
                              Ten_TT = tt.Ten_TT,
-                             MA_LoaiVA = hs.MA_LoaiVA,                  
-                             HoTen_NV = nv.HoTen_NV,                 
+                             MA_LoaiVA = hs.MA_LoaiVA,
+                             HoTen_NV = nv.HoTen_NV,
                          }).ToList();
                 return Json(a, JsonRequestBehavior.AllowGet);
             }

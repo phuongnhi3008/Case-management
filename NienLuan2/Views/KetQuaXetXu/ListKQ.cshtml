@@ -361,8 +361,20 @@
         $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: selectedSoLanXetXu1 }, function (result) {
                     var date = new Date(parseInt((result).match(/\d+/)[0]));
                     $('#idNgayXetXu').val(DateConverter(date));
-                });
+        });
 
+
+        $(".btn_them").on('click', function () {
+            var selectedLanXetXu = $("#idSoLanXetXu").val();
+            if (selectedLanXetXu == "0") {
+                alert("Không có vụ án!");
+                return false;
+            }
+            else
+                return true;
+
+    
+            });
 
     </script>
 }

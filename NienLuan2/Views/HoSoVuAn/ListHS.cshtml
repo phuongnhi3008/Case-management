@@ -11,7 +11,7 @@
 
 <div class="container-fluid">
 
-    <div class="card mb-3">
+<div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
             DANH SÁCH HỒ SƠ
@@ -37,11 +37,25 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" cellspacing="0">
-                    @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.Ten_TT ).OrderBy(item => item.Key))
+                    @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai ).OrderBy(item => item.Key))
                     {
                         <tr class="group-header" data-toggle="collapse">
                             <td colspan="6">
-                                <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;@group.Key</span></i>
+                                @{
+                                    if (group.Key == "01")
+                                    {
+                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Nhận đơn</span></i>
+                                    }
+                                    if (group.Key == "02")
+                                    {
+                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Chờ xét xử</span></i>
+                                    }
+                                    if (group.Key == "03")
+                                    {
+                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Đã xét xử</span></i>
+                                    }
+                                }
+                               
                             </td>
                         </tr>
                             <tr>
@@ -64,14 +78,15 @@
                                 <th>
                                     Loại vụ án
                                 </th>
-                                <th>
-                                    Trạng thái HS
-                                </th>
+                               
                                 <th>
                                     Thẩm phán
                                 </th>
                                 <th>
                                     Ghi chú
+                                </th>
+                                <th>
+                                  Loại hồ sơ
                                 </th>
                                 <th>
                                     Thao tác
@@ -84,8 +99,7 @@
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.MA_HoSo)
-                                    @*@Html.ActionLink(@item.MA_HoSo, "ChiTiet_HS", "HoSoVuAn", null)*@
-                                </td>
+                                </td>                                
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Ten_VuAn)
                                 </td>
@@ -138,15 +152,17 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TRANGTHAI_HS.Ten_TT)
-                                </td>
+                          
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NoiDung_VA)
                                 </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Loai_HS)
+                                </td>
+
                                 <td>
                                     <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
 
@@ -158,8 +174,10 @@
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
+
                             </tr>
-                                        }                                   }
+                                        }
+                                    }
 
                 </table>
                 @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))

@@ -20,7 +20,7 @@ namespace NienLuan2.Models
         {
             this.CHITIET_DS = new HashSet<CHITIET_DS>();
         }
-        [Required(ErrorMessage = "Please Select the Product from the List")]
+    
         public string MA_DuongSu { get; set; }
         public string MA_LoaiDS { get; set; }
         public string CMND { get; set; }

@@ -73,7 +73,7 @@
           <Property Name="QueQuan_DS" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DiaChi_DS" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="SoDienThoai_DS" Type="nvarchar" MaxLength="11" Nullable="false" />
-          <Property Name="GioiTinh_DS" Type="bit" Nullable="false" />
+          <Property Name="GioiTinh_DS" Type="bit" />
         </EntityType>
         <EntityType Name="HOSO_VUAN">
           <Key>
@@ -82,11 +82,10 @@
           <Property Name="MA_HoSo" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="MA_NhanVien" Type="nvarchar" MaxLength="8" Nullable="false" />
           <Property Name="MA_TrangThai" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="MA_LoaiVA" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="MA_LoaiVA" Type="nvarchar" MaxLength="5" />
           <Property Name="Ten_VuAn" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="NoiDung_VA" Type="nvarchar" MaxLength="350" />
           <Property Name="Loai_HS" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="MA_VaiTro" Type="nvarchar" MaxLength="5" />
           <Property Name="NgayNhan_HS" Type="date" />
         </EntityType>
         <EntityType Name="HOTRO">
@@ -94,10 +93,10 @@
             <PropertyRef Name="MA_HT" />
           </Key>
           <Property Name="MA_HT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="HoTen_HT" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Cau_Hoi" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="SDT_HT" Type="varchar" MaxLength="12" Nullable="false" />
-          <Property Name="Email_HT" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="HoTen_HT" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cau_Hoi" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SDT_HT" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email_HT" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="MA_TT_HT" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="KETQUA_XX">
@@ -232,7 +231,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HOSO_VUAN_LOAI_VUAN">
-          <End Role="LOAI_VUAN" Type="Self.LOAI_VUAN" Multiplicity="1" />
+          <End Role="LOAI_VUAN" Type="Self.LOAI_VUAN" Multiplicity="0..1" />
           <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LOAI_VUAN">
@@ -264,18 +263,6 @@
             </Principal>
             <Dependent Role="HOSO_VUAN">
               <PropertyRef Name="MA_TrangThai" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HOSO_VUAN_VAITRO_NV">
-          <End Role="VAITRO_NV" Type="Self.VAITRO_NV" Multiplicity="0..1" />
-          <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VAITRO_NV">
-              <PropertyRef Name="MA_VaiTro" />
-            </Principal>
-            <Dependent Role="HOSO_VUAN">
-              <PropertyRef Name="MA_VaiTro" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -547,10 +534,6 @@
             <End Role="TRANGTHAI_HS" EntitySet="TRANGTHAI_HS" />
             <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
           </AssociationSet>
-          <AssociationSet Name="FK_HOSO_VUAN_VAITRO_NV" Association="Self.FK_HOSO_VUAN_VAITRO_NV">
-            <End Role="VAITRO_NV" EntitySet="VAITRO_NV" />
-            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
-          </AssociationSet>
           <AssociationSet Name="FK_HT_TrangThaiHT" Association="Self.FK_HT_TrangThaiHT">
             <End Role="TRANGTHAI_HOTRO" EntitySet="TRANGTHAI_HOTRO" />
             <End Role="HOTRO" EntitySet="HOTRO" />
@@ -727,10 +710,6 @@
             <End Role="TRANGTHAI_HS" EntitySet="TRANGTHAI_HS" />
             <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
           </AssociationSet>
-          <AssociationSet Name="FK_HOSO_VUAN_VAITRO_NV" Association="ModelNL2.FK_HOSO_VUAN_VAITRO_NV">
-            <End Role="VAITRO_NV" EntitySet="VAITRO_NV" />
-            <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
-          </AssociationSet>
           <AssociationSet Name="FK_XETXU_HOSO" Association="ModelNL2.FK_XETXU_HOSO">
             <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
             <End Role="XETXU" EntitySet="XETXUs" />
@@ -850,7 +829,7 @@
           <Property Name="QueQuan_DS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DiaChi_DS" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SoDienThoai_DS" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="true" />
-          <Property Name="GioiTinh_DS" Type="Boolean" Nullable="false" />
+          <Property Name="GioiTinh_DS" Type="Boolean" />
           <NavigationProperty Name="CHITIET_DS" Relationship="ModelNL2.MA_DuongSu" FromRole="DUONGSU" ToRole="CHITIET_DS" />
         </EntityType>
         <EntityType Name="HOSO_VUAN">
@@ -860,17 +839,15 @@
           <Property Name="MA_HoSo" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="MA_NhanVien" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="MA_TrangThai" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="MA_LoaiVA" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MA_LoaiVA" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="Ten_VuAn" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NoiDung_VA" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Loai_HS" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MA_VaiTro" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="NgayNhan_HS" Type="DateTime" Precision="0" />
           <NavigationProperty Name="CHITIET_DS" Relationship="ModelNL2.chitietDS_HSVA2" FromRole="HOSO_VUAN" ToRole="CHITIET_DS" />
           <NavigationProperty Name="LOAI_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_LOAI_VUAN" FromRole="HOSO_VUAN" ToRole="LOAI_VUAN" />
           <NavigationProperty Name="NHANVIEN" Relationship="ModelNL2.FK_HOSO_VUAN_NHANVIEN" FromRole="HOSO_VUAN" ToRole="NHANVIEN" />
           <NavigationProperty Name="TRANGTHAI_HS" Relationship="ModelNL2.FK_HOSO_VUAN_TRANGTHAI_HS" FromRole="HOSO_VUAN" ToRole="TRANGTHAI_HS" />
-          <NavigationProperty Name="VAITRO_NV" Relationship="ModelNL2.FK_HOSO_VUAN_VAITRO_NV" FromRole="HOSO_VUAN" ToRole="VAITRO_NV" />
           <NavigationProperty Name="XETXUs" Relationship="ModelNL2.FK_XETXU_HOSO" FromRole="HOSO_VUAN" ToRole="XETXU" />
         </EntityType>
         <EntityType Name="HOTRO">
@@ -878,10 +855,10 @@
             <PropertyRef Name="MA_HT" />
           </Key>
           <Property Name="MA_HT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HoTen_HT" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Cau_Hoi" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="SDT_HT" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
-          <Property Name="Email_HT" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="HoTen_HT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cau_Hoi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDT_HT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email_HT" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="MA_TT_HT" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRANGTHAI_HOTRO" Relationship="ModelNL2.FK_HT_TrangThaiHT" FromRole="HOTRO" ToRole="TRANGTHAI_HOTRO" />
         </EntityType>
@@ -1010,7 +987,6 @@
           <Property Name="MA_VaiTro" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="Ten_VT" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CHITIET_XX" Relationship="ModelNL2.MA_VaiTro" FromRole="VAITRO_NV" ToRole="CHITIET_XX" />
-          <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_HOSO_VUAN_VAITRO_NV" FromRole="VAITRO_NV" ToRole="HOSO_VUAN" />
         </EntityType>
         <EntityType Name="XETXU">
           <Key>
@@ -1148,7 +1124,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HOSO_VUAN_LOAI_VUAN">
-          <End Type="ModelNL2.LOAI_VUAN" Role="LOAI_VUAN" Multiplicity="1" />
+          <End Type="ModelNL2.LOAI_VUAN" Role="LOAI_VUAN" Multiplicity="0..1" />
           <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LOAI_VUAN">
@@ -1180,18 +1156,6 @@
             </Principal>
             <Dependent Role="HOSO_VUAN">
               <PropertyRef Name="MA_TrangThai" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HOSO_VUAN_VAITRO_NV">
-          <End Type="ModelNL2.VAITRO_NV" Role="VAITRO_NV" Multiplicity="0..1" />
-          <End Type="ModelNL2.HOSO_VUAN" Role="HOSO_VUAN" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VAITRO_NV">
-              <PropertyRef Name="MA_VaiTro" />
-            </Principal>
-            <Dependent Role="HOSO_VUAN">
-              <PropertyRef Name="MA_VaiTro" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1391,7 +1355,6 @@
             <EntityTypeMapping TypeName="ModelNL2.HOSO_VUAN">
               <MappingFragment StoreEntitySet="HOSO_VUAN">
                 <ScalarProperty Name="NgayNhan_HS" ColumnName="NgayNhan_HS" />
-                <ScalarProperty Name="MA_VaiTro" ColumnName="MA_VaiTro" />
                 <ScalarProperty Name="Loai_HS" ColumnName="Loai_HS" />
                 <ScalarProperty Name="NoiDung_VA" ColumnName="NoiDung_VA" />
                 <ScalarProperty Name="Ten_VuAn" ColumnName="Ten_VuAn" />
