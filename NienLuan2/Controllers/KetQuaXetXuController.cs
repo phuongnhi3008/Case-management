@@ -15,7 +15,7 @@ namespace NienLuan2.Controllers
     {
         NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
         // GET: KetQuaXetXu
-        public ActionResult ListKQ(string searchString, int? error, int page = 1, int pageSize = 10)
+        public ActionResult ListKQ(string searchString, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 10)
         {
             List<HOSO_VUAN> ListVA = new List<HOSO_VUAN>();
             foreach (var item in db.XETXUs.ToList())
@@ -51,11 +51,30 @@ namespace NienLuan2.Controllers
                     ViewBag.Loi = 1;
 
                 IEnumerable<KETQUA_XX> model = db.KETQUA_XX;
+                if (tungay == null || denngay == null)
+                {
+                    ViewBag.tuNgay = db.KETQUA_XX.Min(hs => hs.XETXU.Ngay_XetXu).Value;
+                    ViewBag.denNgay = DateTime.Now;
+                }
+                else
+                {
+                    List<KETQUA_XX> newList = new List<KETQUA_XX>();
+                    foreach (var item in model)
+                    {
+                        if (item.XETXU.Ngay_XetXu >= tungay && item.XETXU.Ngay_XetXu <= denngay)
+                            newList.Add(item);
+                    }
+                    model = newList.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
+                    ViewBag.tuNgay = tungay;
+                    ViewBag.denNgay = denngay;
+                }
 
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     model = model.Where(x => x.XETXU.HOSO_VUAN.Ten_VuAn.Contains(searchString)).OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn);
                 }
+
+
 
                 ViewBag.SearchString = searchString;
                 return View(model.OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn).ToPagedList(page, pageSize));
@@ -80,14 +99,38 @@ namespace NienLuan2.Controllers
                 ViewBag.tva = new SelectList(newListHoSo.AsEnumerable(), "MA_HoSo", "Ten_VuAn");
 
                 IEnumerable<KETQUA_XX> model = db.KETQUA_XX;
-
+                if (tungay == null || denngay == null)
+                {
+                    ViewBag.tuNgay = db.KETQUA_XX.Min(hs => hs.XETXU.Ngay_XetXu).Value;
+                    ViewBag.denNgay = DateTime.Now;
+                }
+                else
+                {
+                    List<KETQUA_XX> newList = new List<KETQUA_XX>();
+                    foreach (var item in model)
+                    {
+                        if (item.XETXU.Ngay_XetXu >= tungay && item.XETXU.Ngay_XetXu <= denngay)
+                            newList.Add(item);
+                    }
+                    model = newList.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
+                    ViewBag.tuNgay = tungay;
+                    ViewBag.denNgay = denngay;
+                }
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     model = model.Where(x => x.XETXU.HOSO_VUAN.Ten_VuAn.Contains(searchString)).OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn);
                 }
 
+                ViewBag.SearchString = searchString;
                 return View(model.OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn).ToPagedList(page, pageSize));
             }
+        }
+
+        public JsonResult GetTuNgay()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var tuNgay = db.KETQUA_XX.Min(xx => xx.XETXU.Ngay_XetXu).Value;
+            return Json(tuNgay, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost, ActionName("them_KQ")]

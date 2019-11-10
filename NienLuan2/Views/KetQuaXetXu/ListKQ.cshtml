@@ -11,16 +11,22 @@
         <div class="card-header">
             <i class="fas fa-table"></i>
             KẾT QUẢ XÉT XỬ
+            <a style="margin-left: 30px">Từ: </a>
+            <input type="date" style="margin-left: 20px" id="tuNgay" />
+            <a style="margin-left: 20px">Đến: </a>
+            <input type="date" style="margin-left: 20px" id="denNgay" />
             <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
                 Thêm kết quả xét xử
             </button>
-            @using (Html.BeginForm("ListKQ", "KetQuaXetXu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            @using (Html.BeginForm("ListKQ", "KetQuaXetXu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0", @id = "formSearch" }))
             {
+                <input type="date" style="width: 0; height: 0" name="tuNgay" id="tuNgayHiden" hidden />
+                <input type="date" style="width: 0; height: 0" name="denNgay" id="denNgayHiden" hidden />
                 <div class="input-group">
                     <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập tên vụ án cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search"></i>
+                            <i class="fas fa-search btn-search"></i>
                         </button>
                     </div>
                 </div>
@@ -375,7 +381,44 @@
 
     
             });
+        $.getJSON('@Url.Action("GetTuNgay")', null, function (result) {
+            if (result != null && !jQuery.isEmptyObject(result)) {
+                var minTuNgay = new Date(parseInt((result).match(/\d+/)[0]));
+                var maxDenNgay = new Date();
+                var tuNgay = new Date(parseInt((@Html.Raw(Json.Encode(ViewBag.tuNgay))).match(/\d+/)[0]));
+                var denNgay = new Date(parseInt((@Html.Raw(Json.Encode(ViewBag.denNgay))).match(/\d+/)[0]));
+                document.getElementById("tuNgay").min = DateConverter(minTuNgay);
+                document.getElementById("tuNgay").max = DateConverter(denNgay);
+                document.getElementById("denNgay").min = DateConverter(tuNgay);
+                document.getElementById("denNgay").max = DateConverter(maxDenNgay);
+                $('#tuNgay').val(DateConverter(tuNgay));
+                $('#denNgay').val(DateConverter(denNgay));
+            };
+        });
 
+        $('#tuNgay').change(function () {
+            var tuNgay = $("#tuNgay").val();
+            var denNgay = $("#denNgay").val();
+            $('#tuNgayHiden').val(tuNgay);
+            $('#denNgayHiden').val(denNgay);
+            document.getElementById('formSearch').submit();
+
+        });
+
+        $('#denNgay').change(function () {
+            var tuNgay = $("#tuNgay").val();
+            var denNgay = $("#denNgay").val();
+            $('#tuNgayHiden').val(tuNgay);
+            $('#denNgayHiden').val(denNgay);
+            document.getElementById('formSearch').submit();
+        });
+        $(".btn-search").on('click', function () {
+            var tuNgay = $("#tuNgay").val();
+            var denNgay = $("#denNgay").val();
+            $('#tuNgayHiden').val(tuNgay);
+            $('#denNgayHiden').val(denNgay);
+            return true;
+        });
     </script>
 }
 

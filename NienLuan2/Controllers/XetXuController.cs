@@ -16,7 +16,7 @@ namespace NienLuan2.Controllers
     {
         NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
         // GET: XetXu
-        public ActionResult ListXX(string searchString, int? error, int page = 1, int pageSize = 10)
+        public ActionResult ListXX(string searchString, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 10)
         {
             ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.Ten_VuAn), "MA_HoSo", "Ten_VuAn");
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
@@ -43,13 +43,36 @@ namespace NienLuan2.Controllers
 
 
             LichXetXuModel lichXetXuModel = new LichXetXuModel();
-            lichXetXuModel.listXetXu = model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
+         
             lichXetXuModel.listChiTietXetXu = db.CHITIET_XX.ToList();
-            //duongsuModel.listXetXu = model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
-            lichXetXuModel.listXetXu = model.OrderBy(x => x.MA_HoSo).ToPagedList(page, pageSize);
+
+            if (tungay == null || denngay == null)
+            {
+                lichXetXuModel.listXetXu = model.OrderBy(x => x.MA_HoSo).ToPagedList(page, pageSize);
+                ViewBag.tuNgay = db.XETXUs.Min(hs => hs.Ngay_XetXu).Value;
+                ViewBag.denNgay = DateTime.Now;
+            }
+            else
+            {
+                List<XETXU> newList = new List<XETXU>();
+                foreach (var item in model)
+                {
+                    if (item.Ngay_XetXu >= tungay && item.Ngay_XetXu <= denngay)
+                        newList.Add(item);
+                }
+                lichXetXuModel.listXetXu = newList.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize);
+                ViewBag.tuNgay = tungay;
+                ViewBag.denNgay = denngay;
+            }
             lichXetXuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
             return View(lichXetXuModel);
-            //return View(model.OrderByDescending(x => x.MA_XetXu).ToPagedList(page, pageSize));   
+
+        }
+        public JsonResult GetTuNgay()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var tuNgay = db.XETXUs.Min(xx => xx.Ngay_XetXu).Value;
+            return Json(tuNgay, JsonRequestBehavior.AllowGet);
         }
         public ActionResult them_xx()
         {

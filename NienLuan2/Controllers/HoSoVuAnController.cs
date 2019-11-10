@@ -21,7 +21,7 @@ namespace NienLuan2.Controllers
         //{
         //    var
         //}
-        public ActionResult ListHS(string searchString, int? error, int page = 1, int pageSize = 10)
+        public ActionResult ListHS(string searchString, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 10)
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.vtnv = new SelectList(db.VAITRO_NV.OrderBy(x => x.Ten_VT), "MA_VaiTro", "Ten_VT");
@@ -39,7 +39,25 @@ namespace NienLuan2.Controllers
             }
             ViewBag.SearchString = searchString;
             DuongSuModel duongSuModel = new DuongSuModel();
-            duongSuModel.listHoSoVuAn = model.OrderByDescending(x => x.MA_HoSo).ToPagedList(page, pageSize);
+            if(tungay == null || denngay == null)
+            {
+                duongSuModel.listHoSoVuAn = model.OrderByDescending(x => x.MA_HoSo).ToPagedList(page, pageSize);
+                ViewBag.tuNgay = db.HOSO_VUAN.Min(hs => hs.NgayNhan_HS).Value;
+                ViewBag.denNgay = DateTime.Now;
+            }        
+            else
+            {
+                List<HOSO_VUAN> newList = new List<HOSO_VUAN>();
+                foreach(var item in model)
+                {
+                    if (item.NgayNhan_HS >= tungay && item.NgayNhan_HS <= denngay)
+                        newList.Add(item);
+                }
+                duongSuModel.listHoSoVuAn = newList.OrderByDescending(x => x.MA_HoSo).ToPagedList(page, pageSize);
+                ViewBag.tuNgay = tungay;
+                ViewBag.denNgay = denngay;
+            }
+
             duongSuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
 
             return View(duongSuModel);
@@ -264,7 +282,7 @@ namespace NienLuan2.Controllers
 
         }
 
-
+        
 
         public ActionResult ChiTiet_HS(string id)
         {
@@ -325,6 +343,13 @@ namespace NienLuan2.Controllers
             ViewBag.loaiva = new SelectList(GetThongKe_HS(), "MA_LoaiVA", "Ten_LoaiVA");
             ModelsXetXu xx = new ModelsXetXu();
             return View();
+        }
+
+        public JsonResult GetTuNgay()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var tuNgay = db.HOSO_VUAN.Min(hs => hs.NgayNhan_HS).Value;
+            return Json(tuNgay, JsonRequestBehavior.AllowGet);
         }
     }
 }

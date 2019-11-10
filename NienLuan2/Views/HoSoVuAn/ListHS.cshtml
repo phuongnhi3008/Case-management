@@ -11,19 +11,25 @@
 
 <div class="container-fluid">
 
-<div class="card mb-3">
+    <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
             DANH SÁCH HỒ SƠ
-            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
+            <a style="margin-left: 30px">Từ: </a>
+            <input type="date" style="margin-left: 20px" id="tuNgay" />
+            <a style="margin-left: 20px">Đến: </a>
+            <input type="date" style="margin-left: 20px" id="denNgay" />
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px;">
                 Thêm hồ sơ
             </button>
-            @using (Html.BeginForm("ListHS", "HoSoVuAn", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            @using (Html.BeginForm("ListHS", "HoSoVuAn", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0", @id = "formSearch" }))
             {
+                <input type="date" style="width: 0; height: 0" name="tuNgay" id="tuNgayHiden" hidden />
+                <input type="date" style="width: 0; height: 0" name="denNgay" id="denNgayHiden" hidden />
                 <div class="input-group">
                     <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập mã hồ sơ cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary btn-search" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
@@ -31,13 +37,11 @@
             }
 
         </div>
-
         <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
-
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" cellspacing="0">
-                    @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai ).OrderBy(item => item.Key))
+                    @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai).OrderBy(item => item.Key))
                     {
                         <tr class="group-header" data-toggle="collapse">
                             <td colspan="6">
@@ -55,131 +59,132 @@
                                         <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Đã xét xử</span></i>
                                     }
                                 }
-                               
                             </td>
                         </tr>
-                            <tr>
+                        <tr>
 
-                                <th>
-                                    Mã số hồ sơ
-                                </th>
-                                <th>
-                                    Tên vụ án
-                                </th>
-                                <th width="100">
-                                    Ngày nhận
-                                </th>
-                                <th>
-                                    Nguyên đơn
-                                </th>
-                                <th>
-                                    Bị đơn
-                                </th>
-                                <th>
-                                    Loại vụ án
-                                </th>
-                               
-                                <th>
-                                    Thẩm phán
-                                </th>
-                                <th>
-                                    Ghi chú
-                                </th>
-                                <th>
-                                  Loại hồ sơ
-                                </th>
-                                <th>
-                                    Thao tác
-                                </th>
-                                <th></th>
-                            </tr>
+                            <th>
+                                Mã số hồ sơ
+                            </th>
+                            <th>
+                                Tên vụ án
+                            </th>
+                            <th width="100">
+                                Ngày nhận
+                            </th>
+                            <th>
+                                Nguyên đơn
+                            </th>
+                            <th>
+                                Bị đơn
+                            </th>
+                            <th>
+                                Loại vụ án
+                            </th>
 
-                        foreach (var item in group)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.MA_HoSo)
-                                </td>                                
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ten_VuAn)
-                                </td>
-                                <td width="100">
-                                    @Html.DisplayFor(modelItem => item.NgayNhan_HS)
-                                </td>
-
-                                @{
-                                    try
+                            <th>
+                                Thẩm phán
+                            </th>
+                            <th>
+                                Ghi chú
+                            </th>
+                            <th>
+                                Loại hồ sơ
+                            </th>
+                            <th>
+                                Thao tác
+                            </th>
+                            <th></th>
+                        </tr>
                                     {
-                                        List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
-                                        var showlistNguyenDon = "";
-                                        for (int i = 0; i < listNguyenDon.Count; i++)
-                                        {
-                                            showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
-                                            if (i != listNguyenDon.Count - 1)
+                                            foreach (var item in group)
                                             {
-                                                showlistNguyenDon += ", ";
-                                            }
-                                        }
-                                        <td>
-                                            @Html.DisplayFor(modelItem => showlistNguyenDon)
-                                        </td>
-                                    }
-                                    catch (Exception)
-                                    {
-                                    }
 
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.MA_HoSo)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Ten_VuAn)
+                                                    </td>
+                                                    <td width="100">
+                                                        @Html.DisplayFor(modelItem => item.NgayNhan_HS)
+                                                    </td>
+                                                    @{
+                                                        try
+                                                        {
+                                                            List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
+                                                            var showlistNguyenDon = "";
+                                                            for (int i = 0; i < listNguyenDon.Count; i++)
+                                                            {
+                                                                showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
+                                                                if (i != listNguyenDon.Count - 1)
+                                                                {
+                                                                    showlistNguyenDon += ", ";
+                                                                }
+                                                            }
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => showlistNguyenDon)
+                                                            </td>
+                                                        }
+                                                        catch (Exception)
+                                                        {
+                                                        }
+                                                        try
+                                                        {
+                                                            List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
+                                                            var showlistBiDon = "";
+                                                            for (int i = 0; i < listBiDon.Count; i++)
+                                                            {
+                                                                showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
+                                                                if (i != listBiDon.Count - 1)
+                                                                {
+                                                                    showlistBiDon += ", ";
+                                                                }
+                                                            }
+                                                            <td>
+                                                                @Html.DisplayFor(modelItem => showlistBiDon)
+                                                            </td>
+                                                        }
+                                                        catch (Exception)
+                                                        {
+                                                        }
+                                                    }
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                                                    </td>
 
-                                    try
-                                    {
-                                        List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
-                                        var showlistBiDon = "";
-                                        for (int i = 0; i < listBiDon.Count; i++)
-                                        {
-                                            showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
-                                            if (i != listBiDon.Count - 1)
-                                            {
-                                                showlistBiDon += ", ";
-                                            }
-                                        }
-                                        <td>
-                                            @Html.DisplayFor(modelItem => showlistBiDon)
-                                        </td>
-                                    }
-                                    catch (Exception)
-                                    {
-                                    }
-                                }
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
-                                </td>
-                          
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NoiDung_VA)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Loai_HS)
-                                </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.NoiDung_VA)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Loai_HS)
+                                                    </td>
+                                                    <td>
+                                                        <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
 
-                                <td>
-                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        |
+                                                        <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
 
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    |
-                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
 
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
+                                                </tr>
+                                                                    
+                                                                }
+                                                            }
+                                                        }
 
-                            </tr>
-                                        }
-                                    }
 
                 </table>
+ 
+               
                 @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))
             </div>
         </div>
@@ -251,7 +256,7 @@
                                     <input type="text" class="form-control" id="Loai_HS" name="Loai_HS" placeholder="Loại hồ sơ" required>
                                 </div>
                             </div>
-       
+
                             <div class="clearfix"></div>
 
                         </div>
@@ -397,9 +402,6 @@
                     document.getElementById('biDonError_Sua').innerHTML = "";
 
                     $('#modal-Update').modal('show');
-
-
-
                 },
                 error: function (response) {
 
@@ -408,6 +410,40 @@
             });
             return false;
         };
+
+        $.getJSON('@Url.Action("GetTuNgay")', null, function (result) {
+            if (result != null && !jQuery.isEmptyObject(result)) {
+                var minTuNgay = new Date(parseInt((result).match(/\d+/)[0]));
+                var maxDenNgay = new Date();
+                var tuNgay = new Date(parseInt((@Html.Raw(Json.Encode(ViewBag.tuNgay))).match(/\d+/)[0]));
+                var denNgay = new Date(parseInt((@Html.Raw(Json.Encode(ViewBag.denNgay))).match(/\d+/)[0]));
+                document.getElementById("tuNgay").min = DateConverter(minTuNgay);
+                document.getElementById("tuNgay").max = DateConverter(denNgay);
+                document.getElementById("denNgay").min = DateConverter(tuNgay);
+                document.getElementById("denNgay").max = DateConverter(maxDenNgay);
+                $('#tuNgay').val(DateConverter(tuNgay));
+                $('#denNgay').val(DateConverter(denNgay));
+            };
+        });
+
+        $('#tuNgay').change(function () {
+            var tuNgay = $("#tuNgay").val();
+            var denNgay = $("#denNgay").val();
+            $('#tuNgayHiden').val(tuNgay);
+            $('#denNgayHiden').val(denNgay);
+            document.getElementById('formSearch').submit();
+
+        });
+
+        $('#denNgay').change(function () {
+            var tuNgay = $("#tuNgay").val();
+            var denNgay = $("#denNgay").val();
+            $('#tuNgayHiden').val(tuNgay);
+            $('#denNgayHiden').val(denNgay);
+            document.getElementById('formSearch').submit();
+
+        });
+
         function DateConverter(date) {
             return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
         }
@@ -419,7 +455,7 @@
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (response) {
-                    if (response == "true"){
+                    if (response == "true") {
                         var result = confirm("Bạn chắc chắn muốn xóa?");
                         if (result) {
                             Xoa(id);
@@ -486,20 +522,20 @@
 
         //bat loi khi them
 
-        $(".btn_them").on('click', function () {         
+        $(".btn_them").on('click', function () {
             document.getElementById('nguyenDonError').innerHTML = "";
             document.getElementById('biDonError').innerHTML = "";
             if ($('#listNguyenDon').val() == "" || $('#listNguyenDon').val() == null) {
                 document.getElementById('nguyenDonError').innerHTML = "Vui lòng chọn nguyên đơn";
                 return false;
             }
-                if ($('#listBiDon').val() == "" || $('#listBiDon').val() == null) {
-                    document.getElementById('biDonError').innerHTML = "Vui lòng chọn bị đơn";
-                    return false;
-                }
-            });
+            if ($('#listBiDon').val() == "" || $('#listBiDon').val() == null) {
+                document.getElementById('biDonError').innerHTML = "Vui lòng chọn bị đơn";
+                return false;
+            }
+        });
         $(".btn_Sua").on('click', function () {
-            document.getElementById('nguyenDonError_Sua').innerHTML = "";    
+            document.getElementById('nguyenDonError_Sua').innerHTML = "";
             if ($('#listNguyenDon_Sua').val() == "" || $('#listNguyenDon_Sua').val() == null) {
                 document.getElementById('nguyenDonError_Sua').innerHTML = "Vui lòng chọn nguyên đơn";
                 return false;
@@ -518,22 +554,30 @@
         });
 
 
-            $(function () {
-                $('.group-header').click(function () {
-                    $(this).nextUntil('.group-header').toggle();
-                });
+        $(function () {
+            $('.group-header').click(function () {
+                $(this).nextUntil('.group-header').toggle();
             });
+        });
 
-            function addPaging() {
-                $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
-                $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
-                    $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
-                });
-            }
-          $(".pull-right").on('click', function () {
-        document.getElementById('hoiDongError').innerHTML = "";
-        return true;
-    });
+        function addPaging() {
+            $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
+            $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
+                $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
+            });
+        }
+        $(".pull-right").on('click', function () {
+            document.getElementById('hoiDongError').innerHTML = "";
+            return true;
+        });
+
+        $(".btn-search").on('click', function () {
+            var tuNgay = $("#tuNgay").val();
+            var denNgay = $("#denNgay").val();
+            $('#tuNgayHiden').val(tuNgay);
+            $('#denNgayHiden').val(denNgay);
+            return true;
+        });
     </script>
 }
 
