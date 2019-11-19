@@ -7,7 +7,7 @@
         <div class="box">
             <div class="card-header">
                 <i class="fas fa-table"></i>
-                DANH SÁCH PHÂN QUYỀN MENU
+                <b>DANH SÁCH PHÂN QUYỀN MENU</b>             
             </div>
             <div class="card-header">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#modal-mrole">Thêm người dùng Menu</button>
@@ -132,33 +132,33 @@
 
 @section scripts {
     <script type="text/javascript">
-        //sua
+ 
         $(function () {
             $('.group-header').click(function () {
                 $(this).nextUntil('.group-header').toggle();
             });
         });
-        function addPaging() {
-            $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
-            $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
-                $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
-            });
-        }
+
         $('#idController').change(function () {
             var selectedController = $("#idController").val();
             var selectedAction = $('#idAction');
             selectedAction.empty();
             if (selectedController != null && selectedController != '') {
-                $.getJSON('@Url.Action("GetActions")', { iso3: selectedController }, function (actions) {
-                    if (actions != null && !jQuery.isEmptyObject(actions)) {
-                        $.each(actions, function (index, action) {
+
+                $.getJSON('@Url.Action("GetActions")', { maController: selectedController }, function (results) {
+
+                    if (results != null && !jQuery.isEmptyObject(results)) {
+                        $.each(results, function (index, result) {
                             selectedAction.append($('<option/>', {
-                                value: action.Value,
-                                text: action.Text
+                                value: result.Value,
+                                text: result.Text
                             }));
                         });
+
                     };
                 });
+
+
             }
         });
     </script>

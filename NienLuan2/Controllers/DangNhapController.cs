@@ -64,6 +64,8 @@ namespace NienLuan2.Controllers
             try
             {
                 var nhanvien = db.NHANVIENs.SingleOrDefault(s => s.MA_NhanVien == maNhanVien);
+
+
                 if (nhanvien != null)
                 {
                     if (nhanvien.MatKhau == matKhau)

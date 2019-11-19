@@ -21,7 +21,7 @@ namespace NienLuan2.Controllers
         //{
         //    var
         //}
-        public ActionResult ListDS(string searchString, int? error, int page = 1, int pageSize = 5)
+        public ActionResult ListDS(string searchString, int? error, int page = 1, int pageSize = 10)
         {
             
            if (error == 1)

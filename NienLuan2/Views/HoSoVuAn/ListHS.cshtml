@@ -12,9 +12,9 @@
 <div class="container-fluid">
 
     <div class="card mb-3">
-        <div class="card-header">
+        <div class="card-header" style="">
             <i class="fas fa-table"></i>
-            DANH SÁCH HỒ SƠ
+              <b> DANH SÁCH HỒ SƠ</b>
             <a style="margin-left: 30px">Từ: </a>
             <input type="date" style="margin-left: 20px" id="tuNgay" />
             <a style="margin-left: 20px">Đến: </a>
@@ -37,156 +37,417 @@
             }
 
         </div>
-        <input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />
+        @*<input type="hidden" class="TonTaiMa" value="@ViewBag.Loi" />*@
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" cellspacing="0">
-                    @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai).OrderBy(item => item.Key))
-                    {
-                        <tr class="group-header" data-toggle="collapse">
-                            <td colspan="6">
-                                @{
-                                    if (group.Key == "01")
-                                    {
-                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Nhận đơn</span></i>
-                                    }
-                                    if (group.Key == "02")
-                                    {
-                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Chờ xét xử</span></i>
-                                    }
-                                    if (group.Key == "03")
-                                    {
-                                        <i class="far fa-plus-square"><span class="h4">&nbsp;&nbsp;Đã xét xử</span></i>
-                                    }
-                                }
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <th>
-                                Mã số hồ sơ
-                            </th>
-                            <th>
-                                Tên vụ án
-                            </th>
-                            <th width="100">
-                                Ngày nhận
-                            </th>
-                            <th>
-                                Nguyên đơn
-                            </th>
-                            <th>
-                                Bị đơn
-                            </th>
-                            <th>
-                                Loại vụ án
-                            </th>
-
-                            <th>
-                                Thẩm phán
-                            </th>
-                            <th>
-                                Ghi chú
-                            </th>
-                            <th>
-                                Loại hồ sơ
-                            </th>
-                            <th>
-                                Thao tác
-                            </th>
-                            <th></th>
-                        </tr>
-                                    {
-                                            foreach (var item in group)
-                                            {
-
-                                                <tr>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.MA_HoSo)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Ten_VuAn)
-                                                    </td>
-                                                    <td width="100">
-                                                        @Html.DisplayFor(modelItem => item.NgayNhan_HS)
-                                                    </td>
-                                                    @{
-                                                        try
-                                                        {
-                                                            List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
-                                                            var showlistNguyenDon = "";
-                                                            for (int i = 0; i < listNguyenDon.Count; i++)
-                                                            {
-                                                                showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
-                                                                if (i != listNguyenDon.Count - 1)
-                                                                {
-                                                                    showlistNguyenDon += ", ";
-                                                                }
-                                                            }
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => showlistNguyenDon)
-                                                            </td>
-                                                        }
-                                                        catch (Exception)
-                                                        {
-                                                        }
-                                                        try
-                                                        {
-                                                            List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
-                                                            var showlistBiDon = "";
-                                                            for (int i = 0; i < listBiDon.Count; i++)
-                                                            {
-                                                                showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
-                                                                if (i != listBiDon.Count - 1)
-                                                                {
-                                                                    showlistBiDon += ", ";
-                                                                }
-                                                            }
-                                                            <td>
-                                                                @Html.DisplayFor(modelItem => showlistBiDon)
-                                                            </td>
-                                                        }
-                                                        catch (Exception)
-                                                        {
-                                                        }
-                                                    }
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
-                                                    </td>
-
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.NoiDung_VA)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Loai_HS)
-                                                    </td>
-                                                    <td>
-                                                        <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
-
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        |
-                                                        <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
-
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </td>
-
-                                                </tr>
-                                                                    
-                                                                }
-                                                            }
-                                                        }
-
-
-                </table>
- 
-               
-                @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'DaNhan')">Nhận đơn</button>
+                <button class="tablinks" onclick="openTab(event, 'ChoXetXu')">Chờ xét xử</button>
+                <button class="tablinks" onclick="openTab(event, 'DaXetXu')">Đã xét xử</button>
             </div>
+            <div id="DaNhan" class="tabcontent">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai).OrderBy(item => item.Key))
+                        {
+                            {
+                                if (group.Key == "01")
+                                {
+                                    <tr>
+                                        <th>
+                                            Mã số hồ sơ
+                                        </th>
+                                        <th>
+                                            Tên vụ án
+                                        </th>
+                                        <th width="100">
+                                            Ngày nhận
+                                        </th>
+                                        <th>
+                                            Nguyên đơn
+                                        </th>
+                                        <th>
+                                            Bị đơn
+                                        </th>
+                                        <th>
+                                            Loại vụ án
+                                        </th>
+
+                                        <th>
+                                            Thẩm phán
+                                        </th>
+                                        <th>
+                                            Ghi chú
+                                        </th>
+                                        <th>
+                                            Loại hồ sơ
+                                        </th>
+                                        <th>
+                                            Thao tác
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    {
+                                        foreach (var item in group)
+                                        {
+
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.MA_HoSo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Ten_VuAn)
+                                                </td>
+                                                <td width="100">
+                                                    @Html.DisplayFor(modelItem => item.NgayNhan_HS)
+                                                </td>
+                                                @{
+                                                    try
+                                                    {
+                                                        List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
+                                                        var showlistNguyenDon = "";
+                                                        for (int i = 0; i < listNguyenDon.Count; i++)
+                                                        {
+                                                            showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
+                                                            if (i != listNguyenDon.Count - 1)
+                                                            {
+                                                                showlistNguyenDon += ", ";
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => showlistNguyenDon)
+                                                        </td>
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                    try
+                                                    {
+                                                        List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
+                                                        var showlistBiDon = "";
+                                                        for (int i = 0; i < listBiDon.Count; i++)
+                                                        {
+                                                            showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
+                                                            if (i != listBiDon.Count - 1)
+                                                            {
+                                                                showlistBiDon += ", ";
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => showlistBiDon)
+                                                        </td>
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                }
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.NoiDung_VA)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Loai_HS)
+                                                </td>
+                                                <td>
+                                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
+
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    |
+                                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
+
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                    </table>
+
+
+                    @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))
+                </div>
+            </div>
+
+            <div id="ChoXetXu" class="tabcontent">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai).OrderBy(item => item.Key))
+                        {
+                            {
+                                if (group.Key == "02")
+                                {
+                                    <tr>
+                                        <th>
+                                            Mã số hồ sơ
+                                        </th>
+                                        <th>
+                                            Tên vụ án
+                                        </th>
+                                        <th width="100">
+                                            Ngày nhận
+                                        </th>
+                                        <th>
+                                            Nguyên đơn
+                                        </th>
+                                        <th>
+                                            Bị đơn
+                                        </th>
+                                        <th>
+                                            Loại vụ án
+                                        </th>
+
+                                        <th>
+                                            Thẩm phán
+                                        </th>
+                                        <th>
+                                            Ghi chú
+                                        </th>
+                                        <th>
+                                            Loại hồ sơ
+                                        </th>
+                                        <th>
+                                            Thao tác
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    {
+                                        foreach (var item in group)
+                                        {
+
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.MA_HoSo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Ten_VuAn)
+                                                </td>
+                                                <td width="100">
+                                                    @Html.DisplayFor(modelItem => item.NgayNhan_HS)
+                                                </td>
+                                                @{
+                                                    try
+                                                    {
+                                                        List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
+                                                        var showlistNguyenDon = "";
+                                                        for (int i = 0; i < listNguyenDon.Count; i++)
+                                                        {
+                                                            showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
+                                                            if (i != listNguyenDon.Count - 1)
+                                                            {
+                                                                showlistNguyenDon += ", ";
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => showlistNguyenDon)
+                                                        </td>
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                    try
+                                                    {
+                                                        List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
+                                                        var showlistBiDon = "";
+                                                        for (int i = 0; i < listBiDon.Count; i++)
+                                                        {
+                                                            showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
+                                                            if (i != listBiDon.Count - 1)
+                                                            {
+                                                                showlistBiDon += ", ";
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => showlistBiDon)
+                                                        </td>
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                }
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.NoiDung_VA)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Loai_HS)
+                                                </td>
+                                                <td>
+                                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
+
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    |
+                                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
+
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                    </table>
+
+
+                    @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))
+                </div>
+            </div>
+
+            <div id="DaXetXu" class="tabcontent">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" cellspacing="0">
+                        @foreach (var group in Model.listHoSoVuAn.GroupBy(x => x.TRANGTHAI_HS.MA_TrangThai).OrderBy(item => item.Key))
+                        {
+                            {
+                                if (group.Key == "03")
+                                {
+                                    <tr>
+                                        <th>
+                                            Mã số hồ sơ
+                                        </th>
+                                        <th>
+                                            Tên vụ án
+                                        </th>
+                                        <th width="100">
+                                            Ngày nhận
+                                        </th>
+                                        <th>
+                                            Nguyên đơn
+                                        </th>
+                                        <th>
+                                            Bị đơn
+                                        </th>
+                                        <th>
+                                            Loại vụ án
+                                        </th>
+
+                                        <th>
+                                            Thẩm phán
+                                        </th>
+                                        <th>
+                                            Ghi chú
+                                        </th>
+                                        <th>
+                                            Loại hồ sơ
+                                        </th>
+                                        <th>
+                                            Thao tác
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    {
+                                        foreach (var item in group)
+                                        {
+
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.MA_HoSo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Ten_VuAn)
+                                                </td>
+                                                <td width="100">
+                                                    @Html.DisplayFor(modelItem => item.NgayNhan_HS)
+                                                </td>
+                                                @{
+                                                    try
+                                                    {
+                                                        List<CHITIET_DS> listNguyenDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "ND")).ToList();
+                                                        var showlistNguyenDon = "";
+                                                        for (int i = 0; i < listNguyenDon.Count; i++)
+                                                        {
+                                                            showlistNguyenDon += listNguyenDon[i].DUONGSU.HoTen_DS;
+                                                            if (i != listNguyenDon.Count - 1)
+                                                            {
+                                                                showlistNguyenDon += ", ";
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => showlistNguyenDon)
+                                                        </td>
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                    try
+                                                    {
+                                                        List<CHITIET_DS> listBiDon = Model.listChiTietDuongSu.Where(x => (x.MA_HoSo == item.MA_HoSo) && (x.MA_LoaiDS == "BD")).ToList();
+                                                        var showlistBiDon = "";
+                                                        for (int i = 0; i < listBiDon.Count; i++)
+                                                        {
+                                                            showlistBiDon += listBiDon[i].DUONGSU.HoTen_DS;
+                                                            if (i != listBiDon.Count - 1)
+                                                            {
+                                                                showlistBiDon += ", ";
+                                                            }
+                                                        }
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => showlistBiDon)
+                                                        </td>
+                                                    }
+                                                    catch (Exception)
+                                                    {
+                                                    }
+                                                }
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.LOAI_VUAN.Ten_LoaiVA)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.NHANVIEN.HoTen_NV)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.NoiDung_VA)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Loai_HS)
+                                                </td>
+                                                <td>
+                                                    <button class="item btn_Sua btn btn-success btn-sm" onclick="GetDetails('@item.MA_HoSo')">
+
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    |
+                                                    <a class="item btn_Sua btn btn-danger btn-sm" onclick="CheckXoa('@item.MA_HoSo');" href="">
+
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+                    </table>
+                    @Html.PagedListPager((IPagedList)Model.listHoSoVuAn, page => Url.Action("ListHS", new { page, @searchString = @ViewBag.SearchString }))
+                </div>
+            </div>
+                  
         </div>
     </div>
 </div>
@@ -358,7 +619,6 @@
     <script type="text/javascript">
         function GetDetails(id) {
             $.ajax({
-
                 url: "/HoSoVuAn/Edit_HS/" + id,
                 typr: "GET",
                 contentType: "application/json;charset=UTF-8",
@@ -369,6 +629,7 @@
                     $('#NgayNhan_HS_Sua').val(DateConverter(date));
                     $('#Ten_VuAn_Sua').val(response.Ten_VuAn);
                     $('#listNhanVien_Sua').val(response.MA_NhanVien);
+
 
                     var listSelectedNguyenDon = new Array();
                     $("#listNguyenDon_Sua option:selected").prop("selected", false);
@@ -381,6 +642,7 @@
                             });
                         };
                     });
+
 
                     var listSelectedBiDon = new Array();
                     $("#listBiDon_Sua option:selected").prop("selected", false);
@@ -513,15 +775,6 @@
         });
 
 
-
-        //bat loi khoa ngoai khi xoa
-        var loi = $(".TonTaiMa").val();
-        if (loi === '1')
-            alert("Mã hồ sơ này đã tồn tại!!!");
-
-
-        //bat loi khi them
-
         $(".btn_them").on('click', function () {
             document.getElementById('nguyenDonError').innerHTML = "";
             document.getElementById('biDonError').innerHTML = "";
@@ -553,24 +806,6 @@
             return true;
         });
 
-
-        $(function () {
-            $('.group-header').click(function () {
-                $(this).nextUntil('.group-header').toggle();
-            });
-        });
-
-        function addPaging() {
-            $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
-            $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
-                $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
-            });
-        }
-        $(".pull-right").on('click', function () {
-            document.getElementById('hoiDongError').innerHTML = "";
-            return true;
-        });
-
         $(".btn-search").on('click', function () {
             var tuNgay = $("#tuNgay").val();
             var denNgay = $("#denNgay").val();
@@ -578,6 +813,42 @@
             $('#denNgayHiden').val(denNgay);
             return true;
         });
+
+
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById('DaNhan').style.display = "block";
+        evt.currentTarget.className += " active";
+
+
+        function addPaging() {
+            $('#employeeGrid tr:first').prepend('<th style="width:60px;">S. No.</th>');
+            $('#employeeGrid tr:not(:first, .group-header, .group-footer)').each(function (index) {
+                $(this).prepend('<td class="text-right">' + (index + 1) + '.</td>');
+            });
+        }
+
     </script>
 }
 

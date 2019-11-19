@@ -7,61 +7,65 @@
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 
-@{
-    int count = 1;
-}
-<div class="container-fluid">
 
+<h2>Danh sách mẫu đơn</h2>
+
+
+<table class="table"></table>
+
+<div>
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            DANH SÁCH MẪU ĐƠN
-            <div class="footer" style="background: #fff">
-                <div class="table-responsive">
-                    <table class="table table-hover table-light">
-                        <thead>
-                            <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Tên mẫu đơn</th>
-                                <th scope="col">Tải về</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @count
-                                        @{
-                                            count++;
-                                        }
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TenMauDon)
-                                    </td>
-                                    <td>
-                                        @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.Link_MD')">
-                                            Download
-                                        </button>*@   
-                                        <a href="@item.Link_MD">
-                                            <i class="fa download">Download</i>
-                                        </a> 
-                                        @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.MA_MauDon')">
-                                            Download
-                                        </button>*@                                       
-                                    </td>
-                                </tr>
-                                            }
-                        </tbody>
-                    </table>
-                    @Html.PagedListPager(Model, page => Url.Action("MauDon", new { page, @searchString = @ViewBag.SearchString }))
-                </div>
-            </div>
+            <b>Danh sách mẫu đơn</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên mẫu đơn</th>
+                        <th scope="col">Tải về</th>
+                    </tr>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
+                                @count
+                                @{
+                                    count++;
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenMauDon)
+                            </td>
+                            <td>
+                                @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.Link_MD')">
+                Download
+            </button>*@
+                                <a href="@item.Link_MD">
+                                    <i class="fa download">Download</i>
+                                </a>
+                                @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.MA_MauDon')">
+                Download
+            </button>*@
+                            </td>
 
+                        </tr>
+                                    }
 
+                </table>
             </div>
         </div>
     </div>
+</div>
+
+
+
+
 @section scripts {
     <script type="text/javascript">
         function DownloadDon(id) {

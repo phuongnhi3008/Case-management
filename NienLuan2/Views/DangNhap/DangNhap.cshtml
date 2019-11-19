@@ -58,11 +58,9 @@
         <!-- Core plugin JavaScript-->
         <script src="/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
         <script type="text/javascript">
-            function CheckDangNhap() {
-             
+            function CheckDangNhap() {            
                 var manhanvien = $("#maNhanVien").val();
                 var matkhau = $("#matKhau").val();
-
                 $.post('/DangNhap/CheckDangNhap/', { maNhanVien: manhanvien, matKhau: matkhau },
                     function (response) {
                         if (response == "thanhcong") {

@@ -10,22 +10,22 @@
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            DANH SÁCH ĐƯƠNG SỰ
-            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
-                Thêm đương sự
-            </button>
-            @using (Html.BeginForm("ListDS", "DuongSu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
+            <b>DANH SÁCH ĐƯƠNG SỰ</b>
+                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" style="margin-right:20px; ">
+                    Thêm đương sự
+                </button>
+                @using (Html.BeginForm("ListDS", "DuongSu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
             {
-                <div class="input-group">
-                    <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập tên đương sự cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
+                    <div class="input-group">
+                        <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Nhập tên đương sự cần tìm..." aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+</div>
 
         <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
 
@@ -259,7 +259,6 @@
     <script type="text/javascript">
     function GetDetails(id) {
     $.ajax({
-
         url: "/DuongSu/Edit_DS/" + id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
@@ -336,82 +335,78 @@
         });
     };
 
-    //bat loi khoa ngoai khi xoa
-    var loi = $(".LoiKhoaNgoai").val();
-    if (loi === '1')
-        alert("Vui lòng xóa nhân viên thuộc phòng ban trước !!")
-    //bat loi khi them
-    $(".btn_them").on('click', function () {
-        var maDuongSu = $('#MA_DuongSu').val();
-        var namsinh = $('#NamSinh_DS').val();
-        var hotenDS = $('#HoTen_DS').val();
-        var quequan = $('#QueQuan_DS').val();
-        var diachi = $('#DiaChi_DS').val();
-        var sdt = $('#SoDienThoai_DS').val();
-        var cmnd = $('#CMND').val();
+    ////bat loi khi them
+    //$(".btn_them").on('click', function () {
+    //    var maDuongSu = $('#MA_DuongSu').val();
+    //    var namsinh = $('#NamSinh_DS').val();
+    //    var hotenDS = $('#HoTen_DS').val();
+    //    var quequan = $('#QueQuan_DS').val();
+    //    var diachi = $('#DiaChi_DS').val();
+    //    var sdt = $('#SoDienThoai_DS').val();
+    //    var cmnd = $('#CMND').val();
 
-        if (maDuongSu === '')
-        {
-            alert("Mã đương sự không được rỗng!!");
-            return false;
-        }
+    //    if (maDuongSu === '')
+    //    {
+    //        alert("Mã đương sự không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (maDuongSu.length > 5)
-        {
-            alert("Mã đương sự không được lớn hơn 5 ký tự!!");
-            return false;
-        }
-        if (namsinh === '') {
-            alert("Năm sinh đương sự không được rỗng!!");
-            return false;
-        }
+    //    if (maDuongSu.length > 5)
+    //    {
+    //        alert("Mã đương sự không được lớn hơn 5 ký tự!!");
+    //        return false;
+    //    }
+    //    if (namsinh === '') {
+    //        alert("Năm sinh đương sự không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (hotenDS === '') {
-            alert("Họ tên không được rỗng!!");
-            return false;
-        }
+    //    if (hotenDS === '') {
+    //        alert("Họ tên không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (hotenDS.length > 50) {
-            alert("Họ tên không được lớn hơn 50 ký tự!!");
-            return false;
-        }
-        if (quequan === '') {
-            alert("Quê quán không được rỗng!!");
-            return false;
-        }
+    //    if (hotenDS.length > 50) {
+    //        alert("Họ tên không được lớn hơn 50 ký tự!!");
+    //        return false;
+    //    }
+    //    if (quequan === '') {
+    //        alert("Quê quán không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (quequan.length > 50) {
-            alert("Quê quán không được lớn hơn 50 ký tự!!");
-            return false;
-        }
-        if (diachi === '') {
-            alert("Địa chỉ không được rỗng!!");
-            return false;
-        }
+    //    if (quequan.length > 50) {
+    //        alert("Quê quán không được lớn hơn 50 ký tự!!");
+    //        return false;
+    //    }
+    //    if (diachi === '') {
+    //        alert("Địa chỉ không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (diachi.length > 255) {
-            alert("Địa chỉ không được lớn hơn 255 ký tự!!");
-            return false;
-        }
-        if (sdt === '') {
-            alert("Số điện thoại không được rỗng!!");
-            return false;
-        }
+    //    if (diachi.length > 255) {
+    //        alert("Địa chỉ không được lớn hơn 255 ký tự!!");
+    //        return false;
+    //    }
+    //    if (sdt === '') {
+    //        alert("Số điện thoại không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (sdt.length > 11) {
-            alert("Số điện thoại không được lớn hơn 11 ký tự!!");
-            return false;
-        }
-        if (cmnd === '') {
-            alert("CMND không được rỗng!!");
-            return false;
-        }
+    //    if (sdt.length > 11) {
+    //        alert("Số điện thoại không được lớn hơn 11 ký tự!!");
+    //        return false;
+    //    }
+    //    if (cmnd === '') {
+    //        alert("CMND không được rỗng!!");
+    //        return false;
+    //    }
 
-        if (cmnd.length > 12) {
-            alert("CMND không được lớn hơn 12 ký tự!!");
-            return false;
-        }
-    });
+    //    if (cmnd.length > 12) {
+    //        alert("CMND không được lớn hơn 12 ký tự!!");
+    //        return false;
+    //    }
+    //});
     </script>
 }
 

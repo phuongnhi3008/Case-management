@@ -252,14 +252,14 @@ namespace NienLuan2.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetActions(string iso3)
+        public ActionResult GetActions(string maController)
         {
             try
             {
-                db.CHUCNANGs.Where(x => x.MA_Controller.Equals(iso3)).ToList();
+                db.CHUCNANGs.Where(x => x.MA_Controller.Equals(maController)).ToList();
                 IEnumerable<SelectListItem> actions = db.CHUCNANGs.AsNoTracking()
                         .OrderBy(n => n.Ten_Action_Viet)
-                        .Where(n => n.MA_Controller == iso3)
+                        .Where(n => n.MA_Controller == maController)
                         .Select(n =>
                            new SelectListItem
                            {

@@ -9,55 +9,73 @@
 
 
 <table class="table">
-    <tr>
-        <th>
-            STT
-        </th>
-        <th>
-            Ngày xét xử
-        </th>
-        <th>
-          Lần xét xử
-        </th>
-        <th>
-           Địa điểm
-        </th>
-        <th>
-           Tên vụ án
-        </th>
-        <th>
-            Cấp xét xử
-        </th>
-        <th></th>
-    </tr>
-    @{
-        int count = 1;
-    }
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @count
-            @{
-                count++;
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ngay_XetXu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lan_XetXu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
-        </td>
-
-    </tr>
-}
-
+    
 </table>
+
+<div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            <b>Lịch xét xử</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    <tr>
+                        <th>
+                            STT
+                        </th>
+                        <th>
+                            Ngày xét xử
+                        </th>
+                        <th>
+                            Lần xét xử
+                        </th>
+                        <th>
+                            Địa điểm
+                        </th>
+                        <th>
+                            Tên vụ án
+                        </th>
+                        <th>
+                            Cấp xét xử
+                        </th>
+          
+                    </tr>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @count
+                                @{
+                                    count++;
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ngay_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lan_XetXu)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DIADIEM_XX.Ten_DiaDiem)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HOSO_VUAN.Ten_VuAn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CAPXETXU.TenCapXetXu)
+                            </td>
+
+                        </tr>
+                                    }
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
