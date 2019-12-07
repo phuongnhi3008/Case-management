@@ -13,6 +13,7 @@ namespace NienLuan2.Controllers
         NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
         public ActionResult Index()
         {
+            var debug = Session["TaiKhoan"];
             return View();
         }
 

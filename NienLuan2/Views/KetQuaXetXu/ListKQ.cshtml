@@ -33,7 +33,6 @@
             }
         </div>
 
-        <input type="hidden" class="LoiKhoaNgoai" value="@ViewBag.Loi" />
 
         <div class="card-body">
             <div class="table-responsive">
@@ -79,10 +78,11 @@
                                 @Html.DisplayFor(modelItem => item.XETXU.Lan_XetXu)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.XETXU.Ngay_XetXu)
+    
+                                @Html.ActionLink(Convert.ToString(@item.XETXU.Ngay_XetXu).Substring(0, 10), "ChiTiet_XX", "XetXu", new { @id = item.MA_XetXu }, new { })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.KetQua_XX)
+                                @Html.DisplayFor(modelItem => item.KetQua_XX1)
                             </td>
                             <td>
 
@@ -138,7 +138,7 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Kết quả :</label>
 
-                                <input type="text" class="form-control" id="Ketquaxetxu" name="KetQua_XX" required>
+                                <input type="text" class="form-control" id="Ketquaxetxu" name="KetQua_XX1" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -192,7 +192,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Kết quả :</label>
-                                <input type="text" class="form-control" id="Ketquaxetxu_capnhat" name="KetQua_XX">
+                                <input type="text" class="form-control" id="Ketquaxetxu_capnhat" name="KetQua_XX1" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -211,7 +211,7 @@
 @section scripts {
 
     <script type="text/javascript">
-        //sua
+        
         function GetDetails(id) {
             $.ajax({
                 url: "/KetQuaXetXu/Edit_KQ/" + id,
@@ -219,7 +219,6 @@
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
                 success: function (response) {
-
                     var date = new Date(parseInt((response.Ngay_XetXu).match(/\d+/)[0]));
                     $('#txtMA_KetQuaXX').val(response.MA_KetQuaXX);
                     $('#idVuAn_capnhat').val(response.Ten_VuAn);
@@ -245,85 +244,6 @@
                + "/" + (d.getDate() + "").padStart(2, "0")
                + "/" + d.getFullYear();
         }
-        ////bat loi khoa ngoai khi xoa
-        //var loi = $(".TonTaiMa").val();
-        //if (loi === '1')
-        //    alert("Mã nhân viên này đã tồn tại!!!");
-
-        ////bat loi khi them
-
-        //$(".btn_them").on('click', function () {
-        //    var maNV = $('#MA_NhanVien').val();
-        //    var TenNV = $('#HoTen_NV').val();
-        //    var NamSinh = $('#NamSinh_NV').val();
-        //    var QueQuan = $('#QueQuan_NV').val();
-        //    var cmnd = $('#CMND_NV').val();
-        //    var Sdt = $('#SoDienThoai_NV').val();
-        //    var MatKhau = $('#MatKhau').val();
-
-        //    if (maNV === '') {
-        //        alert("Mã nhân viên không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (maNV.length > 8) {
-        //        alert("Mã nhân viên không được lớn hơn 8 ký tự!!");
-        //        return false;
-        //    }
-
-        //    if (TenNV === '') {
-        //        alert("Tên nhân viên không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (TenNV.length > 50) {
-        //        alert("Tên nhân viên không được lớn hơn 50 ký tự!!");
-        //        return false;
-        //    }
-
-        //    if (NamSinh === '') {
-        //        alert("Năm sinh không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (QueQuan === '') {
-        //        alert("Quê quán không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (QueQuan.length > 250) {
-        //        alert("Quê quán không được lớn hơn 250 ký tự!!");
-        //        return false;
-        //    }
-        //    if (cmnd === '') {
-        //        alert("Số CMND không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (cmnd.length > 12) {
-        //        alert("Số CMND không được lớn hơn 12 ký tự!!");
-        //        return false;
-        //    }
-        //    if (Sdt === '') {
-        //        alert("Số điện thoại không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (Sdt.length > 11) {
-        //        alert("Số điện thoại không được lớn hơn 11 ký tự!!");
-        //        return false;
-        //    }
-        //    if (MatKhau === '') {
-        //        alert("Mật khẩu không được rỗng!!");
-        //        return false;
-        //    }
-
-        //    if (MatKhau.length > 50) {
-        //        alert("Mật khẩu không được lớn hơn 50 ký tự!!");
-        //        return false;
-        //    }
-        //});
-
 
 
         $('#idVuAn').change(function () {
@@ -331,7 +251,7 @@
             var selectedSoLanXetXu = $('#idSoLanXetXu');
             selectedSoLanXetXu.empty();
             if (selectedVuAn != null && selectedVuAn != '') {
-                $.getJSON('@Url.Action("GetSoLanXetXu")', { iso3: selectedVuAn }, function (actions) {
+                $.getJSON('@Url.Action("GetSoLanXetXu")', { maHoSo: selectedVuAn }, function (actions) {
                     if (actions != null && !jQuery.isEmptyObject(actions)) {
                         $.each(actions, function (index, action) {
                             selectedSoLanXetXu.append($('<option/>', {
@@ -340,7 +260,7 @@
                             }));
                             if (index == 0) {
                                 $('#idSoLanXetXu').val(action.Value);
-                                $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: action.Value }, function (result) {
+                                $.getJSON('@Url.Action("GetNgayXetXu")', { maXetXu: action.Value }, function (result) {
                                     var date = new Date(parseInt((result).match(/\d+/)[0]));
                                     $('#idNgayXetXu').val(DateConverter(date));
                                 });
@@ -356,15 +276,17 @@
             var selectedLanXetXu = $("#idSoLanXetXu").val();
             var ngay = $('#idNgayXetXu');
             if (selectedLanXetXu != null && selectedLanXetXu != '') {
-                $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: selectedLanXetXu }, function (result) {
+                $.getJSON('@Url.Action("GetNgayXetXu")', { maXetXu: selectedLanXetXu }, function (result) {
                     var date = new Date(parseInt((result).match(/\d+/)[0]));
                     $('#idNgayXetXu').val(DateConverter(date));
                 });
             }
 
         });
+
+
         var selectedSoLanXetXu1 = $('#idSoLanXetXu').val();
-        $.getJSON('@Url.Action("GetNgayXetXu")', { iso3: selectedSoLanXetXu1 }, function (result) {
+        $.getJSON('@Url.Action("GetNgayXetXu")', { maXetXu: selectedSoLanXetXu1 }, function (result) {
                     var date = new Date(parseInt((result).match(/\d+/)[0]));
                     $('#idNgayXetXu').val(DateConverter(date));
         });

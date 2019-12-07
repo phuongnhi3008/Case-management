@@ -25,49 +25,26 @@ namespace NienLuan2.Controllers
             ViewBag.qsd1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
             ViewBag.pb1 = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
 
-            if (error == 1)
-                ViewBag.Loi = 1;
-
             IEnumerable<NHANVIEN> model = db.NHANVIENs;
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                model = model.Where(x => x.HoTen_NV.Contains(searchString) || x.MA_NhanVien.Contains(searchString)).OrderByDescending(x => x.HoTen_NV);
+                model = model.Where(x => x.HoTen_NV.Contains(searchString) || x.MA_NhanVien.Contains(searchString)).OrderBy(x => x.HoTen_NV);
             }
-
             ViewBag.SearchString = searchString;
-            return View(model.OrderByDescending(x => x.HoTen_NV).ToPagedList(page, pageSize));
-           // return View(db.NHANVIENs);
+            return View(model.OrderBy(x => x.HoTen_NV).ToPagedList(page, pageSize));
         }
 
         [HttpGet]
         public ActionResult chitiet_NV(string id)
         {
-            //if (id == null)
-            //    return HttpNotFound();
-
-            //var chitietNV = db.NHANVIENs.SingleOrDefault(x => x.MA_NhanVien == id);
             var chitiet = db.NHANVIENs.Find(id);
             return View(chitiet);
-        }
-
-        public ActionResult them_NV()
-        {
-            ViewBag.cv = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
-            ViewBag.qsd = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
-            ViewBag.pb = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
-
-            return View();
         }
 
         [HttpPost, ActionName("them_NV")]
         public ActionResult them_NV(NHANVIEN Nv, FormCollection form)
         {
-            if (db.NHANVIENs.Any(x => x.MA_NhanVien == Nv.MA_NhanVien))
-            {
-                ViewBag.error = "Mã nhân viên này đã tồn tại!!!";
-                return View(Nv);
-            }
             Nv.MA_NhanVien = UUID.GetUUID(5);
             Nv.MA_ChucVu = form["cv"].ToString(); ;
             Nv.MA_PhongBan = form["pb"].ToString();
@@ -82,12 +59,6 @@ namespace NienLuan2.Controllers
             else Nv.GioiTinh_NV = false;
             db.NHANVIENs.Add(Nv);
             db.SaveChanges();
-
-            //ViewBag.cv = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
-            //ViewBag.qsd = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
-            //ViewBag.pb = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
-
-            //var list_NV = from s in db.NHANVIENs select s;
             return RedirectToAction("ListNV");
         }
 
@@ -97,18 +68,6 @@ namespace NienLuan2.Controllers
             var nv = db.NHANVIENs.Find(id);
 
             return Json(nv, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult sua_NV(string id)
-        {
-            ViewBag.cv1 = new SelectList(db.CHUCVUs.OrderBy(x => x.TEN_ChucVu), "MA_ChucVu", "TEN_ChucVu");
-            ViewBag.qsd1 = new SelectList(db.QUYEN_NSD.OrderBy(x => x.Ten_QNSD), "MA_QNSD", "Ten_QNSD");
-            ViewBag.pb1 = new SelectList(db.PHONGBANs.OrderBy(x => x.Ten_PB), "MA_PhongBan", "Ten_PB");
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            NHANVIEN nhanvien = db.NHANVIENs.Find(id);
-            return View(nhanvien);
         }
 
         [HttpPost, ActionName("Sua_NV1")]
@@ -165,16 +124,7 @@ namespace NienLuan2.Controllers
             }
 
         }
-        public ActionResult xoa_NV(string id)
-        {
-            NHANVIEN nhanvien = db.NHANVIENs.SingleOrDefault(s => s.MA_NhanVien == id);
-            if (nhanvien == null)
-            {
-                Response.StatusCode = 404;
-                return null;
-            }
-            return View(nhanvien);
-        }
+
         //[HttpPost, ActionName("xoa_NV")]
         public ActionResult xoa_NV1(string id)
         {

@@ -22,10 +22,10 @@ namespace NienLuan2.Models
         }
     
         public string MA_DuongSu { get; set; }
-        public string MA_LoaiDS { get; set; }
         public string CMND { get; set; }
         public string HoTen_DS { get; set; }
-        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public System.DateTime NamSinh_DS { get; set; }
         public string QueQuan_DS { get; set; }
         public string DiaChi_DS { get; set; }

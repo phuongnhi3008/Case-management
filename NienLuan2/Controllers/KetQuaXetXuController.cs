@@ -15,14 +15,17 @@ namespace NienLuan2.Controllers
     {
         NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
         // GET: KetQuaXetXu
-        public ActionResult ListKQ(string searchString, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 10)
+        public ActionResult ListKQ(string searchString, string maHoSo, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 10)
         {
+
             List<HOSO_VUAN> ListVA = new List<HOSO_VUAN>();
             foreach (var item in db.XETXUs.ToList())
             {
                 ListVA.Add(item.HOSO_VUAN);
+                //Xoa vu an da duoc xet xet xu khoi danh sach
                 foreach (var itemKQ in db.KETQUA_XX.ToList())
                 {
+                    //Kiem tra vu an da duoc xet xu chua
                     if (item.Equals(itemKQ.XETXU))
                         ListVA.Remove(item.HOSO_VUAN);
                 }
@@ -31,11 +34,14 @@ namespace NienLuan2.Controllers
             {
                 IEnumerable<HOSO_VUAN> result = ListVA.GroupBy(x => x.Ten_VuAn).Select(x => x.First());
                 ViewBag.tva = new SelectList(result, "MA_HoSo", "Ten_VuAn");
+
+
                 HOSO_VUAN hoso = result.First();
                 List<XETXU> listXetXu = db.XETXUs.Where(xx => xx.MA_HoSo == hoso.MA_HoSo).ToList();
                 List<XETXU> newListXetXu = listXetXu;
                 foreach (var itemXX in listXetXu.ToList())
                 {
+                    //Kiem tra vu an da duoc xet xu chua(theo lan)
                     foreach (var itemKQ in db.KETQUA_XX.ToList())
                     {
                         if (itemXX.Equals(itemKQ.XETXU))
@@ -43,13 +49,11 @@ namespace NienLuan2.Controllers
                     }
                 }
                 ViewBag.lxx = new SelectList(newListXetXu.AsEnumerable(), "MA_XetXu", "Lan_XetXu");
+
                 var ngayxetxu = listXetXu.First().Ngay_XetXu;
                 ViewBag.nxx = ngayxetxu;
-                var listKetQua = from s in db.KETQUA_XX select s;
 
-                if (error == 1)
-                    ViewBag.Loi = 1;
-
+                //loc
                 IEnumerable<KETQUA_XX> model = db.KETQUA_XX;
                 if (tungay == null || denngay == null)
                 {
@@ -73,7 +77,12 @@ namespace NienLuan2.Controllers
                 {
                     model = model.Where(x => x.XETXU.HOSO_VUAN.Ten_VuAn.Contains(searchString)).OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn);
                 }
-
+                
+                if (!String.IsNullOrEmpty(maHoSo))
+                {
+                    model = model.Where(kqxx => kqxx.XETXU.HOSO_VUAN.MA_HoSo == maHoSo);
+                }
+       
 
 
                 ViewBag.SearchString = searchString;
@@ -95,13 +104,13 @@ namespace NienLuan2.Controllers
                 newListXetXu.Add(xetxu);
                 List<HOSO_VUAN> newListHoSo = new List<HOSO_VUAN>();
                 newListHoSo.Add(hosoGia);
-                ViewBag.lxx = new SelectList(newListXetXu.AsEnumerable(), "MA_XetXu", "MA_HoSo");
+                ViewBag.lxx = new SelectList(newListXetXu.AsEnumerable(), "MA_XetXu", "Lan_XetXu");
                 ViewBag.tva = new SelectList(newListHoSo.AsEnumerable(), "MA_HoSo", "Ten_VuAn");
 
                 IEnumerable<KETQUA_XX> model = db.KETQUA_XX;
                 if (tungay == null || denngay == null)
                 {
-                    ViewBag.tuNgay = db.KETQUA_XX.Min(hs => hs.XETXU.Ngay_XetXu).Value;
+                    ViewBag.tuNgay = db.KETQUA_XX.Min(kq => kq.XETXU.Ngay_XetXu).Value;
                     ViewBag.denNgay = DateTime.Now;
                 }
                 else
@@ -121,6 +130,10 @@ namespace NienLuan2.Controllers
                     model = model.Where(x => x.XETXU.HOSO_VUAN.Ten_VuAn.Contains(searchString)).OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn);
                 }
 
+                if (!String.IsNullOrEmpty(maHoSo))
+                {
+                    model = model.Where(kqxx => kqxx.XETXU.HOSO_VUAN.MA_HoSo == maHoSo);
+                }
                 ViewBag.SearchString = searchString;
                 return View(model.OrderByDescending(x => x.XETXU.HOSO_VUAN.Ten_VuAn).ToPagedList(page, pageSize));
             }
@@ -134,7 +147,7 @@ namespace NienLuan2.Controllers
         }
 
         [HttpPost, ActionName("them_KQ")]
-        public ActionResult them_KQ(KETQUA_XX kqxx, FormCollection form)
+        public ActionResult them_KQ(KETQUA_XX kqxx, FormCollection form, string troVe)
         {
             var listKetQua = from s in db.KETQUA_XX select s;
             if (db.KETQUA_XX.Any(x => x.MA_KetQuaXX == kqxx.MA_KetQuaXX))
@@ -158,7 +171,8 @@ namespace NienLuan2.Controllers
             hoSo.MA_TrangThai = "03";
             db.SaveChanges();
 
-
+            if (troVe == "troVe")
+                return RedirectToAction("ListHS", "HoSoVuAn");
             return RedirectToAction("ListKQ");
         }
 
@@ -173,13 +187,8 @@ namespace NienLuan2.Controllers
                 Ten_VuAn = kq.XETXU.HOSO_VUAN.Ten_VuAn,
                 Lan_XetXu = kq.XETXU.Lan_XetXu,
                 Ngay_XetXu = kq.XETXU.Ngay_XetXu,
-                KetQua_XX = kq.KetQua_XX
+                KetQua_XX = kq.KetQua_XX1
             }, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult sua_KQ1()
-        {
-            return View();
         }
 
         [HttpPost, ActionName("sua_KQ1")]
@@ -190,11 +199,11 @@ namespace NienLuan2.Controllers
             if (ketqua == null)
                 return HttpNotFound();
 
-            if (TryUpdateModel(ketqua, "", new string[] { "MA_KetQuaXX", "KetQua_XX" }))
+            if (TryUpdateModel(ketqua, "", new string[] { "MA_KetQuaXX", "KetQua_XX1" }))
             {
                 try
                 {
-                    ketqua.KetQua_XX = kq.KetQua_XX;
+                    ketqua.KetQua_XX1 = kq.KetQua_XX1;
                     db.Entry(ketqua).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -212,14 +221,14 @@ namespace NienLuan2.Controllers
 
 
         [HttpGet]
-        public ActionResult GetSoLanXetXu(string iso3)
+        public ActionResult GetSoLanXetXu(string maHoSo)
         {
             try
             {
-                db.XETXUs.Where(x => x.MA_HoSo.Equals(iso3)).ToList();
+                db.XETXUs.Where(x => x.MA_HoSo.Equals(maHoSo)).ToList();
                 IEnumerable<SelectListItem> actions = db.XETXUs.AsNoTracking()
                         .OrderBy(n => n.Lan_XetXu)
-                        .Where(n => n.MA_HoSo == iso3)
+                        .Where(n => n.MA_HoSo == maHoSo)
                         .Select(n =>
                            new SelectListItem
                            {
@@ -243,14 +252,14 @@ namespace NienLuan2.Controllers
             }
         }
         [HttpGet]
-        public ActionResult GetNgayXetXu(string iso3)
+        public ActionResult GetNgayXetXu(string maXetXu)
         {
 
-            if (iso3 != null)
+            if (maXetXu != null)
             {
-                if (iso3 != "0")
+                if (maXetXu != "0")
                 {
-                    int intMaXetXu = Convert.ToInt32(iso3);
+                    int intMaXetXu = Convert.ToInt32(maXetXu);
                     var ngayXetXu = db.XETXUs.Where(xx => xx.MA_XetXu == intMaXetXu).FirstOrDefault().Ngay_XetXu;
                     return Json(ngayXetXu, JsonRequestBehavior.AllowGet);
                 }

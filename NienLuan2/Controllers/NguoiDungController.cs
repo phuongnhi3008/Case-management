@@ -30,29 +30,5 @@ namespace NienLuan2.Controllers
             IEnumerable<KETQUA_XX> model = db.KETQUA_XX;
             return View(model.OrderByDescending(x => x.XETXU.Ngay_XetXu).ToPagedList(page, pageSize));
         }
-
-        [HttpGet]
-        public FileResult DowloadDon(int id)
-        {
-            MAUDON maudon = db.MAUDONs.Where(md => md.MA_MauDon == id).FirstOrDefault();
-            string path = AppDomain.CurrentDomain.BaseDirectory + "/Content/MauDon/";
-            string fileName = maudon.Link_MD;
-            byte[] fileBytes = System.IO.File.ReadAllBytes(path + fileName);
-            string contentType = MimeMapping.GetMimeMapping(path + fileName);
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = fileName,
-                Inline = true,
-            };
-            string header = "attachment; filename=\"" + fileName +"\"";
-            Response.ContentType = "application/ms-word";
-            Response.AppendHeader("Content-Disposition", header);
-            Response.TransmitFile(Server.MapPath("~/Content/MauDon/" + fileName));
-            Response.End();
-            MemoryStream mStream = new MemoryStream();
-            mStream.Write(fileBytes, 0, fileBytes.Length);
-            return File(mStream, contentType, fileName);
-        }
     }
 }

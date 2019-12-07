@@ -53,15 +53,6 @@ namespace NienLuan2.Controllers
 
             return Json(nhanvien, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Change_Password(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            NHANVIEN nhanvien = db.NHANVIENs.Find(id);
-            return View(nhanvien);
-        }
 
         [HttpPost, ActionName("Change_Password1"),AllowAnonymous]
         public ActionResult Change_Password1(string id, string password)

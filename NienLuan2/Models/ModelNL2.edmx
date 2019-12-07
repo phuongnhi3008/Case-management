@@ -230,6 +230,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="CHITIETXX_xetxu">
+          <End Role="XETXU" Type="Self.XETXU" Multiplicity="0..1" />
+          <End Role="CHITIET_XX" Type="Self.CHITIET_XX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="XETXU">
+              <PropertyRef Name="MA_XetXu" />
+            </Principal>
+            <Dependent Role="CHITIET_XX">
+              <PropertyRef Name="MA_XetXu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HOSO_VUAN_LOAI_VUAN">
           <End Role="LOAI_VUAN" Type="Self.LOAI_VUAN" Multiplicity="0..1" />
           <End Role="HOSO_VUAN" Type="Self.HOSO_VUAN" Multiplicity="*" />
@@ -522,6 +534,10 @@
             <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
             <End Role="CHITIET_DS" EntitySet="CHITIET_DS" />
           </AssociationSet>
+          <AssociationSet Name="CHITIETXX_xetxu" Association="Self.CHITIETXX_xetxu">
+            <End Role="XETXU" EntitySet="XETXU" />
+            <End Role="CHITIET_XX" EntitySet="CHITIET_XX" />
+          </AssociationSet>
           <AssociationSet Name="FK_HOSO_VUAN_LOAI_VUAN" Association="Self.FK_HOSO_VUAN_LOAI_VUAN">
             <End Role="LOAI_VUAN" EntitySet="LOAI_VUAN" />
             <End Role="HOSO_VUAN" EntitySet="HOSO_VUAN" />
@@ -674,6 +690,10 @@
             <End Role="LOAI_DS" EntitySet="LOAI_DS" />
             <End Role="CHITIET_DS" EntitySet="CHITIET_DS" />
           </AssociationSet>
+          <AssociationSet Name="CHITIETXX_xetxu" Association="ModelNL2.CHITIETXX_xetxu">
+            <End Role="XETXU" EntitySet="XETXUs" />
+            <End Role="CHITIET_XX" EntitySet="CHITIET_XX" />
+          </AssociationSet>
           <AssociationSet Name="MA_NhanVien" Association="ModelNL2.MA_NhanVien">
             <End Role="NHANVIEN" EntitySet="NHANVIENs" />
             <End Role="CHITIET_XX" EntitySet="CHITIET_XX" />
@@ -778,6 +798,7 @@
           <Property Name="MA_XetXu" Type="Int32" />
           <Property Name="MA_NhanVien" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="MA_VaiTro" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="XETXU" Relationship="ModelNL2.CHITIETXX_xetxu" FromRole="CHITIET_XX" ToRole="XETXU" />
           <NavigationProperty Name="NHANVIEN" Relationship="ModelNL2.MA_NhanVien" FromRole="CHITIET_XX" ToRole="NHANVIEN" />
           <NavigationProperty Name="VAITRO_NV" Relationship="ModelNL2.MA_VaiTro" FromRole="CHITIET_XX" ToRole="VAITRO_NV" />
         </EntityType>
@@ -822,7 +843,6 @@
             <PropertyRef Name="MA_DuongSu" />
           </Key>
           <Property Name="MA_DuongSu" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="MA_LoaiDS" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="CMND" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="HoTen_DS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NamSinh_DS" Type="DateTime" Nullable="false" Precision="0" />
@@ -868,7 +888,7 @@
           </Key>
           <Property Name="MA_KetQuaXX" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="MA_XetXu" Type="Int32" />
-          <Property Name="KetQua_XX" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="KetQua_XX1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="XETXU" Relationship="ModelNL2.ketqua_xetxu" FromRole="KETQUA_XX" ToRole="XETXU" />
         </EntityType>
         <EntityType Name="LOAI_DS">
@@ -999,6 +1019,7 @@
           <Property Name="MA_HoSo" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="MA_CapXetXu" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CAPXETXU" Relationship="ModelNL2.XETXU_CAPXETXU" FromRole="XETXU" ToRole="CAPXETXU" />
+          <NavigationProperty Name="CHITIET_XX" Relationship="ModelNL2.CHITIETXX_xetxu" FromRole="XETXU" ToRole="CHITIET_XX" />
           <NavigationProperty Name="DIADIEM_XX" Relationship="ModelNL2.FK_XetXu_DiaDiem" FromRole="XETXU" ToRole="DIADIEM_XX" />
           <NavigationProperty Name="HOSO_VUAN" Relationship="ModelNL2.FK_XETXU_HOSO" FromRole="XETXU" ToRole="HOSO_VUAN" />
           <NavigationProperty Name="KETQUA_XX" Relationship="ModelNL2.ketqua_xetxu" FromRole="XETXU" ToRole="KETQUA_XX" />
@@ -1048,6 +1069,18 @@
             </Principal>
             <Dependent Role="CHITIET_DS">
               <PropertyRef Name="MA_LoaiDS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CHITIETXX_xetxu">
+          <End Type="ModelNL2.XETXU" Role="XETXU" Multiplicity="0..1" />
+          <End Type="ModelNL2.CHITIET_XX" Role="CHITIET_XX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="XETXU">
+              <PropertyRef Name="MA_XetXu" />
+            </Principal>
+            <Dependent Role="CHITIET_XX">
+              <PropertyRef Name="MA_XetXu" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1346,7 +1379,6 @@
                 <ScalarProperty Name="NamSinh_DS" ColumnName="NamSinh_DS" />
                 <ScalarProperty Name="HoTen_DS" ColumnName="HoTen_DS" />
                 <ScalarProperty Name="CMND" ColumnName="CMND" />
-                <ScalarProperty Name="MA_LoaiDS" ColumnName="MA_LoaiDS" />
                 <ScalarProperty Name="MA_DuongSu" ColumnName="MA_DuongSu" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1380,7 +1412,7 @@
           <EntitySetMapping Name="KETQUA_XX">
             <EntityTypeMapping TypeName="ModelNL2.KETQUA_XX">
               <MappingFragment StoreEntitySet="KETQUA_XX">
-                <ScalarProperty Name="KetQua_XX" ColumnName="KetQua_XX" />
+                <ScalarProperty Name="KetQua_XX1" ColumnName="KetQua_XX" />
                 <ScalarProperty Name="MA_XetXu" ColumnName="MA_XetXu" />
                 <ScalarProperty Name="MA_KetQuaXX" ColumnName="MA_KetQuaXX" />
               </MappingFragment>

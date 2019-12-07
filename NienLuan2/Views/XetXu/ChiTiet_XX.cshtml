@@ -177,13 +177,18 @@
                         <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Địa điểm:</strong></td>
                         <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.DIADIEM_XX.Ten_DiaDiem)</label></td>
                     </tr>
+                    <tr>
+                        <td><strong for="inputName" style="border: 0px;font-family:'Times New Roman'">Kết quả:</strong></td>
+                        <td><label for="inputName" class="form-control" style="border: 0px;">@Html.DisplayFor(model => model.KETQUA_XX.FirstOrDefault().KetQua_XX1)</label ></ td >
+                                          </tr>
                 </table>
             </div>
         </div>
     </div>
 </div>
 <p>
-    @Html.ActionLink("Trở về", "ListXX")
+    <a href='javascript:history.go(-1)'>Trở về</a>
+    @*@Html.ActionLink("Trở về", "ListXX")*@
 </p>
 
 

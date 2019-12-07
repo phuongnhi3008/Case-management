@@ -43,15 +43,9 @@
                                 @Html.DisplayFor(modelItem => item.TenMauDon)
                             </td>
                             <td>
-                                @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.Link_MD')">
-                Download
-            </button>*@
                                 <a href="@item.Link_MD">
                                     <i class="fa download">Download</i>
                                 </a>
-                                @*<button class="item btn btn-success btn-sm" onclick="DownloadDon('@item.MA_MauDon')">
-                Download
-            </button>*@
                             </td>
 
                         </tr>
@@ -62,27 +56,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-@section scripts {
-    <script type="text/javascript">
-        function DownloadDon(id) {
-            $.ajax({
-                url: id,
-                typr: "GET",
-                contentType: "application/json;charset=UTF-8",
-                dataType: "json",
-                success: function (response) {
-                    //if (response == true)
-                    //    location.reload();
-                },
-                error: function (response) {
-                    //alert(response.responseText);
-                }
-            });
-            return false;
-        }
-    </script>
-}

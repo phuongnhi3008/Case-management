@@ -1,4 +1,5 @@
-﻿using NienLuan2.Models;
+﻿using NienLuan2.Helper;
+using NienLuan2.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -163,6 +164,7 @@ namespace NienLuan2.Controllers
 
             if (!ModelState.IsValid)
                 return View(vt);
+            vt.MA_QNSD = UUID.GetUUID(5);
             db.QUYEN_NSD.Add(vt);
             db.SaveChanges();
             return RedirectToAction("ListVT");

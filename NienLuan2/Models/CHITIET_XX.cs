@@ -19,6 +19,7 @@ namespace NienLuan2.Models
         public string MA_NhanVien { get; set; }
         public string MA_VaiTro { get; set; }
     
+        public virtual XETXU XETXU { get; set; }
         public virtual NHANVIEN NHANVIEN { get; set; }
         public virtual VAITRO_NV VAITRO_NV { get; set; }
     }

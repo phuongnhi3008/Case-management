@@ -16,7 +16,7 @@ namespace NienLuan2.Models
     {
         public string MA_KetQuaXX { get; set; }
         public Nullable<int> MA_XetXu { get; set; }
-        public string KetQua_XX { get; set; }
+        public string KetQua_XX1 { get; set; }
     
         public virtual XETXU XETXU { get; set; }
     }

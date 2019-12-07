@@ -29,7 +29,9 @@ namespace NienLuan2.Models
         public string Ten_VuAn { get; set; }
         public string NoiDung_VA { get; set; }
         public string Loai_HS { get; set; }
-        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> NgayNhan_HS { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

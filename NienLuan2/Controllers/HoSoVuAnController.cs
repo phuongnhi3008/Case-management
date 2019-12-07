@@ -15,21 +15,79 @@ namespace NienLuan2.Controllers
     public class HoSoVuAnController : Controller
     {
         NL2_QLVAEntities1 db = new NL2_QLVAEntities1();
-        // GET: HoSoVuAn
-
-        //public JsonResult ListHoSo(String q)
-        //{
-        //    var
-        //}
-        public ActionResult ListHS(string searchString, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 10)
+        
+        public ActionResult ListHS(string searchString, DateTime? tungay, DateTime? denngay, int? error, int page = 1, int pageSize = 25)
         {
             ViewBag.lva = new SelectList(db.LOAI_VUAN.OrderBy(x => x.Ten_LoaiVA), "MA_LoaiVA", "Ten_LoaiVA");
             ViewBag.vtnv = new SelectList(db.VAITRO_NV.OrderBy(x => x.Ten_VT), "MA_VaiTro", "Ten_VT");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
             ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
-            if (error == 1)
-                ViewBag.Loi = 1;
+
+            //
+            ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.Ten_VuAn), "MA_HoSo", "Ten_VuAn");
+            ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
+            ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.ds = new SelectList(db.DUONGSUs, "MA_DuongSu", "Hoten_DS");
+            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
+
+            //
+            List<HOSO_VUAN> ListVA = new List<HOSO_VUAN>();
+            foreach (var item in db.XETXUs.ToList())
+            {
+                ListVA.Add(item.HOSO_VUAN);
+                //Xoa vu an da duoc xet xet xu khoi danh sach
+                foreach (var itemKQ in db.KETQUA_XX.ToList())
+                {
+                    //Kiem tra vu an da duoc xet xu chua
+                    if (item.Equals(itemKQ.XETXU))
+                        ListVA.Remove(item.HOSO_VUAN);
+                }
+            }
+
+         
+            IEnumerable<HOSO_VUAN> result = ListVA.GroupBy(x => x.Ten_VuAn).Select(x => x.First());
+            if(result.Count() > 0)
+            {
+                ViewBag.tva = new SelectList(result, "MA_HoSo", "Ten_VuAn");
+
+                HOSO_VUAN hoso = result.First();
+                List<XETXU> listXetXu = db.XETXUs.Where(xx => xx.MA_HoSo == hoso.MA_HoSo).ToList();
+                List<XETXU> newListXetXu = listXetXu;
+                foreach (var itemXX in listXetXu.ToList())
+                {
+                    //Kiem tra vu an da duoc xet xu chua(theo lan)
+                    foreach (var itemKQ in db.KETQUA_XX.ToList())
+                    {
+                        if (itemXX.Equals(itemKQ.XETXU))
+                            newListXetXu.Remove(itemXX);
+                    }
+                }
+                ViewBag.lxx = new SelectList(newListXetXu.AsEnumerable(), "MA_XetXu", "Lan_XetXu");
+
+                var ngayxetxu = listXetXu.First().Ngay_XetXu;
+                ViewBag.nxx = ngayxetxu;
+            }
+            else
+            {
+                HOSO_VUAN hosoGia = new HOSO_VUAN
+                {
+                    MA_HoSo = "00000",
+                    Ten_VuAn = "Không có vụ án"
+                };
+                List<HOSO_VUAN> newListHoSo = new List<HOSO_VUAN>();
+                newListHoSo.Add(hosoGia);
+                ViewBag.tva = new SelectList(newListHoSo.AsEnumerable(), "MA_HoSo", "Ten_VuAn");
+                ViewBag.lxx = new SelectList(newListHoSo.AsEnumerable(), "MA_HoSo", "Ten_VuAn");
+                var ngayxetxu = DateTime.Now;
+                ViewBag.nxx = ngayxetxu;
+            }
+           
+
+
+
 
             IEnumerable<HOSO_VUAN> model = db.HOSO_VUAN;
 
@@ -42,7 +100,12 @@ namespace NienLuan2.Controllers
             if(tungay == null || denngay == null)
             {
                 duongSuModel.listHoSoVuAn = model.OrderByDescending(x => x.MA_HoSo).ToPagedList(page, pageSize);
+                if (db.HOSO_VUAN.Count() > 0)
                 ViewBag.tuNgay = db.HOSO_VUAN.Min(hs => hs.NgayNhan_HS).Value;
+                else
+                {
+                    ViewBag.tuNgay = DateTime.Now;
+                }
                 ViewBag.denNgay = DateTime.Now;
             }        
             else
@@ -59,7 +122,7 @@ namespace NienLuan2.Controllers
             }
 
             duongSuModel.listChiTietDuongSu = db.CHITIET_DS.ToList();
-
+            
             return View(duongSuModel);
         }
         public void themChiTietDuongSu(CHITIET_DS ctds)
@@ -67,29 +130,16 @@ namespace NienLuan2.Controllers
             db.CHITIET_DS.Add(ctds);
             db.SaveChanges();
         }
-        public ActionResult them_HS()
-        {
-            return View();
-        }
 
         [HttpPost, ActionName("them_HS")]
         public ActionResult them_HS(HOSO_VUAN hs, FormCollection form)
         {
-            if (db.HOSO_VUAN.Any(x => x.MA_HoSo == hs.MA_HoSo))
-            {
-                //ViewBag.error = "Mã hồ sơ này đã tồn tại!!!";
-                return RedirectToAction("ListHS", new { error = 1 });
-            }
+            //Tao ma tu dong
+            hs.MA_HoSo = UUID.GetUUID(5);
 
             hs.MA_LoaiVA = form["lva"].ToString();
             hs.MA_TrangThai = "01";
             hs.MA_NhanVien = form["mnv"].ToString();
-
-            if (!ModelState.IsValid)
-                return View(hs);
-
-            //Tao ma tu dong
-            hs.MA_HoSo = UUID.GetUUID(5);
 
             db.HOSO_VUAN.Add(hs);
             db.SaveChanges();
@@ -126,6 +176,7 @@ namespace NienLuan2.Controllers
             ViewBag.nd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
             ViewBag.bd = new SelectList(db.DUONGSUs.OrderBy(x => x.HoTen_DS), "MA_DuongSu", "HoTen_DS");
             ViewBag.mnv = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+
             return RedirectToAction("ListHS");
         }
 
@@ -282,33 +333,6 @@ namespace NienLuan2.Controllers
 
         }
 
-        
-
-        public ActionResult ChiTiet_HS(string id)
-        {
-            var model = (from hsva in db.HOSO_VUAN
-                         join xx in db.XETXUs on hsva.MA_HoSo equals xx.MA_HoSo
-                         join nv in db.NHANVIENs on hsva.MA_NhanVien equals nv.MA_NhanVien
-                         join tt in db.TRANGTHAI_HS on hsva.MA_TrangThai equals tt.MA_TrangThai
-                         select new ModelsXetXu
-                         {
-                             MA_HoSo = xx.MA_HoSo,
-                             MA_NhanVien = hsva.MA_NhanVien,
-                             MA_TrangThai = hsva.MA_TrangThai,
-                             MA_LoaiVA = hsva.MA_LoaiVA,
-                             Ten_VuAn = hsva.Ten_VuAn,
-                             NoiDung_VA = hsva.NoiDung_VA,
-                             Ten_TT = tt.Ten_TT,
-                             Loai_HS = hsva.Loai_HS,
-                             NgayNhan_HS = hsva.NgayNhan_HS.Value.ToString("dd/MM/yyyy"),
-                             HoTen_NV = nv.HoTen_NV,
-                             Ngay_XetXu = xx.Ngay_XetXu.Value.ToString("dd/MM/yyyy"),
-                             Lan_XetXu = xx.Lan_XetXu,
-                             MA_DiaDiem = xx.MA_DiaDiem,
-                         }).SingleOrDefault(m => m.MA_HoSo == id);
-            return View(model);
-        }
-
         public JsonResult GetThongKe_HS(string id)
         {
             using (NL2_QLVAEntities1 db = new NL2_QLVAEntities1())
@@ -348,8 +372,178 @@ namespace NienLuan2.Controllers
         public JsonResult GetTuNgay()
         {
             db.Configuration.ProxyCreationEnabled = false;
-            var tuNgay = db.HOSO_VUAN.Min(hs => hs.NgayNhan_HS).Value;
+
+            DateTime tuNgay;
+            if (db.HOSO_VUAN.Count() > 0)
+            {
+                tuNgay = db.HOSO_VUAN.Min(hs => hs.NgayNhan_HS).Value;
+            }
+            else
+            {
+                tuNgay = DateTime.Now;
+            }
+                
             return Json(tuNgay, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //
+
+        [HttpPost, ActionName("themLXX")]
+        public ActionResult themLXX(XETXU xx, FormCollection form)
+        {
+            ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
+            ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
+            ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
+            ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
+            if (db.XETXUs.Any(x => x.MA_XetXu == xx.MA_XetXu))
+            {
+
+                return RedirectToAction("ListXX", new { error = 1 });
+            }
+            xx.MA_CapXetXu = form["cxx"].ToString();
+            xx.MA_DiaDiem = form["dd"].ToString();
+            xx.MA_HoSo = form["hs"].ToString();
+
+            if (!ModelState.IsValid)
+                return View(xx);
+
+            db.XETXUs.Add(xx);
+            db.SaveChanges();
+
+            HOSO_VUAN hoSo = db.HOSO_VUAN.Where(hs => hs.MA_HoSo == xx.MA_HoSo).FirstOrDefault();
+            hoSo.MA_TrangThai = "02";
+            db.SaveChanges();
+            List<string> selectedHoiDongList = form["hd"].Split(',').ToList();
+
+            for (int i = 0; i < selectedHoiDongList.Count; i++)
+            {
+                CHITIET_XX hoidong = new CHITIET_XX
+                {
+
+                    MA_NhanVien = selectedHoiDongList[i],
+                    MA_VaiTro = "C4",
+                    MA_XetXu = xx.MA_XetXu,
+                    MA_ChiTietXX = UUID.GetUUID(5)
+                };
+                themChiTietXetXu(hoidong);
+            }
+            CHITIET_XX kiemSat = new CHITIET_XX
+            {
+
+                MA_NhanVien = form["ks"].ToString(),
+                MA_VaiTro = "C3",
+                MA_XetXu = xx.MA_XetXu,
+                MA_ChiTietXX = UUID.GetUUID(5)
+            };
+            themChiTietXetXu(kiemSat);
+            CHITIET_XX thuky = new CHITIET_XX
+            {
+
+                MA_NhanVien = form["tk"].ToString(),
+                MA_VaiTro = "C1",
+                MA_XetXu = xx.MA_XetXu,
+                MA_ChiTietXX = UUID.GetUUID(5)
+            };
+            themChiTietXetXu(thuky);
+            return RedirectToAction("ListXX");
+        }
+        public void themChiTietXetXu(CHITIET_XX ctxx)
+        {
+            db.CHITIET_XX.Add(ctxx);
+            db.SaveChanges();
+        }
+
+        public JsonResult GetNgayNhanHoSo(string maHoSo)
+        {
+            if (db.HOSO_VUAN.Count() > 0)
+            {
+                HOSO_VUAN hoSo = db.HOSO_VUAN.FirstOrDefault(ks => ks.MA_HoSo == maHoSo);
+                return Json(hoSo.NgayNhan_HS, JsonRequestBehavior.AllowGet);
+            }             
+            else
+            {
+                var ngayNhan = DateTime.Now.ToString();
+                return Json(ngayNhan, JsonRequestBehavior.AllowGet);
+            }
+
+
+          
+        }
+
+        public JsonResult GetLanXetXu(string maHoSo)
+        {
+            try
+            {
+                var ListLanXetXu = db.XETXUs.Where(xx => xx.MA_HoSo == maHoSo).ToList();
+                var result = (ListLanXetXu.Count + 1).ToString();
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception e)
+            {
+                return Json("1", JsonRequestBehavior.AllowGet);
+            }
+          
+        }
+
+        public ActionResult GetSoLanXetXu(string maHoSo)
+        {
+            try
+            {
+                db.XETXUs.Where(x => x.MA_HoSo.Equals(maHoSo)).ToList();
+                IEnumerable<SelectListItem> actions = db.XETXUs.AsNoTracking()
+                        .OrderBy(n => n.Lan_XetXu)
+                        .Where(n => n.MA_HoSo == maHoSo)
+                        .Select(n =>
+                           new SelectListItem
+                           {
+                               Value = n.MA_XetXu.ToString(),
+                               Text = n.Lan_XetXu.ToString()
+                           }).ToList();
+                var result = actions.ToList();
+                foreach (var lanxetxu in actions)
+                {
+                    foreach (var itemKQ in db.KETQUA_XX.ToList())
+                    {
+                        if (lanxetxu.Value.Equals(itemKQ.XETXU.MA_XetXu.ToString()))
+                            result.Remove(lanxetxu);
+                    }
+                }
+                return Json(new SelectList(result, "Value", "Text"), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public ActionResult GetNgayXetXu(string maXetXu)
+        {
+
+            if (maXetXu != null)
+            {
+                if (maXetXu != "0")
+                {
+                    int intMaXetXu = Convert.ToInt32(maXetXu);
+                    var ngayXetXu = db.XETXUs.Where(xx => xx.MA_XetXu == intMaXetXu).FirstOrDefault().Ngay_XetXu;
+                    return Json(ngayXetXu, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(DateTime.Now, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+
+            else
+            {
+                string str = "Có bug";
+                return Json(str, JsonRequestBehavior.AllowGet);
+            }
+
+
         }
     }
 }

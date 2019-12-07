@@ -42,9 +42,9 @@
                                 <th>
                                     Tên quyền
                                 </th>
-                                <th>
+                                @*<th>
                                     Thao tác
-                                </th>
+                                </th>*@
                             </tr>
 
                             @{
@@ -65,12 +65,12 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Ten_QNSD)
                                     </td>
-                                    <td>
+                                    @*<td>
                                         <a class="item btn_Xoa btn btn-primary btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_VT1", new { id = item.MA_QNSD})">
 
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                    </td>
+                                    </td>*@
                                 </tr>
                                             }
                         </table>
@@ -96,12 +96,12 @@
                     @using (Html.BeginForm("AddVT", "Menu", FormMethod.Post))
                     {
                         <div class="modal-body" style="height:auto">
-                            <div class="col-md-8">
+                            @*<div class="col-md-8">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Mã vai trò :</label>
                                     <input type="text" class="form-control" id="MA_QNSD" name="MA_QNSD" placeholder="Mã quyền">
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên vai trò :</label>

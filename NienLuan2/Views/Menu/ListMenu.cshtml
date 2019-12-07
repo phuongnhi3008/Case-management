@@ -7,11 +7,11 @@
         <div class="box">
             <div class="card-header">
                 <i class="fas fa-table"></i>
-                <b>DANH SÁCH PHÂN QUYỀN MENU</b>             
+                <b>PHÂN QUYỀN</b>             
             </div>
             <div class="card-header">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-mrole">Thêm người dùng Menu</button>
-                - &nbsp;<a class="btn btn-primary" @Html.ActionLink("Danh sách vai trò", "ListVT", "Menu", null, new { @class = "btn btn-sucesss" })</a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-mrole">Phân quyền người dùng</button>
+                - &nbsp;<a class="btn btn-primary" @Html.ActionLink("Danh sách quyền", "ListVT", "Menu", null, new { @class = "btn btn-sucesss" })</a>
                 - &nbsp;<a class="btn btn-primary" @Html.ActionLink("Danh sách menu chính", "ListMenuChinh", "Menu", null, new { @class = "btn btn-sucesss" })</a>
                 @using (Html.BeginForm("ListMN", "Menu", FormMethod.Get, new { @class = "pull-right d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" }))
                 {
@@ -105,7 +105,6 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Chức năng :</label>      
                                    @Html.DropDownList("controller", null, new { @class = "form-control", @id = "idController" })
-                                    @*<input type="text" class="form-control" id="Controller_SUB" name="Controller_SUB" placeholder="Tên controller">*@
                                 </div>
                             </div>
 
@@ -113,7 +112,6 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Danh mục :</label>
                                     @Html.DropDownList("action", null, new { @class = "form-control", @id = "idAction" })
-                                    @*<input type="text" class="form-control" id="Action_SUB" name="Action_SUB" placeholder="Tên action">*@
                                 </div>
                             </div>
 

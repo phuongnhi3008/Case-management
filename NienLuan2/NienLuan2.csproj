@@ -332,6 +332,9 @@
     <Content Include="Content\Boostrap4\bootstrap.min.js" />
     <Content Include="Content\Chosen\chosen.jquery.min.js" />
     <Content Include="Content\Chosen\chosen.min.css" />
+    <Content Include="Content\imagesbook2.JPG.png" />
+    <Content Include="Content\imagesbook3.JPG.png" />
+    <Content Include="Content\imagesHello-Kitty-hello-kitty-181297_1024_768.png" />
     <Content Include="Content\images\48389528_271840736829122_3434235745139687424_n.png" />
     <Content Include="Content\images\avatar\no-avatar.jpg" />
     <Content Include="Content\bootstrap.css" />
@@ -469,6 +472,7 @@
     <Content Include="Content\js\demo\datatables-demo.js" />
     <Content Include="Content\js\sb-admin.js" />
     <Content Include="Content\js\sb-admin.min.js" />
+    <Content Include="Content\noavatar.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\stylesheets\animate.css" />
     <Content Include="Content\stylesheets\bootstrap.css" />

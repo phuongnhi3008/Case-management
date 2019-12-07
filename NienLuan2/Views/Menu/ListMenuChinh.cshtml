@@ -27,9 +27,9 @@
                                 <th>
                                     Tên menu
                                 </th>
-                                <th>
+                                @*<th>
                                     Thao tác
-                                </th>
+                                </th>*@
                             </tr>
 
                             @foreach (var item in Model)
@@ -41,12 +41,12 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Ten_Main)
                                     </td>
-                                    <td>
+                                    @*<td>
                                         <a class="item btn_Xoa btn btn-primary btn-sm" onclick="return confirm('Bạn chắc chắn muốn xóa?');" href="@Url.Action("xoa_MAIN1", new { id = item.ID_Main})">
 
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                    </td>
+                                    </td>*@
                                 </tr>
                             }
                         </table>

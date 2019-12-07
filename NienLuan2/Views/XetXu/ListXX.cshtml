@@ -132,6 +132,12 @@
                         <div class="modal-body" style="height:730px">
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label for="exampleinputemail1">Tên vụ án: </label>
+                                    @Html.DropDownList("hs", null, new { @class = "form-control", @required = "required", @id = "listHoSo" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label for="exampleinputemail1">Ngày xét xử: </label>
                                     <input type="date" class="form-control" id="Ngay_XetXu" name="Ngay_XetXu" value="@DateTime.Today.ToString("dd/MM/yyyy")" required>
                                 </div>
@@ -140,12 +146,6 @@
                                 <div class="form-group">
                                     <label for="exampleinputemail1">Lần xét xử: </label>
                                     <input type="number" step="1" min="1" class="form-control" id="Lan_XetXu" name="Lan_XetXu" placeholder="Lần xét xử" required>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="exampleinputemail1">Tên vụ án: </label>
-                                    @Html.DropDownList("hs", null, new { @class = "form-control", @required= "required", @id = "listHoSo" })
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -273,7 +273,6 @@
     </div>
 </div>
 
-
 @section scripts {
 <script src="~/Content/Chosen/chosen.jquery.min.js"></script>
 <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
@@ -307,9 +306,8 @@
             dataType: "json",
             success: function (response) {
                 $('#MA_XetXu_Sua').val(response.MA_XetXu);
-                $('#listHoSoVuAn_Sua').val(response.MA_HoSo);
-                $('#Lan_XetXu_Sua').val(response.Lan_XetXu);
- 
+                $('#listHoSoVuAn').val(response.MA_HoSo);
+
                 var listSelectedHoiDong = new Array();
                 $("#listHoiDong_Sua option:selected").prop("selected", false);
                 $.getJSON('@Url.Action("GetListHoiDong")', { maXetXu: id }, function (actions) {
@@ -412,6 +410,7 @@
             no_results_text: "Không tìm thấy",
             width: '100%'
         });
+
     });
 
     $('#listHoSo').change(function () {
@@ -427,7 +426,31 @@
             });
         }
     });
- 
+    $(function () {
+        $("#listNguyenDon").chosen({
+            placeholder_text: "Chọn nguyên đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+
+        $("#listBiDon").chosen({
+            placeholder_text: "Chọn bị đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+        $("#listNguyenDon_Sua").chosen({
+            placeholder_text: "Chọn nguyên đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+
+        $("#listBiDon_Sua").chosen({
+            placeholder_text: "Chọn bị đơn...",
+            no_results_text: "Không tìm thấy",
+            width: '100%'
+        });
+
+    });
     function DateConverter(date) {
         return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).substr(-2, 2) + '-' + ('0' + date.getDate()).substr(-2, 2);
     }

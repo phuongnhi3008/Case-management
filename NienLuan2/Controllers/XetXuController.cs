@@ -24,9 +24,6 @@ namespace NienLuan2.Controllers
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.ds = new SelectList(db.DUONGSUs, "MA_DuongSu", "Hoten_DS");
-            //List<SelectListItem> selectsHoiDong
-
-            //ViewBag.selectsHoiDong = null;
             ViewBag.cxx = new SelectList(db.CAPXETXUs.OrderBy(x => x.MA_CapXetXu), "MA_CapXetXu", "TenCapXetXu");
    
 
@@ -80,11 +77,10 @@ namespace NienLuan2.Controllers
         }
 
         [HttpPost, ActionName("themLXX")]
-        public ActionResult themLXX(XETXU xx, FormCollection form)
+        public ActionResult themLXX(XETXU xx, FormCollection form, string troVe)
         {
             ViewBag.dd = new SelectList(db.DIADIEM_XX.OrderBy(x => x.Ten_DiaDiem), "MA_DiaDiem", "Ten_DiaDiem");
             ViewBag.hs = new SelectList(db.HOSO_VUAN.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
-            //ViewBag.hs = new SelectList(db.h.OrderBy(x => x.MA_HoSo), "MA_HoSo", "Ten_VuAn");
             ViewBag.hd = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.ks = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
             ViewBag.tk = new SelectList(db.NHANVIENs.OrderBy(x => x.HoTen_NV), "MA_NhanVien", "HoTen_NV");
@@ -139,6 +135,8 @@ namespace NienLuan2.Controllers
                 MA_ChiTietXX = UUID.GetUUID(5)
             };
             themChiTietXetXu(thuky);
+            if (troVe == "troVe")
+                return RedirectToAction("ListHS", "HoSoVuAn");
             return RedirectToAction("ListXX");
         }
 
@@ -166,19 +164,17 @@ namespace NienLuan2.Controllers
 
         }
         //[HttpPost, ActionName("xoaLXX")]
-        public ActionResult xoaLXX1(XETXU xx,int? id)
+        public ActionResult xoaLXX1(XETXU xx,int id)
         {
             try
             {
                 XETXU xetxu = db.XETXUs.SingleOrDefault(x => x.MA_XetXu == id);
+                ClearChiTietXetXu(id);
                 db.XETXUs.Remove(xetxu);
                 db.SaveChanges();
-                // xóa mấy thằng nhân viên trong bảng chi tiết xét xử trước (xóa data trong bang ChiTietXetXu)
-                // select list bảng ChiTietXetXu, check MA_XetXu (thằng nào bằng xx.MA_XetXu thì xóa hết)
-                // sau đó mới xóa xetxu
                 return RedirectToAction("ListXX");
             }
-            catch
+            catch (Exception e)
             {
                 return RedirectToAction("ListXX");
             }
@@ -244,16 +240,10 @@ namespace NienLuan2.Controllers
         [HttpPost, ActionName("Edit_XX1")]
         public ActionResult Edit_XX1(XETXU xx, FormCollection form)
         {
-
-            //Tương tự xóa
-            //Nếu có cập nhật nhân viên thì chỉ cập nhật trong bảng ChiTietXetXu
-            //Còn ko thì cập nhật trong XETXU
             XETXU newXetXu = db.XETXUs.FirstOrDefault(nxx => nxx.MA_XetXu == xx.MA_XetXu);
             newXetXu.Ngay_XetXu = xx.Ngay_XetXu;
             newXetXu.MA_DiaDiem = form["dd"].ToString();
  
-
-
             CHITIET_XX newThuKy = db.CHITIET_XX.FirstOrDefault(ntk => ntk.MA_XetXu == xx.MA_XetXu && ntk.MA_VaiTro == "C1");
             newThuKy.MA_NhanVien = form["tk"].ToString();
 
@@ -279,6 +269,7 @@ namespace NienLuan2.Controllers
             return RedirectToAction("ListXX");
 
         }
+      
         public void ClearHoiDong(int maXetXu)
         {
             foreach (var item in db.CHITIET_XX.ToList())
@@ -291,6 +282,17 @@ namespace NienLuan2.Controllers
             }
         }
 
+        public void ClearChiTietXetXu(int maXetXu)
+        {
+            foreach (var item in db.CHITIET_XX.ToList())
+            {
+                if (item.MA_XetXu == maXetXu)
+                {
+                    db.CHITIET_XX.Remove(item);
+                    db.SaveChanges();
+                }
+            }
+        }
 
 
         public List<DUONGSU> Get_DS(string ds_ma)

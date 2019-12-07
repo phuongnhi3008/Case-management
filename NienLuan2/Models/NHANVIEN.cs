@@ -27,7 +27,9 @@ namespace NienLuan2.Models
         public string MA_QNSD { get; set; }
         public string MA_PhongBan { get; set; }
         public string HoTen_NV { get; set; }
-        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public System.DateTime NamSinh_NV { get; set; }
         public bool GioiTinh_NV { get; set; }
         public string QueQuan_NV { get; set; }

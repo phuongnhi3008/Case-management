@@ -95,8 +95,18 @@ namespace NienLuan2.Controllers
             Session["MatKhau"] = null;
             Session["QuyenSD"] = null;
 
-            FormsAuthentication.SignOut();
+            //gán session Tài khoản
+            Session["online"] = null;
+            Session["TaiKhoan"] = null;
+            Session["LoginCredentials"] = null;
+            Session["MenuMaster"] = null;
+            Session["UserName"] = null;
 
+            FormsAuthentication.SignOut();
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Session.Clear();
+            Session.Abandon();
+            Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
             return RedirectToAction("Index", "Home");
         }
 

@@ -46,7 +46,6 @@ namespace NienLuan2.Controllers
         public ActionResult them_DS(DUONGSU ds, FormCollection form)
         {               
             ds.MA_DuongSu = UUID.GetUUID(5);
-            ds.MA_LoaiDS = "ND";
             if (form["GioiTinh_DS"] != null)
             {
                 if ((form["GioiTinh_DS"].ToString() == "on"))
@@ -65,20 +64,6 @@ namespace NienLuan2.Controllers
             var duongsu = db.DUONGSUs.Find(id);
 
             return Json(duongsu, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public ActionResult sua_DS(string id)
-        {
-            ViewBag.lds = new SelectList(db.LOAI_DS.OrderBy(x => x.Ten_LoaiDS), "MA_LoaiDS", "Ten_LoaiDS");
-            
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DUONGSU duongsu = db.DUONGSUs.Find(id);
-            return View(duongsu);
         }
 
         [HttpPost, ActionName("sua_DS1")]
@@ -106,9 +91,6 @@ namespace NienLuan2.Controllers
             newDuongSu.GioiTinh_DS = ds.GioiTinh_DS;
 
             db.SaveChanges();
-
-
-
             return RedirectToAction("ListDS");
         }
         public JsonResult CheckXoa(string id)

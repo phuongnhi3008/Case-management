@@ -18,11 +18,14 @@ namespace NienLuan2.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public XETXU()
         {
+            this.CHITIET_XX = new HashSet<CHITIET_XX>();
             this.KETQUA_XX = new HashSet<KETQUA_XX>();
         }
     
         public int MA_XetXu { get; set; }
-        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy}")]
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> Ngay_XetXu { get; set; }
         public int Lan_XetXu { get; set; }
         public string MA_DiaDiem { get; set; }
@@ -30,6 +33,8 @@ namespace NienLuan2.Models
         public string MA_CapXetXu { get; set; }
     
         public virtual CAPXETXU CAPXETXU { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CHITIET_XX> CHITIET_XX { get; set; }
         public virtual DIADIEM_XX DIADIEM_XX { get; set; }
         public virtual HOSO_VUAN HOSO_VUAN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
